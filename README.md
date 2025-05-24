@@ -1,24 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Reignit Inc Landing Page
+
+A modern, high-performance landing page for Reignit Inc, showcasing AI-powered business solutions with interactive elements and engaging user experience.
+
+## Features
+
+- Responsive design optimized for all devices
+- Interactive service accordion with expandable details
+- WebGL animations and 60-second explainer video
+- Animated counters and testimonials
+- Interactive AI quote wizard
+- Creative playground with AI demos
+- Fully accessible (WCAG AA compliant)
+- Performance optimized (LCP ≤ 2.5s)
+
+## Tech Stack
+
+- **Framework**: Next.js 14
+- **Language**: TypeScript
+- **Styling**: TailwindCSS
+- **Animations**: Framer Motion
+- **UI Components**: Headless UI
+- **Icons**: Heroicons
+- **Deployment**: Vercel
 
 ## Getting Started
 
-First, run the development server:
+First, install the dependencies:
+
+```bash
+npm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## Learn More
 
