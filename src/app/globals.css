@@ -14,6 +14,26 @@ body {
   background-color: var(--background);
   color: var(--foreground);
   overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  text-rendering: optimizeLegibility;
+}
+
+/* Fluid typography for responsive text scaling */
+html {
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 640px) {
+  html {
+    font-size: 14px;
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -44,11 +64,21 @@ body::after {
 
 /* CTA button styles */
 .cta-primary {
-  @apply bg-accent text-white font-headline font-semibold uppercase text-sm px-6 py-3 rounded-full transition-all hover:shadow-lg hover:scale-105;
+  @apply bg-accent text-white font-headline font-semibold uppercase text-sm px-5 py-3 sm:px-6 rounded-full transition-all hover:shadow-lg hover:scale-105 flex-shrink-0 touch-manipulation;
 }
 
 .cta-secondary {
-  @apply bg-transparent border border-white text-white font-headline font-semibold uppercase text-sm px-6 py-3 rounded-full transition-all hover:bg-white hover:text-dark-canvas;
+  @apply bg-transparent border border-white text-white font-headline font-semibold uppercase text-sm px-5 py-3 sm:px-6 rounded-full transition-all hover:bg-white hover:text-dark-canvas flex-shrink-0 touch-manipulation;
+}
+
+/* Ensure buttons have proper touch targets on mobile */
+@media (max-width: 640px) {
+  .cta-primary, .cta-secondary {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 /* Accordion animation */
@@ -59,8 +89,9 @@ body::after {
 
 /* Floating pill */
 .floating-pill {
-  @apply fixed bottom-8 right-8 bg-primary-gradient-start text-white py-2 px-4 rounded-full shadow-lg z-50 flex items-center gap-2 cursor-pointer transition-all hover:scale-105;
+  @apply fixed bottom-4 sm:bottom-8 right-4 sm:right-8 bg-primary-gradient-start text-white py-2 px-4 rounded-full shadow-lg z-50 flex items-center gap-2 cursor-pointer transition-all hover:scale-105;
   animation: float 3s ease-in-out infinite;
+  touch-action: manipulation;
 }
 
 :root {

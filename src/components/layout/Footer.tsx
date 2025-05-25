@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline';
+import Logo from '../ui/Logo';
 
 const Footer: React.FC = () => {
   return (
@@ -7,11 +8,12 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-1">
-            <Link href="/" className="flex items-center">
-              <span className="text-2xl font-headline font-bold text-white">
-                Reignit<span className="text-accent">Inc</span>
-              </span>
-            </Link>
+            <Logo 
+              variant="default" 
+              size="md" 
+              showText={true}
+              background="dark"
+            />
             <p className="mt-4 text-gray-400">
               Transforming businesses with AI-powered solutions that drive growth and efficiency.
             </p>

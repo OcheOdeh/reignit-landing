@@ -4,20 +4,7 @@ import FormField from '../ui/FormField';
 import SubmitButton from '../ui/SubmitButton';
 import { useFormContext } from './FormContext';
 import { ArrowRightIcon } from '@heroicons/react/24/solid';
-
-// Mock country data - in a real app, you'd fetch this from an API
-const countries = [
-  { value: 'us', label: 'United States' },
-  { value: 'ca', label: 'Canada' },
-  { value: 'uk', label: 'United Kingdom' },
-  { value: 'au', label: 'Australia' },
-  { value: 'de', label: 'Germany' },
-  { value: 'fr', label: 'France' },
-  { value: 'jp', label: 'Japan' },
-  { value: 'in', label: 'India' },
-  { value: 'br', label: 'Brazil' },
-  { value: 'ng', label: 'Nigeria' },
-];
+import { countries } from '@/data/countries';
 
 const roles = [
   { value: 'product', label: 'Product' },
@@ -77,7 +64,7 @@ const ContactStep: React.FC<{ onNext: () => void }> = ({ onNext }) => {
       case 'workEmail':
         return validateEmail(value);
       case 'company':
-        return !value ? 'Company name is required' : '';
+        return ''; // Company is no longer required
       case 'role':
         return !value ? 'Please select your role' : '';
       case 'country':
@@ -103,7 +90,7 @@ const ContactStep: React.FC<{ onNext: () => void }> = ({ onNext }) => {
     const newErrors: ValidationErrors = {
       fullName: validateField('fullName', formData.fullName),
       workEmail: validateField('workEmail', formData.workEmail),
-      company: validateField('company', formData.company),
+      company: '', // Company is no longer required
       role: validateField('role', formData.role),
       country: validateField('country', formData.country),
     };
@@ -151,7 +138,7 @@ const ContactStep: React.FC<{ onNext: () => void }> = ({ onNext }) => {
 
         <FormField
           id="workEmail"
-          label="Work Email"
+          label="Email"
           type="email"
           value={formData.workEmail}
           onChange={(value) => handleChange('workEmail', value as string)}
@@ -169,7 +156,6 @@ const ContactStep: React.FC<{ onNext: () => void }> = ({ onNext }) => {
           value={formData.company}
           onChange={(value) => handleChange('company', value as string)}
           error={errors.company}
-          required
           placeholder="Your company name"
           onKeyDown={handleKeyDown}
           helperText="We'll use this to personalize your audit"

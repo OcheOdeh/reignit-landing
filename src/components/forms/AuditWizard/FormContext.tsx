@@ -6,7 +6,7 @@ export const auditFormSchema = z.object({
   // Step 1: Contact Information
   fullName: z.string().min(2, 'Name must be at least 2 characters'),
   workEmail: z.string().email('Please enter a valid email address'),
-  company: z.string().min(1, 'Company name is required'),
+  company: z.string().optional(),
   role: z.string().min(1, 'Please select or enter your role'),
   country: z.string().min(1, 'Please select your country'),
   

@@ -7,7 +7,7 @@ import ServicesCarousel from '@/components/sections/ServicesCarousel';
 import HowItWorks from '@/components/sections/HowItWorks';
 import ProofCounters from '@/components/sections/ProofCounters';
 import QuoteWizard from '@/components/sections/QuoteWizard';
-import CreativePlayground from '@/components/sections/CreativePlayground';
+// CreativePlayground removed as requested
 // Testimonials section removed
 import CtaBanner from '@/components/sections/CtaBanner';
 
@@ -30,7 +30,7 @@ export default function Home() {
       <HowItWorks />
       <ProofCounters />
       <QuoteWizard />
-      <CreativePlayground />
+      {/* CreativePlayground removed as requested */}
       {/* Testimonials section removed */}
       <CtaBanner />
     </Layout>

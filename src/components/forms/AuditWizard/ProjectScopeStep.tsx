@@ -18,7 +18,7 @@ type ValidationErrors = {
 const serviceOptions = [
   { 
     value: 'cx-ai', 
-    label: 'Customer Experience AI (Chatbots/Voice)',
+    label: 'Customer Experience AI (AI Chatbots/Conversational AI Dev/Voice Agents)',
     color: 'bg-blue-600'
   },
   { 
@@ -28,7 +28,7 @@ const serviceOptions = [
   },
   { 
     value: 'product-studio', 
-    label: 'Product Studio (MicroSaaS / CustomToonz / RPG)',
+    label: 'Product Studio (Graphic Design/MicroSaaS/CustomToonz/Games)',
     color: 'bg-purple-600'
   },
   { 

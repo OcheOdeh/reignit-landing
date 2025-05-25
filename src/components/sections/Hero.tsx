@@ -164,17 +164,17 @@ const Hero: React.FC = () => {
         {/* Content */}
         <div className="container mx-auto px-4 text-center z-10">
           <motion.h1
-            className="text-5xl md:text-7xl font-headline font-bold text-white mb-6"
+            className="text-4xl sm:text-5xl md:text-7xl font-headline font-bold text-white mb-4 md:mb-6 px-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            Transform Your Business <br />
-            <span className="text-accent">With AI</span>
+            Transform Your Business{' '}
+            <span className="text-accent block sm:inline">With AI</span>
           </motion.h1>
 
           <motion.p
-            className="text-xl md:text-2xl text-neutral-smoke max-w-3xl mx-auto mb-10"
+            className="text-lg sm:text-xl md:text-2xl text-neutral-smoke max-w-3xl mx-auto mb-8 md:mb-10 px-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -184,17 +184,18 @@ const Hero: React.FC = () => {
           </motion.p>
 
           <motion.div
-            className="flex flex-col sm:flex-row justify-center gap-4"
+            className="flex justify-center px-4 w-full max-w-md mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <a href="#audit" className="cta-primary" onClick={handleOpenAuditWizard}>
+            <a 
+              href="#audit" 
+              className="cta-primary w-full text-center" 
+              onClick={handleOpenAuditWizard}
+            >
               Book Free AI Audit
             </a>
-            <Link href="#demo" className="cta-secondary">
-              Watch Demo
-            </Link>
           </motion.div>
         </div>
 

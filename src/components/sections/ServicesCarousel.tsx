@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRightIcon } from '@heroicons/react/24/solid';
+import { PlayIcon, PauseIcon } from '@heroicons/react/24/outline';
 
 type ServiceItem = {
   id: string;
@@ -66,9 +67,12 @@ type ServiceCardProps = {
 
 const ServiceCard: React.FC<ServiceCardProps> = ({ service, isExpanded, onClick, isAllExpanded }) => {
   const contentRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [contentHeight, setContentHeight] = useState<number>(0);
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
+  const [videoLoaded, setVideoLoaded] = useState<boolean>(false);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
   useEffect(() => {
     if (contentRef.current) {
@@ -76,8 +80,21 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, isExpanded, onClick,
     }
   }, [isExpanded]);
 
-  // Load the GIF when expanded or on hover
-  const shouldLoadGif = isExpanded || isHovered || isAllExpanded;
+  // Load the GIF/video when expanded or on hover
+  const shouldLoadMedia = isExpanded || isHovered || isAllExpanded;
+  
+  // Handle video play/pause
+  const togglePlayPause = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
 
   return (
     <div 
@@ -118,6 +135,124 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, isExpanded, onClick,
             <div>
               <p className="text-neutral-smoke mb-4">{service.description}</p>
               
+              {service.id === 'cx-ai' && (
+                <div className="mb-4">
+                  <div className="space-y-3">
+                    <div className="flex items-start">
+                      <span className="text-accent font-semibold mr-2">•</span>
+                      <div>
+                        <span className="text-white font-medium">AI Chatbots</span>
+                        <span className="text-neutral-smoke"> (Multilingual web / WhatsApp bot; 35% ticket deflection)</span>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <span className="text-accent font-semibold mr-2">•</span>
+                      <div>
+                        <span className="text-white font-medium">Conversational AI Dev</span>
+                        <span className="text-neutral-smoke"> (Retrieval-augmented, tool-calling agent)</span>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <span className="text-accent font-semibold mr-2">•</span>
+                      <div>
+                        <span className="text-white font-medium">Voice Agents</span>
+                        <span className="text-neutral-smoke"> (IVR hand-off, smart routing)</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              {service.id === 'workflow-ai' && (
+                <div className="mb-4">
+                  <div className="space-y-3">
+                    <div className="flex items-start">
+                      <span className="text-accent font-semibold mr-2">•</span>
+                      <div>
+                        <span className="text-white font-medium">AI Automations</span>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <span className="text-accent font-semibold mr-2">•</span>
+                      <div>
+                        <span className="text-white font-medium">Process Mining & Optimization</span>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <span className="text-accent font-semibold mr-2">•</span>
+                      <div>
+                        <span className="text-white font-medium">AI Integration Services</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              {service.id === 'product-studio' && (
+                <div className="mb-4">
+                  <div className="space-y-3">
+                    <div className="flex items-start">
+                      <span className="text-accent font-semibold mr-2">•</span>
+                      <div>
+                        <span className="text-white font-medium">MicroSaas Development</span>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <span className="text-accent font-semibold mr-2">•</span>
+                      <div>
+                        <span className="text-white font-medium">CustomToonz</span>
+                        <span className="text-neutral-smoke"> (Toonify kids avatars)</span>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <span className="text-accent font-semibold mr-2">•</span>
+                      <div>
+                        <span className="text-white font-medium">RPG Games</span>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <span className="text-accent font-semibold mr-2">•</span>
+                      <div>
+                        <span className="text-white font-medium">AI Graphic Design</span>
+                        <span className="text-neutral-smoke"> (Logo + brand kit generator, marketing assets)</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              {service.id === 'deep-ai' && (
+                <div className="mb-4">
+                  <div className="space-y-3">
+                    <div className="flex items-start">
+                      <span className="text-accent font-semibold mr-2">•</span>
+                      <div>
+                        <span className="text-white font-medium">AI Agents</span>
+                        <span className="text-neutral-smoke"> (Memory, tool-use, multi-personal frameworks)</span>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <span className="text-accent font-semibold mr-2">•</span>
+                      <div>
+                        <span className="text-white font-medium">Model Training and Fine-tuning</span>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <span className="text-accent font-semibold mr-2">•</span>
+                      <div>
+                        <span className="text-white font-medium">AI Infrastructure setup</span>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <span className="text-accent font-semibold mr-2">•</span>
+                      <div>
+                        <span className="text-white font-medium">Strategy and consultation</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
               <h4 className="text-lg font-headline font-semibold text-accent mb-2">ROI Impact</h4>
               <ul className="space-y-2">
                 {service.bullets.map((bullet, index) => (
@@ -130,19 +265,73 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, isExpanded, onClick,
             </div>
             
             <div className="relative aspect-video bg-gray-900 rounded overflow-hidden">
-              {shouldLoadGif && (
+              {/* Video for all service categories */}
+              {(service.id === 'cx-ai' || service.id === 'workflow-ai' || service.id === 'product-studio' || service.id === 'deep-ai') && shouldLoadMedia ? (
+                <div className="relative w-full h-full">
+                  <video 
+                    ref={videoRef}
+                    className="w-full h-full object-cover"
+                    preload="metadata"
+                    playsInline
+                    controls
+                    onLoadedData={() => setVideoLoaded(true)}
+                    onPlay={() => setIsPlaying(true)}
+                    onPause={() => setIsPlaying(false)}
+                    onEnded={() => setIsPlaying(false)}
+                    poster={
+                      service.id === 'cx-ai' 
+                        ? "/images/cx-ai-poster.png" 
+                        : service.id === 'workflow-ai' 
+                          ? "/images/workflow-ai-poster.png"
+                          : service.id === 'product-studio' 
+                            ? "/images/product-studio-ai-poster.png"
+                            : "/images/deep-ai-poster.png"
+                    }
+                  >
+                    <source 
+                      src={
+                        service.id === 'cx-ai' 
+                          ? "/videos/cx-ai-demo.mp4" 
+                          : service.id === 'workflow-ai' 
+                            ? "/videos/workflow-ai-demo.mp4"
+                            : service.id === 'product-studio' 
+                              ? "/videos/product-studio-ai-demo.mp4"
+                              : "/videos/deep-ai-demo.mp4"
+                      } 
+                      type="video/mp4" 
+                    />
+                    Your browser does not support the video tag.
+                  </video>
+                  
+                  {/* Video controls */}
+                  <div 
+                    className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+                    onClick={togglePlayPause}
+                  >
+                    <div className="bg-accent bg-opacity-90 rounded-full p-3 shadow-lg">
+                      {isPlaying ? (
+                        <PauseIcon className="h-8 w-8 text-white" />
+                      ) : (
+                        <PlayIcon className="h-8 w-8 text-white" />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ) : false ? ( // All services now have videos, so this branch is no longer needed
                 <img 
                   src={service.gifUrl} 
                   alt={`${service.title} demonstration`}
                   className={`w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
                   onLoad={() => setImageLoaded(true)}
                 />
-              )}
-              {!imageLoaded && (
+              ) : null}
+              
+              {/* Loading state - no longer needed as all services have videos */}
+              {false ? (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <span className="text-sm text-gray-400">Loading demonstration...</span>
                 </div>
-              )}
+              ) : null}
             </div>
           </div>
         </div>

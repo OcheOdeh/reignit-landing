@@ -7,6 +7,7 @@ interface LogoProps {
   variant?: 'default' | 'white';
   size?: 'sm' | 'md' | 'lg';
   showText?: boolean;
+  background?: 'light' | 'dark';
 }
 
 /**
@@ -17,6 +18,7 @@ const Logo: React.FC<LogoProps> = ({
   variant = 'default',
   size = 'md',
   showText = true,
+  background = 'dark',
 }) => {
   // Size mapping for the logo
   const sizeMap = {
@@ -46,7 +48,7 @@ const Logo: React.FC<LogoProps> = ({
           variants={logoVariants}
         >
           <Image
-            src="/images/logo.png"
+            src={background === 'light' ? "/images/logo.png" : "/images/logo-dark.png"}
             alt="Reignit Inc Logo"
             width={width}
             height={height}
