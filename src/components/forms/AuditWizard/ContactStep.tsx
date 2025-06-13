@@ -5,6 +5,7 @@ import SubmitButton from '../ui/SubmitButton';
 import { useFormContext } from './FormContext';
 import { ArrowRightIcon } from '@heroicons/react/24/solid';
 import { countries } from '@/data/countries';
+import { parsePhoneNumberFromString, isValidPhoneNumber } from 'libphonenumber-js';
 
 const roles = [
   { value: 'product', label: 'Product' },
@@ -18,6 +19,7 @@ const roles = [
 type ValidationErrors = {
   fullName?: string;
   workEmail?: string;
+  phoneNumber?: string;
   company?: string;
   role?: string;
   country?: string;
@@ -57,12 +59,38 @@ const ContactStep: React.FC<{ onNext: () => void }> = ({ onNext }) => {
     return '';
   };
 
+  const validatePhoneNumber = (phoneNumber: string, countryCode: string) => {
+    if (!phoneNumber) return ''; // Phone is optional
+    
+    try {
+      // Try to parse the phone number with the selected country code
+      // Convert country code to a format libphonenumber-js accepts
+      const phoneNumberObj = parsePhoneNumberFromString(phoneNumber, countryCode.toUpperCase() as any);
+      
+      // If we couldn't parse it, try with the phone number as is (might already have country code)
+      if (!phoneNumberObj && !phoneNumber.startsWith('+')) {
+        return 'Please enter a valid phone number with country code';
+      }
+      
+      // Check if the phone number is valid for the selected country
+      if (phoneNumberObj && !phoneNumberObj.isValid()) {
+        return 'Please enter a valid phone number for the selected country';
+      }
+      
+      return '';
+    } catch (error) {
+      return 'Please enter a valid phone number';
+    }
+  };
+
   const validateField = (field: keyof ValidationErrors, value: string) => {
     switch (field) {
       case 'fullName':
         return !value ? 'Name is required' : value.length < 2 ? 'Name must be at least 2 characters' : '';
       case 'workEmail':
         return validateEmail(value);
+      case 'phoneNumber':
+        return validatePhoneNumber(value, formData.country);
       case 'company':
         return ''; // Company is no longer required
       case 'role':
@@ -90,6 +118,7 @@ const ContactStep: React.FC<{ onNext: () => void }> = ({ onNext }) => {
     const newErrors: ValidationErrors = {
       fullName: validateField('fullName', formData.fullName),
       workEmail: validateField('workEmail', formData.workEmail),
+      phoneNumber: validateField('phoneNumber', formData.phoneNumber || ''),
       company: '', // Company is no longer required
       role: validateField('role', formData.role),
       country: validateField('country', formData.country),
@@ -147,6 +176,18 @@ const ContactStep: React.FC<{ onNext: () => void }> = ({ onNext }) => {
           placeholder="your.name@company.com"
           onKeyDown={handleKeyDown}
           helperText={isGmailWarning ? "Please use your work email if possible" : undefined}
+        />
+
+        <FormField
+          id="phoneNumber"
+          label="Phone Number"
+          type="tel"
+          value={formData.phoneNumber}
+          onChange={(value) => handleChange('phoneNumber', value as string)}
+          error={errors.phoneNumber}
+          placeholder={`+${formData.country === 'us' ? '1' : formData.country === 'gb' ? '44' : ''} phone number`}
+          onKeyDown={handleKeyDown}
+          helperText="Include country code (e.g., +1 for US, +44 for UK)"
         />
 
         <FormField

@@ -200,8 +200,8 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, isExpanded, onClick,
                     <div className="flex items-start">
                       <span className="text-accent font-semibold mr-2">•</span>
                       <div>
-                        <span className="text-white font-medium">CustomToonz</span>
-                        <span className="text-neutral-smoke"> (Toonify kids avatars)</span>
+                        <span className="text-white font-medium">AI Academy</span>
+                        
                       </div>
                     </div>
                     <div className="flex items-start">

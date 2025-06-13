@@ -21,7 +21,10 @@ const config: Config = {
       },
       fontFamily: {
         'headline': ['Space Grotesk', 'sans-serif'],
-        'body': ['Inter', 'sans-serif']
+        'body': ['Inter', 'sans-serif'],
+        'display': ['var(--font-display)', 'sans-serif'],
+        'sans': ['var(--font-sans)', 'sans-serif'],
+        'mono': ['var(--font-mono)', 'monospace']
       },
       backgroundImage: {
         'primary-gradient': 'linear-gradient(45deg, var(--tw-colors-primary-gradient-start), var(--tw-colors-primary-gradient-end))',

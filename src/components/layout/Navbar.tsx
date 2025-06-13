@@ -61,17 +61,17 @@ const Navbar: React.FC<NavbarProps> = ({ isTransparent = true }) => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
-            <Link href="#services" className="text-white hover:text-accent transition-colors">
+            <Link href="#services" className="text-white hover:text-accent transition-colors font-sans font-medium tracking-wide">
               Services
             </Link>
-            <Link href="#how-it-works" className="text-white hover:text-accent transition-colors">
+            <Link href="#how-it-works" className="text-white hover:text-accent transition-colors font-sans font-medium tracking-wide">
               How It Works
             </Link>
           </nav>
 
           {/* Desktop CTAs */}
           <div className="hidden md:flex">
-            <a href="#audit" className="cta-primary" onClick={handleOpenAuditWizard}>
+            <a href="#audit" className="bg-accent text-white font-display font-semibold uppercase text-sm px-6 py-3 rounded-full transition-all hover:shadow-lg hover:scale-105" onClick={handleOpenAuditWizard}>
               Book Free AI Audit
             </a>
           </div>
@@ -118,7 +118,7 @@ const Navbar: React.FC<NavbarProps> = ({ isTransparent = true }) => {
                 <div className="flex flex-col pt-3">
                   <a 
                     href="#audit" 
-                    className="cta-primary text-center" 
+                    className="bg-accent text-white font-display font-semibold uppercase text-sm px-6 py-3 rounded-full transition-all hover:shadow-lg hover:scale-105 text-center" 
                     onClick={(e) => {
                       handleOpenAuditWizard(e);
                       setMobileMenuOpen(false);

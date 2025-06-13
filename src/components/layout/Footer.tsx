@@ -1,8 +1,12 @@
+import React, { useState } from 'react';
 import Link from 'next/link';
+import ChatWidget from '../chat/ChatWidget';
 import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline';
 import Logo from '../ui/Logo';
 
 const Footer: React.FC = () => {
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
   return (
     <footer className="bg-dark-canvas py-12 border-t border-gray-800">
       <div className="container mx-auto px-4">
@@ -94,10 +98,11 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-500">© {new Date().getFullYear()} Reignit Inc. All rights reserved.</p>
+          <p className="text-gray-500"> {new Date().getFullYear()} Reignit Inc. All rights reserved.</p>
           
           <div className="mt-4 md:mt-0 flex items-center">
             <button 
+              onClick={() => setIsChatOpen(true)} 
               className="flex items-center space-x-2 bg-primary-gradient-start hover:bg-primary-gradient-end text-white px-4 py-2 rounded-full transition-all"
               aria-label="Open chat"
             >
@@ -107,6 +112,7 @@ const Footer: React.FC = () => {
           </div>
         </div>
       </div>
+          {isChatOpen && <ChatWidget onClose={() => setIsChatOpen(false)} />}
     </footer>
   );
 };

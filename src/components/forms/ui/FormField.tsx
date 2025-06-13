@@ -5,7 +5,7 @@ import { CheckIcon, ExclamationCircleIcon } from '@heroicons/react/24/solid';
 type FormFieldProps = {
   id: string;
   label: string;
-  type: 'text' | 'email' | 'textarea' | 'select' | 'checkbox' | 'radio' | 'file' | 'date' | 'multiselect' | 'toggle';
+  type: 'text' | 'email' | 'textarea' | 'select' | 'checkbox' | 'radio' | 'file' | 'date' | 'multiselect' | 'toggle' | 'tel';
   value: any;
   onChange: (value: any) => void;
   error?: string;
@@ -78,6 +78,7 @@ const FormField: React.FC<FormFieldProps> = ({
   const isValid = !error && (
     (type === 'text' && typeof value === 'string' && value.trim().length > 0) ||
     (type === 'email' && typeof value === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) ||
+    (type === 'tel' && typeof value === 'string') || // Phone is optional, so any string is valid unless there's an error
     (type === 'textarea' && typeof value === 'string' && value.trim().length > 0) ||
     (type === 'select' && value) ||
     (type === 'checkbox' && typeof value === 'boolean') ||
@@ -136,6 +137,17 @@ const FormField: React.FC<FormFieldProps> = ({
           value={value as string}
           onChange={handleChange}
           placeholder={placeholder}
+          {...commonProps}
+        />
+      )}
+
+      {type === 'tel' && (
+        <input
+          type="tel"
+          value={value as string}
+          onChange={handleChange}
+          placeholder={placeholder}
+          pattern="[+][0-9]{1,4}[ ][0-9]{6,14}"
           {...commonProps}
         />
       )}

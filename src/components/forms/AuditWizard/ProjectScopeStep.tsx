@@ -28,7 +28,7 @@ const serviceOptions = [
   },
   { 
     value: 'product-studio', 
-    label: 'Product Studio (Graphic Design/MicroSaaS/CustomToonz/Games)',
+    label: 'Product Studio (Graphic Design/MicroSaaS/AI Academy/Games)',
     color: 'bg-purple-600'
   },
   { 
@@ -55,9 +55,8 @@ const ProjectScopeStep: React.FC<{ onNext: () => void; onBack: () => void }> = (
   const { formData, updateFormData, validateStep } = useFormContext();
   const [errors, setErrors] = useState<ValidationErrors>({});
 
-  // Calculate minimum date (today + 7 days)
+  // Use current date as minimum date
   const minDate = new Date();
-  minDate.setDate(minDate.getDate() + 7);
 
   const validateField = (field: keyof ValidationErrors, value: any) => {
     switch (field) {
@@ -188,7 +187,7 @@ const ProjectScopeStep: React.FC<{ onNext: () => void; onBack: () => void }> = (
                 dateFormat="MMMM d, yyyy"
               />
             </div>
-            <p className="text-xs text-gray-400 mt-1">Optional, at least 7 days from today</p>
+            {/* Helper text removed as requested */}
           </div>
 
           <div>

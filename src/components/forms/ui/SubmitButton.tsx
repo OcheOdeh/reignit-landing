@@ -25,13 +25,13 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({
   const getButtonStyles = () => {
     switch (variant) {
       case 'primary':
-        return 'bg-accent text-white hover:bg-accent/90';
+        return 'bg-accent text-white hover:bg-accent/90 hover:scale-105 hover:shadow-lg';
       case 'secondary':
         return 'bg-primary-gradient-start text-white hover:bg-primary-gradient-start/90';
       case 'outline':
         return 'bg-transparent border border-white text-white hover:bg-white/10';
       default:
-        return 'bg-accent text-white hover:bg-accent/90';
+        return 'bg-accent text-white hover:bg-accent/90 hover:scale-105 hover:shadow-lg';
     }
   };
 

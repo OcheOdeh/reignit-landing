@@ -59,7 +59,7 @@ const Logo: React.FC<LogoProps> = ({
         </motion.div>
         
         {showText && (
-          <span className={`font-headline font-bold ${textClass} ${variant === 'white' ? 'text-white' : 'text-white'}`}>
+          <span className={`font-display font-bold ${textClass} ${variant === 'white' ? 'text-white' : 'text-white'}`}>
             Reignit<span className="text-accent">Inc</span>
             {size === 'lg' && <span className="text-white">.</span>}
           </span>

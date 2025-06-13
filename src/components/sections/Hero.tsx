@@ -161,40 +161,56 @@ const Hero: React.FC = () => {
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-black bg-opacity-50 -z-5"></div>
 
-        {/* Content */}
-        <div className="container mx-auto px-4 text-center z-10">
-          <motion.h1
-            className="text-4xl sm:text-5xl md:text-7xl font-headline font-bold text-white mb-4 md:mb-6 px-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            Transform Your Business{' '}
-            <span className="text-accent block sm:inline">With AI</span>
-          </motion.h1>
+        {/* Tech grid overlay */}
+        <div className="absolute inset-0 bg-grid-pattern opacity-20 z-0"></div>
 
-          <motion.p
-            className="text-lg sm:text-xl md:text-2xl text-neutral-smoke max-w-3xl mx-auto mb-8 md:mb-10 px-4"
+        {/* Content */}
+        <div className="container mx-auto px-4 text-center z-10 relative">
+          {/* Removed bracket decorations as requested */}
+          
+          <div className="relative">
+            <motion.div 
+              className="overflow-hidden mb-2 md:mb-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4 }}
+            >
+              <motion.h1
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-semibold tracking-tight text-white px-4 whitespace-nowrap mx-auto leading-tight"
+                initial={{ y: 100 }}
+                animate={{ y: 0 }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              >
+                Transform Your Business And Ideas <span className="bg-gradient-to-r from-pink-500 to-blue-400 bg-clip-text text-transparent">With AI</span>
+              </motion.h1>
+            </motion.div>
+          </div>
+
+          <motion.div
+            className="backdrop-blur-sm bg-black/20 rounded-xl p-4 md:p-6 max-w-3xl mx-auto mb-8 md:mb-10 border border-white/10"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
           >
-            Custom AI solutions that deliver real ROI. From customer experience 
-            to workflow automation, we build AI that works for you.
-          </motion.p>
+            <p className="mt-6 max-w-xl text-lg md:text-xl font-sans text-white/80 mx-auto">
+              Custom AI solutions that deliver real ROI. From customer experience 
+              to workflow automation, we build AI that works for you.
+            </p>
+          </motion.div>
 
           <motion.div
             className="flex justify-center px-4 w-full max-w-md mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
           >
             <a 
               href="#audit" 
-              className="cta-primary w-full text-center" 
+              className="bg-accent text-white font-display font-semibold uppercase text-sm px-6 py-3 rounded-full transition-all hover:shadow-lg hover:scale-105 w-full text-center backdrop-blur-md relative group" 
               onClick={handleOpenAuditWizard}
             >
-              Book Free AI Audit
+              <span className="relative z-10">Book Free AI Audit</span>
+              <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-full"></div>
             </a>
           </motion.div>
         </div>

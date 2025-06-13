@@ -6,6 +6,7 @@ export const auditFormSchema = z.object({
   // Step 1: Contact Information
   fullName: z.string().min(2, 'Name must be at least 2 characters'),
   workEmail: z.string().email('Please enter a valid email address'),
+  phoneNumber: z.string().optional(),
   company: z.string().optional(),
   role: z.string().min(1, 'Please select or enter your role'),
   country: z.string().min(1, 'Please select your country'),
@@ -36,6 +37,7 @@ export type AuditFormData = z.infer<typeof auditFormSchema>;
 const initialFormData: AuditFormData = {
   fullName: '',
   workEmail: '',
+  phoneNumber: '',
   company: '',
   role: '',
   country: '',
@@ -120,15 +122,16 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       if (step === 0) {
         // Validate Step 1 fields
-        const { fullName, workEmail, company, role, country } = formData;
+        const { fullName, workEmail, phoneNumber, company, role, country } = formData;
         const stepSchema = z.object({
           fullName: auditFormSchema.shape.fullName,
           workEmail: auditFormSchema.shape.workEmail,
+          phoneNumber: auditFormSchema.shape.phoneNumber,
           company: auditFormSchema.shape.company,
           role: auditFormSchema.shape.role,
           country: auditFormSchema.shape.country,
         });
-        stepSchema.parse({ fullName, workEmail, company, role, country });
+        stepSchema.parse({ fullName, workEmail, phoneNumber, company, role, country });
         return true;
       } else if (step === 1) {
         // Validate Step 2 fields
