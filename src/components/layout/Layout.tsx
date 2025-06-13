@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useRef } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
