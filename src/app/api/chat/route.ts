@@ -12,5 +12,6 @@ export async function POST(req: Request) {
     messages,
   });
 
-  return result.toAIStreamResponse();
+  // Respond with the stream
+  return result.toDataStreamResponse();
 }
