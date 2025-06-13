@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/google": "^1.2.19",
     "@google/generative-ai": "^0.24.1",
     "@headlessui/react": "^2.2.4",
     "@heroicons/react": "^2.2.0",
