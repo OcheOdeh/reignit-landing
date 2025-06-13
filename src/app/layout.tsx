@@ -1,39 +1,33 @@
-import type { Metadata } from "next";
-import { Space_Grotesk, Inter, DM_Mono } from 'next/font/google';
-import "./globals.css";
+import type { Metadata } from 'next';
+import { Inter, Space_Grotesk } from 'next/font/google';
+import './globals.css';
+import Layout from '@/components/layout/Layout';
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-space-grotesk',
+});
 
 export const metadata: Metadata = {
-  title: "Reignit Inc - AI-Powered Business Solutions",
-  description: "Transform your business with AI-powered solutions that drive growth and efficiency. Book your free AI audit today.",
-  keywords: "AI solutions, business transformation, CX AI, Workflow AI, Product Studio, Deep AI",
+  title: 'Reignit Inc | AI-Powered Business Solutions',
+  description: 'Custom AI chatbots, workflow automation, and innovative product development.',
 };
-
-export const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-display',
-  weight: ['400', '500', '600', '700'],
-});
-
-export const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-sans',
-});
-
-export const dmMono = DM_Mono({
-  subsets: ['latin'],
-  variable: '--font-mono',
-  weight: ['400', '500'],
-});
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable} ${dmMono.variable}`}>
-      <body>
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans`}>
+        <Layout>{children}</Layout>
       </body>
     </html>
   );
