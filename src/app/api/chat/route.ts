@@ -1,27 +1,16 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
-import { GoogleAIStream, StreamingTextResponse } from 'ai';
+import { google } from '@ai-sdk/google';
+import { streamText } from 'ai';
 
-// IMPORTANT! Set the runtime to edge
-export const runtime = 'edge';
+// Allow streaming responses up to 30 seconds
+export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  // Extract the `messages` from the body of the request
   const { messages } = await req.json();
 
-  const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || '');
+  const result = await streamText({
+    model: google('models/gemini-pro'),
+    messages,
+  });
 
-  // Get a streamed response from Google
-  const stream = await genAI
-    .getGenerativeModel({ model: 'gemini-pro' })
-    .generateContentStream(
-      // Right now, we're just sending the last message. 
-      // We can improve this later to include chat history.
-      messages[messages.length - 1].content
-    );
-
-  // Convert the response into a friendly text-stream
-  const aiStream = GoogleAIStream(stream);
-
-  // Respond with the stream
-  return new StreamingTextResponse(aiStream);
+  return result.toAIStreamResponse();
 }
