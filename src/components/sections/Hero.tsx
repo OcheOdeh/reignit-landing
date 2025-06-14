@@ -4,7 +4,11 @@ import Link from 'next/link';
 import { ChevronDownIcon } from '@heroicons/react/24/solid';
 import AuditWizard from '../forms/AuditWizard';
 
-const Hero: React.FC = () => {
+interface HeroProps {
+  onScrollDown: () => void;
+}
+
+const Hero: React.FC<HeroProps> = ({ onScrollDown }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isAuditWizardOpen, setIsAuditWizardOpen] = useState<boolean>(false);
 
