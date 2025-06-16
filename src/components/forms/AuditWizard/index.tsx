@@ -22,6 +22,7 @@ const AuditWizardInner: React.FC<AuditWizardProps> = ({
   embedded = false 
 }) => {
   const { 
+    formData,
     currentStep, 
     setCurrentStep, 
     isSubmitting, 
@@ -67,18 +68,27 @@ const AuditWizardInner: React.FC<AuditWizardProps> = ({
     setIsSubmitting(true);
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const response = await fetch('/api/send-audit-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Failed to send audit email:', errorData.error);
+        alert('There was an error submitting your audit request. Please try again or contact us directly.');
+        // Stop execution if the email failed
+        return;
+      }
       
-      // In a real implementation, you would:
-      // 1. Call your backend API
-      // 2. Trigger Windsurf createLead()
-      // 3. Handle success/error states
-      
+      // On successful submission, move to the success screen
       setIsSubmitted(true);
     } catch (error) {
       console.error('Error submitting form:', error);
-      // Handle error state
+      alert('An unexpected error occurred. Please check your connection and try again.');
     } finally {
       setIsSubmitting(false);
     }

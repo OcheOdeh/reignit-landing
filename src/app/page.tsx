@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from 'react';
-import Layout from '@/components/layout/Layout';
+
 import Hero from '@/components/sections/Hero';
 import ServicesCarousel from '@/components/sections/ServicesCarousel';
 import HowItWorks from '@/components/sections/HowItWorks';
@@ -24,15 +24,15 @@ export default function Home() {
   };
 
   return (
-    <Layout>
+    <>
       <Hero onScrollDown={handleScrollDown} />
       <ServicesCarousel allExpanded={allAccordionsExpanded} onToggleAll={setAllAccordionsExpanded} />
       <HowItWorks />
-      <ProofCounters />
+      {/* <ProofCounters /> */}
       <QuoteWizard />
       {/* CreativePlayground removed as requested */}
       {/* Testimonials section removed */}
       <CtaBanner />
-    </Layout>
+    </>
   );
 }

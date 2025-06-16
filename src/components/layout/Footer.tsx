@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
-import ChatWidget from '../chat/ChatWidget';
-import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline';
+
 import Logo from '../ui/Logo';
 
 const Footer: React.FC = () => {
-  const [isChatOpen, setIsChatOpen] = useState(false);
-
   return (
     <footer className="bg-dark-canvas py-12 border-t border-gray-800">
       <div className="container mx-auto px-4">
@@ -79,20 +76,20 @@ const Footer: React.FC = () => {
             <h3 className="text-lg font-headline font-semibold text-white mb-4">Legal</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/privacy" className="text-gray-400 hover:text-accent transition-colors">
+                <Link href="/legal/privacy-policy" className="text-gray-400 hover:text-accent transition-colors">
                   Privacy Policy
                 </Link>
               </li>
-              <li>
-                <Link href="/terms" className="text-gray-400 hover:text-accent transition-colors">
+              {/* <li>
+                <Link href="/legal/terms-of-service" className="text-gray-400 hover:text-accent transition-colors">
                   Terms of Service
                 </Link>
-              </li>
-              <li>
-                <Link href="/cookies" className="text-gray-400 hover:text-accent transition-colors">
+              </li> */}
+              {/* <li>
+                <Link href="/legal/cookie-policy" className="text-gray-400 hover:text-accent transition-colors">
                   Cookie Policy
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>
@@ -100,19 +97,8 @@ const Footer: React.FC = () => {
         <div className="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-500"> {new Date().getFullYear()} Reignit Inc. All rights reserved.</p>
           
-          <div className="mt-4 md:mt-0 flex items-center">
-            <button 
-              onClick={() => setIsChatOpen(true)} 
-              className="flex items-center space-x-2 bg-primary-gradient-start hover:bg-primary-gradient-end text-white px-4 py-2 rounded-full transition-all"
-              aria-label="Open chat"
-            >
-              <ChatBubbleLeftRightIcon className="h-5 w-5" />
-              <span>Chat with AI</span>
-            </button>
-          </div>
         </div>
       </div>
-          {isChatOpen && <ChatWidget onClose={() => setIsChatOpen(false)} />}
     </footer>
   );
 };

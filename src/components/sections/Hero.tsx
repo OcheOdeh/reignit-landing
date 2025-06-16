@@ -196,9 +196,8 @@ const Hero: React.FC<HeroProps> = ({ onScrollDown }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <p className="mt-6 max-w-xl text-lg md:text-xl font-sans text-white/80 mx-auto">
-              Custom AI solutions that deliver real ROI. From customer experience 
-              to workflow automation, we build AI that works for you.
+            <p className="max-w-xl text-lg md:text-xl font-sans text-white/80 mx-auto">
+              Custom AI solutions that deliver real ROI
             </p>
           </motion.div>
 
