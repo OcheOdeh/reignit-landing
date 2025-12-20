@@ -1,20 +1,21 @@
 import type { Metadata } from 'next';
-import { Inter, Space_Grotesk } from 'next/font/google';
+import { Inter, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import Layout from '@/components/layout/Layout';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import ChatController from '@/components/chat/ChatController';
+import TelegramFloat from '@/components/layout/TelegramFloat';
 
 const inter = Inter({
   subsets: ['latin'],
+  weight: ['400', '500'], // Regular and Medium as requested
   variable: '--font-inter',
 });
 
-const spaceGrotesk = Space_Grotesk({
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-space-grotesk',
+  weight: ['800'], // Extra Bold as requested
+  variable: '--font-plus-jakarta',
 });
 
 export const metadata: Metadata = {
@@ -29,11 +30,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans`}>
-                <Layout>{children}</Layout>
+      <body className={`${inter.variable} ${plusJakartaSans.variable} font-sans`}>
+        <Layout>{children}</Layout>
         <Analytics />
         <SpeedInsights />
-        <ChatController />
+        <TelegramFloat />
       </body>
     </html>
   );

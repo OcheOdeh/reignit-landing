@@ -11,12 +11,12 @@ const config: Config = {
       colors: {
         'primary-gradient-start': '#8b5cf6', // Neon Purple
         'primary-gradient-end': '#d946ef', // Pinkish purple
-        'dark-canvas': '#0a0a0a',
+        'dark-canvas': '#0A0A0A', // Deep Charcoal
         'accent': '#10b981', // Neon Green
         'neutral-white': '#ededed',
         'neutral-smoke': '#121212',
-        'glass-card': 'rgba(18, 18, 18, 0.8)',
-        background: '#0a0a0a',
+        'glass-card': 'rgba(255, 255, 255, 0.05)', // Updated for lighter/softer glass
+        background: '#0A0A0A', // Deep Charcoal
         foreground: '#ededed',
         primary: {
           DEFAULT: '#8b5cf6',
@@ -32,10 +32,10 @@ const config: Config = {
         'neon-purple': '#bf00ff',
       },
       fontFamily: {
-        'headline': ['Inter', 'sans-serif'],
-        'body': ['Inter', 'sans-serif'],
-        'display': ['Inter', 'sans-serif'],
-        'sans': ['Inter', 'sans-serif'],
+        'headline': ['var(--font-plus-jakarta)', 'sans-serif'],
+        'body': ['var(--font-inter)', 'sans-serif'],
+        'display': ['var(--font-plus-jakarta)', 'sans-serif'],
+        'sans': ['var(--font-inter)', 'sans-serif'],
         'mono': ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace']
       },
       backgroundImage: {

@@ -59,7 +59,7 @@ const Navbar: React.FC<NavbarProps> = ({ isTransparent = true }) => {
           />
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
+          <nav className="hidden lg:flex space-x-8">
             <Link href="/agency" className="text-white hover:text-accent transition-colors font-sans font-medium tracking-wide">
               Agency
             </Link>
@@ -72,7 +72,7 @@ const Navbar: React.FC<NavbarProps> = ({ isTransparent = true }) => {
           </nav>
 
           {/* Desktop CTAs */}
-          <div className="hidden md:flex">
+          <div className="hidden lg:flex">
             <Link href="/agency" className="bg-accent text-white font-display font-semibold uppercase text-sm px-6 py-3 rounded-full transition-all hover:shadow-lg hover:scale-105">
               Start Now
             </Link>
@@ -80,7 +80,7 @@ const Navbar: React.FC<NavbarProps> = ({ isTransparent = true }) => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-white p-2 focus:outline-none"
+            className="lg:hidden text-white p-2 focus:outline-none"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle mobile menu"
           >
@@ -96,7 +96,7 @@ const Navbar: React.FC<NavbarProps> = ({ isTransparent = true }) => {
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
-              className="md:hidden bg-dark-canvas shadow-lg"
+              className="lg:hidden bg-dark-canvas shadow-lg"
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}

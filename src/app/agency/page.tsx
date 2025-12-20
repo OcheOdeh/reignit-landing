@@ -39,7 +39,7 @@ export default function AgencyPage() {
                         WHO IS THIS FOR?
                     </motion.h2>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 w-full max-w-full">
                         {/* Card 1: The Ghost - Large Card (Span 7) */}
                         <motion.div
                             className="bg-cyber-card p-8 rounded-3xl border border-gray-800 hover:border-neon-purple/50 transition-all lg:col-span-7 flex flex-col justify-between group"
