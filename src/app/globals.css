@@ -4,9 +4,45 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .text-neon-green {
+    color: #39ff14;
+    text-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+  }
+
+  .text-neon-purple {
+    color: #bf00ff;
+    text-shadow: 0 0 20px rgba(191, 0, 255, 0.3);
+  }
+
+  .bg-cyber-card {
+    background: rgba(18, 18, 18, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(57, 255, 20, 0.2);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(57, 255, 20, 0.5);
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(57, 255, 20, 0.8);
+  }
+}
+
 :root {
-  --background: #0B0E21;
-  --foreground: #FFFFFF;
+  --background: #0a0a0a;
+  --foreground: #ededed;
 }
 
 body {
@@ -36,9 +72,15 @@ html {
   }
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Space Grotesk', sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Inter', sans-serif;
   font-weight: 700;
+  letter-spacing: -0.025em;
 }
 
 /* Subtle grain overlay */
@@ -73,7 +115,9 @@ body::after {
 
 /* Ensure buttons have proper touch targets on mobile */
 @media (max-width: 640px) {
-  .cta-primary, .cta-secondary {
+
+  .cta-primary,
+  .cta-secondary {
     min-height: 48px;
     display: flex;
     align-items: center;
@@ -96,8 +140,15 @@ body::after {
 
 /* Tech-inspired cursor animation */
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
 }
 
 .animate-cursor {
@@ -107,21 +158,21 @@ body::after {
 /* Tech grid pattern */
 .bg-grid-pattern {
   background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   background-size: 20px 20px;
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0a;
+  --foreground: #ededed;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
+} */
 
 body {
   color: var(--foreground);

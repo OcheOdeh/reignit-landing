@@ -42,42 +42,44 @@ const Navbar: React.FC<NavbarProps> = ({ isTransparent = true }) => {
   return (
     <>
       <motion.header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled || !isTransparent || mobileMenuOpen
-            ? 'bg-dark-canvas shadow-lg'
-            : 'bg-transparent'
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || !isTransparent || mobileMenuOpen
+          ? 'bg-dark-canvas shadow-lg'
+          : 'bg-transparent'
+          }`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
       >
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <Logo 
-            variant="default" 
-            size={scrolled ? "sm" : "md"} 
+          <Logo
+            variant="default"
+            size={scrolled ? "sm" : "md"}
             showText={true}
             background={scrolled || !isTransparent || mobileMenuOpen ? 'dark' : 'light'}
           />
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
-            <Link href="#services" className="text-white hover:text-accent transition-colors font-sans font-medium tracking-wide">
-              Services
+            <Link href="/agency" className="text-white hover:text-accent transition-colors font-sans font-medium tracking-wide">
+              Agency
             </Link>
-            <Link href="#how-it-works" className="text-white hover:text-accent transition-colors font-sans font-medium tracking-wide">
-              How It Works
+            <Link href="/toolkit" className="text-white hover:text-accent transition-colors font-sans font-medium tracking-wide">
+              Toolkit
+            </Link>
+            <Link href="/community" className="text-white hover:text-accent transition-colors font-sans font-medium tracking-wide">
+              Community
             </Link>
           </nav>
 
           {/* Desktop CTAs */}
           <div className="hidden md:flex">
-            <a href="#audit" className="bg-accent text-white font-display font-semibold uppercase text-sm px-6 py-3 rounded-full transition-all hover:shadow-lg hover:scale-105" onClick={handleOpenAuditWizard}>
-              Book Free AI Audit
-            </a>
+            <Link href="/agency" className="bg-accent text-white font-display font-semibold uppercase text-sm px-6 py-3 rounded-full transition-all hover:shadow-lg hover:scale-105">
+              Start Now
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
-          <button 
+          <button
             className="md:hidden text-white p-2 focus:outline-none"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle mobile menu"
@@ -101,31 +103,35 @@ const Navbar: React.FC<NavbarProps> = ({ isTransparent = true }) => {
               transition={{ duration: 0.3 }}
             >
               <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
-                <Link 
-                  href="#services" 
+                <Link
+                  href="/agency"
                   className="text-white hover:text-accent transition-colors py-3 border-b border-gray-800"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Services
+                  Agency
                 </Link>
-                <Link 
-                  href="#how-it-works" 
+                <Link
+                  href="/toolkit"
                   className="text-white hover:text-accent transition-colors py-3 border-b border-gray-800"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  How It Works
+                  Toolkit
+                </Link>
+                <Link
+                  href="/community"
+                  className="text-white hover:text-accent transition-colors py-3 border-b border-gray-800"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Community
                 </Link>
                 <div className="flex flex-col pt-3">
-                  <a 
-                    href="#audit" 
-                    className="bg-accent text-white font-display font-semibold uppercase text-sm px-6 py-3 rounded-full transition-all hover:shadow-lg hover:scale-105 text-center" 
-                    onClick={(e) => {
-                      handleOpenAuditWizard(e);
-                      setMobileMenuOpen(false);
-                    }}
+                  <Link
+                    href="/agency"
+                    className="bg-accent text-white font-display font-semibold uppercase text-sm px-6 py-3 rounded-full transition-all hover:shadow-lg hover:scale-105 text-center"
+                    onClick={() => setMobileMenuOpen(false)}
                   >
-                    Book Free AI Audit
-                  </a>
+                    Start Now
+                  </Link>
                 </div>
               </div>
             </motion.div>
@@ -134,9 +140,9 @@ const Navbar: React.FC<NavbarProps> = ({ isTransparent = true }) => {
       </motion.header>
 
       {/* Audit Wizard Modal */}
-      <AuditWizard 
-        isOpen={isAuditWizardOpen} 
-        onClose={handleCloseAuditWizard} 
+      <AuditWizard
+        isOpen={isAuditWizardOpen}
+        onClose={handleCloseAuditWizard}
         embedded={false}
       />
     </>

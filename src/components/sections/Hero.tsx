@@ -1,18 +1,21 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ChevronDownIcon } from '@heroicons/react/24/solid';
-import AuditWizard from '../forms/AuditWizard';
 
 interface HeroProps {
-  onScrollDown: () => void;
+  onScrollDown?: () => void;
 }
 
 const Hero: React.FC<HeroProps> = ({ onScrollDown }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [isAuditWizardOpen, setIsAuditWizardOpen] = useState<boolean>(false);
 
-  // WebGL animation setup
+  // WebGL animation (simplified for stability/performance or reused)
+  // For now, retaining the existing efficient WebGL boilerplate but adjusting colors if needed or keeping the dark vibe.
+  // We'll keep the existing animation logic but arguably might want to tweak colors. 
+  // Since the user asked for "Cyberpunk Professional" (Dark, Neon Green/Purple), the existing shader had purple/cyan.
+  // Let's modify the shader colors in the existing code or just rely on CSS overlay.
+  // For this rewrite, I'll use a cleaner specific implementation or keep the noise effect which fits cyberpunk.
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -20,7 +23,6 @@ const Hero: React.FC<HeroProps> = ({ onScrollDown }) => {
     const gl = canvas.getContext('webgl');
     if (!gl) return;
 
-    // Set canvas dimensions
     const setCanvasDimensions = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -30,7 +32,6 @@ const Hero: React.FC<HeroProps> = ({ onScrollDown }) => {
     setCanvasDimensions();
     window.addEventListener('resize', setCanvasDimensions);
 
-    // Simple shader for gradient background with animated noise
     const vertexShaderSource = `
       attribute vec2 position;
       void main() {
@@ -74,22 +75,20 @@ const Hero: React.FC<HeroProps> = ({ onScrollDown }) => {
       void main() {
         vec2 uv = gl_FragCoord.xy / resolution;
         
-        // Gradient colors
-        vec3 color1 = vec3(0.5, 0.0, 1.0); // Purple
-        vec3 color2 = vec3(0.0, 0.9, 1.0); // Cyan
+        // Cyberpunk colors: Dark background with noise
+        vec3 color1 = vec3(0.05, 0.05, 0.05); // Dark Gray
+        vec3 color2 = vec3(0.0, 0.0, 0.0); // Black
         
-        // Base gradient
         vec3 color = mix(color1, color2, uv.y);
         
-        // Add animated noise
-        float noise = snoise(uv * 3.0 + time * 0.2) * 0.15;
+        // Add animated noise with green/purple tint possibility
+        float noise = snoise(uv * 3.0 + time * 0.1) * 0.05;
         color += noise;
         
         gl_FragColor = vec4(color, 1.0);
       }
     `;
 
-    // Compile shaders
     const vertexShader = gl.createShader(gl.VERTEX_SHADER);
     gl.shaderSource(vertexShader!, vertexShaderSource);
     gl.compileShader(vertexShader!);
@@ -98,37 +97,28 @@ const Hero: React.FC<HeroProps> = ({ onScrollDown }) => {
     gl.shaderSource(fragmentShader!, fragmentShaderSource);
     gl.compileShader(fragmentShader!);
 
-    // Create program
     const program = gl.createProgram();
     gl.attachShader(program!, vertexShader!);
     gl.attachShader(program!, fragmentShader!);
     gl.linkProgram(program!);
     gl.useProgram(program!);
 
-    // Set up buffers
     const positionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-    gl.bufferData(
-      gl.ARRAY_BUFFER,
-      new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]),
-      gl.STATIC_DRAW
-    );
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
 
     const positionLocation = gl.getAttribLocation(program!, 'position');
     gl.enableVertexAttribArray(positionLocation);
     gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
-    // Set up uniforms
     const timeLocation = gl.getUniformLocation(program!, 'time');
     const resolutionLocation = gl.getUniformLocation(program!, 'resolution');
 
-    // Animation loop
     let startTime = Date.now();
     const animate = () => {
       const time = (Date.now() - startTime) / 1000;
       gl.uniform1f(timeLocation, time);
       gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
-
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       requestAnimationFrame(animate);
     };
@@ -144,103 +134,53 @@ const Hero: React.FC<HeroProps> = ({ onScrollDown }) => {
     };
   }, []);
 
-  const handleOpenAuditWizard = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsAuditWizardOpen(true);
-  };
-
-  const handleCloseAuditWizard = () => {
-    setIsAuditWizardOpen(false);
-  };
-
   return (
-    <>
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* WebGL Background */}
-        <canvas
-          ref={canvasRef}
-          className="absolute inset-0 w-full h-full -z-10"
-        />
+    <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      {/* WebGL Background */}
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full -z-10" />
 
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black bg-opacity-50 -z-5"></div>
+      {/* Grid Pattern Overlay */}
+      <div className="absolute inset-0 bg-cyber-grid opacity-20 z-0"></div>
 
-        {/* Tech grid overlay */}
-        <div className="absolute inset-0 bg-grid-pattern opacity-20 z-0"></div>
-
-        {/* Content */}
-        <div className="container mx-auto px-4 text-center z-10 relative">
-          {/* Removed bracket decorations as requested */}
-          
-          <div className="relative">
-            <motion.div 
-              className="overflow-hidden mb-2 md:mb-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4 }}
-            >
-              <motion.h1
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-semibold tracking-tight text-white px-4 whitespace-nowrap mx-auto leading-tight"
-                initial={{ y: 100 }}
-                animate={{ y: 0 }}
-                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              >
-                Transform Your Business And Ideas <span className="bg-gradient-to-r from-pink-500 to-blue-400 bg-clip-text text-transparent">With AI</span>
-              </motion.h1>
-            </motion.div>
-          </div>
-
-          <motion.div
-            className="backdrop-blur-sm bg-black/20 rounded-xl p-4 md:p-6 max-w-3xl mx-auto mb-8 md:mb-10 border border-white/10"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            <p className="max-w-xl text-lg md:text-xl font-sans text-white/80 mx-auto">
-              Custom AI solutions that deliver real ROI
-            </p>
-          </motion.div>
-
-          <motion.div
-            className="flex justify-center px-4 w-full max-w-md mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-          >
-            <a 
-              href="#audit" 
-              className="bg-accent text-white font-display font-semibold uppercase text-sm px-6 py-3 rounded-full transition-all hover:shadow-lg hover:scale-105 w-full text-center backdrop-blur-md relative group" 
-              onClick={handleOpenAuditWizard}
-            >
-              <span className="relative z-10">Book Free AI Audit</span>
-              <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-full"></div>
-            </a>
-          </motion.div>
-        </div>
-
-        {/* Scroll indicator */}
+      {/* Content */}
+      <div className="container mx-auto px-4 text-center z-10 relative">
         <motion.div
-          className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 1 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="mb-8"
         >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ repeat: Infinity, duration: 1.5 }}
+          <motion.h1
+            className="text-4xl sm:text-6xl md:text-7xl font-display font-bold tracking-tighter text-white mb-4 leading-tight uppercase"
           >
-            <ChevronDownIcon className="h-8 w-8 text-white" />
-          </motion.div>
+            Relevance is <span className="text-neon-green">Currency</span>. <br />
+            Stop <span className="text-neon-purple">Hiding</span>.
+          </motion.h1>
+          <motion.p
+            className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto font-sans"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+          >
+            The AI era has no silent billionaires. We build your influence—whether you show your face or not.
+          </motion.p>
         </motion.div>
-      </section>
 
-      {/* Audit Wizard Modal */}
-      <AuditWizard 
-        isOpen={isAuditWizardOpen} 
-        onClose={handleCloseAuditWizard} 
-        embedded={false}
-      />
-    </>
+        <motion.div
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.8 }}
+        >
+          <Link href="/agency" className="cta-primary w-full sm:w-auto text-center border-2 border-transparent hover:border-neon-green">
+            Start My Agency Plan
+          </Link>
+          <Link href="/toolkit" className="cta-secondary w-full sm:w-auto text-center hover:text-neon-purple hover:border-neon-purple">
+            Explore the Toolkit
+          </Link>
+        </motion.div>
+      </div>
+    </section>
   );
 };
 

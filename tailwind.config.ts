@@ -9,22 +9,34 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'primary-gradient-start': '#7F00FF',
-        'primary-gradient-end': '#00E4FF',
-        'dark-canvas': '#0B0E21',
-        'accent': '#FF5F5F',
-        'neutral-white': '#FFFFFF',
-        'neutral-smoke': '#F5F7FA',
-        'glass-card': 'rgba(255,255,255,0.08)',
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        'primary-gradient-start': '#8b5cf6', // Neon Purple
+        'primary-gradient-end': '#d946ef', // Pinkish purple
+        'dark-canvas': '#0a0a0a',
+        'accent': '#10b981', // Neon Green
+        'neutral-white': '#ededed',
+        'neutral-smoke': '#121212',
+        'glass-card': 'rgba(18, 18, 18, 0.8)',
+        background: '#0a0a0a',
+        foreground: '#ededed',
+        primary: {
+          DEFAULT: '#8b5cf6',
+          foreground: '#ffffff',
+        },
+        secondary: {
+          DEFAULT: '#10b981',
+          foreground: '#000000',
+        },
+        'cyber-black': '#050505',
+        'cyber-gray': '#121212',
+        'neon-green': '#39ff14',
+        'neon-purple': '#bf00ff',
       },
       fontFamily: {
-        'headline': ['Space Grotesk', 'sans-serif'],
+        'headline': ['Inter', 'sans-serif'],
         'body': ['Inter', 'sans-serif'],
-        'display': ['var(--font-display)', 'sans-serif'],
-        'sans': ['var(--font-sans)', 'sans-serif'],
-        'mono': ['var(--font-mono)', 'monospace']
+        'display': ['Inter', 'sans-serif'],
+        'sans': ['Inter', 'sans-serif'],
+        'mono': ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace']
       },
       backgroundImage: {
         'primary-gradient': 'linear-gradient(45deg, var(--tw-colors-primary-gradient-start), var(--tw-colors-primary-gradient-end))',

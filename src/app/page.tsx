@@ -1,20 +1,12 @@
 "use client";
 
-import { useState, useRef } from 'react';
-
 import Hero from '@/components/sections/Hero';
-import ServicesCarousel from '@/components/sections/ServicesCarousel';
-import HowItWorks from '@/components/sections/HowItWorks';
-import ProofCounters from '@/components/sections/ProofCounters';
-import QuoteWizard from '@/components/sections/QuoteWizard';
-// CreativePlayground removed as requested
-// Testimonials section removed
+import ProblemSection from '@/components/sections/ProblemSection';
+import ServiceTeaser from '@/components/sections/ServiceTeaser';
+import SocialProof from '@/components/sections/SocialProof';
 import CtaBanner from '@/components/sections/CtaBanner';
 
 export default function Home() {
-  const [allAccordionsExpanded, setAllAccordionsExpanded] = useState(false);
-  const servicesRef = useRef<HTMLDivElement>(null);
-
   const handleScrollDown = () => {
     // Scroll to the services section
     const servicesSection = document.getElementById('services');
@@ -26,13 +18,9 @@ export default function Home() {
   return (
     <>
       <Hero onScrollDown={handleScrollDown} />
-      <ServicesCarousel allExpanded={allAccordionsExpanded} onToggleAll={setAllAccordionsExpanded} />
-      <HowItWorks />
-      {/* <ProofCounters /> */}
-      <QuoteWizard />
-      {/* CreativePlayground removed as requested */}
-      {/* Testimonials section removed */}
-      <CtaBanner />
+      <ProblemSection />
+      <ServiceTeaser />
+      <SocialProof />
     </>
   );
 }

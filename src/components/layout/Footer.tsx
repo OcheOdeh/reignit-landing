@@ -9,9 +9,9 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-1">
-            <Logo 
-              variant="default" 
-              size="md" 
+            <Logo
+              variant="default"
+              size="md"
               showText={true}
               background="dark"
             />
@@ -24,23 +24,18 @@ const Footer: React.FC = () => {
             <h3 className="text-lg font-headline font-semibold text-white mb-4">Services</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="#cx-ai" className="text-gray-400 hover:text-accent transition-colors">
-                  CX AI
+                <Link href="/agency" className="text-gray-400 hover:text-accent transition-colors">
+                  Agency
                 </Link>
               </li>
               <li>
-                <Link href="#workflow-ai" className="text-gray-400 hover:text-accent transition-colors">
-                  Workflow AI
+                <Link href="/toolkit" className="text-gray-400 hover:text-accent transition-colors">
+                  Toolkit
                 </Link>
               </li>
               <li>
-                <Link href="#product-studio" className="text-gray-400 hover:text-accent transition-colors">
-                  Product Studio
-                </Link>
-              </li>
-              <li>
-                <Link href="#deep-ai" className="text-gray-400 hover:text-accent transition-colors">
-                  Deep AI
+                <Link href="/community" className="text-gray-400 hover:text-accent transition-colors">
+                  Community
                 </Link>
               </li>
             </ul>
@@ -96,7 +91,7 @@ const Footer: React.FC = () => {
 
         <div className="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-500"> {new Date().getFullYear()} Reignit Inc. All rights reserved.</p>
-          
+
         </div>
       </div>
     </footer>
