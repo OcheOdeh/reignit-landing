@@ -12,10 +12,34 @@ export default function CommunityForm({ embedded = false }: CommunityFormProps) 
     const [submitted, setSubmitted] = useState(false);
     const [activeTab, setActiveTab] = useState<'telegram' | 'email'>('telegram');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState('');
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Placeholder logic
-        setSubmitted(true);
+        setIsSubmitting(true);
+        setError('');
+
+        try {
+            const response = await fetch('/api/subscribe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email }),
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.error || 'Failed to subscribe');
+            }
+
+            setSubmitted(true);
+            setEmail('');
+        } catch (err) {
+            console.error(err);
+            setError('Something went wrong. Please try again.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -30,7 +54,7 @@ export default function CommunityForm({ embedded = false }: CommunityFormProps) 
             )}
 
             {/* Tabs */}
-            <div className="flex gap-4 mb-6 border-b border-gray-700 pb-2">
+            <div className="flex gap-4 mb-6 border-b border-gray-700 pb-2 relative z-10">
                 <button
                     onClick={() => setActiveTab('telegram')}
                     className={`pb-2 text-sm font-semibold uppercase tracking-wider transition-colors ${activeTab === 'telegram' ? 'text-neon-green border-b-2 border-neon-green' : 'text-gray-500 hover:text-gray-300'}`}
@@ -52,8 +76,7 @@ export default function CommunityForm({ embedded = false }: CommunityFormProps) 
 
                     {submitted ? (
                         <div className="bg-green-900/30 border border-green-500 text-green-400 p-4 rounded-lg text-center">
-                            <p className="font-bold">Welcome to the Vanguard.</p>
-                            <p className="text-sm">Check your inbox for the download link.</p>
+                            <p className="font-bold">Welcome to Reignit The AI Vanguard</p>
                         </div>
                     ) : (
                         <form onSubmit={handleSubmit} className="space-y-4">
@@ -71,10 +94,12 @@ export default function CommunityForm({ embedded = false }: CommunityFormProps) 
                             </div>
                             <button
                                 type="submit"
-                                className="w-full bg-transparent border border-neon-green text-neon-green font-display font-bold uppercase py-4 rounded-lg hover:bg-neon-green hover:text-black hover:shadow-[0_0_20px_rgba(57,255,20,0.4)] transition-all transform hover:scale-[1.02]"
+                                disabled={isSubmitting}
+                                className={`w-full bg-transparent border border-neon-green text-neon-green font-display font-bold uppercase py-4 rounded-lg hover:bg-neon-green hover:text-black hover:shadow-[0_0_20px_rgba(57,255,20,0.4)] transition-all transform hover:scale-[1.02] ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                             >
-                                Link Up
+                                {isSubmitting ? 'Joining...' : 'Link Up'}
                             </button>
+                            {error && <p className="text-red-500 text-xs text-center mt-2">{error}</p>}
                             <p className="text-xs text-center text-gray-600 mt-4">
                                 We don't spam. We only send alpha.
                             </p>
@@ -91,7 +116,9 @@ export default function CommunityForm({ embedded = false }: CommunityFormProps) 
                     <h2 className="text-2xl font-display font-bold text-white mb-2">Join the Community</h2>
                     <p className="text-gray-400 mb-6">Get real-time updates, signals, and community support directly on Telegram.</p>
                     <a
-                        href="#"
+                        href="https://t.me/ReignitTheAIVanguard"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="block w-full bg-[#0088cc] text-white font-display font-bold uppercase py-4 rounded-lg hover:shadow-[0_0_20px_rgba(0,136,204,0.4)] transition-all transform hover:scale-[1.02]"
                     >
                         Join Channel

@@ -1289,7 +1289,7 @@ export default function ResourcePage({ params }: { params: { slug: string } }) {
             <div className="container mx-auto px-4 max-w-4xl">
                 {/* Back Link */}
                 <div className="mb-12">
-                    <a href="/toolkit" className="text-gray-400 hover:text-white transition-colors flex items-center gap-2">
+                    <a href="/toolkit?view=Resources" className="text-gray-400 hover:text-white transition-colors flex items-center gap-2">
                         ← Back to Toolkit
                     </a>
                 </div>

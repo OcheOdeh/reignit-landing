@@ -215,21 +215,21 @@ const RESOURCES = [
 ];
 
 const PROMPTS = [
-    { title: "nano banana prompt tutorial series", description: "a hidden collection of nano banana prompts to make your images 10 times better", category: "AI Image", updated: "3w" },
-    { title: "nano banana prompt to create more realistic photo", description: "Nano bananana pros are creating people that looks 100 percent real.", category: "AI Image", updated: "1m" },
-    { title: "Character Design Sheet", description: "prompt to create a full character concept sheet", category: "AI Image", updated: "1m" },
-    { title: "wool ASMR", description: "Cutting wool products ASMR prompts", category: "AI Video", updated: "1m" },
-    { title: "AI Studio 3D Scene", description: "Gemini 3 builds a 3D interactive scene for me", category: "AI Coding", updated: "1w" },
-    { title: "google logo 3d prompt", description: "use this prompt to build your 3D google logo", category: "AI Coding", updated: "1w" },
-    { title: "ltx official prompt guide", description: "it helps you write better prompts for camera motion, mood, and sound", category: "AI Video", updated: "3w" },
-    { title: "let ChatGPT disagree with you", description: "It makes ChatGPT skeptical,fact-checks your logic, and argues back when you're wrong", category: "Thinking", updated: "3w" },
-    { title: "nano banana prompt library", description: "a hidden collection of nano banana prompts to make your images 10 times better", category: "AI Image", updated: "3w", external: true },
-    { title: "let AI more Like a Human", description: "Make AI-generated content sound more natural and human-like.", category: "Thinking", updated: "1m" },
-    { title: "let your AI Stop Lying", description: "Prevent AI from making up information, ensure truthful output.", category: "Thinking", updated: "1m" },
-    { title: "ASMR Prompt", description: "Professional ASMR video script generation prompts.", category: "AI Video", updated: "4w" },
-    { title: "UGC Prompt", description: "User-generated content (UGC) creation prompt templates.", category: "AI Video", updated: "1m" },
-    { title: "Sora2 Official Prompt Guide", description: "Official Sora2 prompt guide, complete tutorial.", category: "AI Video", updated: "3w", external: true },
-    { title: "ChatGPT for Any Role", description: "Universal prompts to make ChatGPT play any role you need.", category: "Writing", updated: "3w", external: true },
+    { title: "nano banana prompt tutorial series", description: "a hidden collection of nano banana prompts to make your images 10 times better", category: "AI Image", updated: "3w", link: "/toolkit/prompts/nano-banana-prompt-tutorial-series" },
+    { title: "nano banana prompt to create more realistic photo", description: "Nano bananana pros are creating people that looks 100 percent real.", category: "AI Image", updated: "1m", link: "/toolkit/prompts/nano-banana-prompt-to-create-more-realistic-photo" },
+    { title: "Character Design Sheet", description: "prompt to create a full character concept sheet", category: "AI Image", updated: "1m", link: "/toolkit/prompts/character-design-sheet" },
+    { title: "wool ASMR", description: "Cutting wool products ASMR prompts", category: "AI Video", updated: "1m", link: "/toolkit/prompts/wool-asmr" },
+    { title: "AI Studio 3D Scene", description: "Gemini 3 builds a 3D interactive scene for me", category: "AI Coding", updated: "1w", link: "/toolkit/prompts/ai-studio-3d-scene" },
+    { title: "google logo 3d prompt", description: "use this prompt to build your 3D google logo", category: "AI Coding", updated: "1w", link: "/toolkit/prompts/google-logo-3d-prompt" },
+    { title: "ltx official prompt guide", description: "it helps you write better prompts for camera motion, mood, and sound", category: "AI Video", updated: "3w", link: "/toolkit/prompts/ltx-official-prompt-guide" },
+    { title: "let ChatGPT disagree with you", description: "It makes ChatGPT skeptical,fact-checks your logic, and argues back when you're wrong", category: "Thinking", updated: "3w", link: "/toolkit/prompts/let-chatgpt-disagree-with-you" },
+    { title: "nano banana prompt library", description: "a hidden collection of nano banana prompts to make your images 10 times better", category: "AI Image", updated: "3w", external: true, link: "/toolkit/prompts/nano-banana-prompt-library" },
+    { title: "let AI more Like a Human", description: "Make AI-generated content sound more natural and human-like.", category: "Thinking", updated: "1m", link: "/toolkit/prompts/let-ai-more-like-a-human" },
+    { title: "let your AI Stop Lying", description: "Prevent AI from making up information, ensure truthful output.", category: "Thinking", updated: "1m", link: "/toolkit/prompts/let-your-ai-stop-lying" },
+    { title: "ASMR Prompt", description: "Professional ASMR video script generation prompts.", category: "AI Video", updated: "4w", link: "/toolkit/prompts/asmr-prompt" },
+    { title: "UGC Prompt", description: "User-generated content (UGC) creation prompt templates.", category: "AI Video", updated: "1m", link: "/toolkit/prompts/ugc-prompt" },
+    { title: "Sora2 Official Prompt Guide", description: "Official Sora2 prompt guide, complete tutorial.", category: "AI Video", updated: "3w", external: true, link: "/toolkit/prompts/sora2-official-prompt-guide" },
+    { title: "ChatGPT for Any Role", description: "Universal prompts to make ChatGPT play any role you need.", category: "Writing", updated: "3w", external: true, link: "/toolkit/prompts/chatgpt-for-any-role" },
 ];
 
 const TOOLS = [
@@ -322,7 +322,7 @@ export default function ToolkitPage() {
             <div className="container mx-auto px-4 max-w-7xl">
 
                 {/* Top-level Tabs */}
-                <div className="flex justify-center items-center gap-4 md:gap-8 mb-16">
+                <div className="flex justify-center items-center gap-4 md:gap-8 mb-16 relative z-10">
                     {["Resources", "Prompts", "AI Tools"].map((tab) => (
                         <button
                             key={tab}
@@ -366,13 +366,13 @@ export default function ToolkitPage() {
                         {/* Categories */}
                         <div className="mb-12">
                             <p className="text-gray-400 text-sm mb-4">Filter by type:</p>
-                            <div className="flex flex-wrap gap-2">
+                            <div className="flex flex-wrap gap-2 relative z-10">
                                 {CATEGORIES.map((cat, idx) => (
                                     <button
                                         key={idx}
                                         onClick={() => setActiveCategory(cat)}
                                         className={`px-3 py-1 rounded md:rounded-lg text-xs md:text-sm font-medium border transition-all ${activeCategory === cat
-                                            ? 'bg-neon-green text-black border-neon-green shadow-[0_0_10px_rgba(57,255,20,0.4)]'
+                                            ? 'bg-neon-green/20 text-neon-green border-neon-green shadow-[0_0_10px_rgba(57,255,20,0.4)]'
                                             : 'bg-transparent text-white border-gray-700 hover:border-gray-500'
                                             }`}
                                     >
@@ -457,13 +457,13 @@ export default function ToolkitPage() {
                         {/* Categories */}
                         <div className="mb-12">
                             <p className="text-gray-400 text-sm mb-4">Filter by type:</p>
-                            <div className="flex flex-wrap gap-2">
+                            <div className="flex flex-wrap gap-2 relative z-10">
                                 {PROMPT_CATEGORIES.map((cat, idx) => (
                                     <button
                                         key={idx}
                                         onClick={() => setActivePromptCategory(cat)}
                                         className={`px-3 py-1 rounded md:rounded-lg text-xs md:text-sm font-medium border transition-all ${activePromptCategory === cat
-                                            ? 'bg-neon-green text-black border-neon-green shadow-[0_0_10px_rgba(57,255,20,0.4)]'
+                                            ? 'bg-neon-green/20 text-neon-green border-neon-green shadow-[0_0_10px_rgba(57,255,20,0.4)]'
                                             : 'bg-transparent text-white border-gray-700 hover:border-gray-500'
                                             }`}
                                     >
@@ -480,8 +480,9 @@ export default function ToolkitPage() {
                         >
                             <AnimatePresence mode='popLayout'>
                                 {filteredPrompts.map((prompt, idx) => (
-                                    <motion.div
+                                    <motion.a
                                         layout
+                                        href={prompt.link}
                                         key={idx}
                                         className="block bg-cyber-card border border-gray-800 rounded-xl p-6 hover:border-neon-purple/50 transition-all group hover:shadow-[0_0_20px_rgba(191,0,255,0.1)] relative overflow-hidden"
                                         initial={{ opacity: 0, scale: 0.9 }}
@@ -517,7 +518,7 @@ export default function ToolkitPage() {
                                                 </>
                                             )}
                                         </div>
-                                    </motion.div>
+                                    </motion.a>
                                 ))}
                             </AnimatePresence>
                         </motion.div>
@@ -548,13 +549,13 @@ export default function ToolkitPage() {
                         {/* Categories */}
                         <div className="mb-12">
                             <p className="text-gray-400 text-sm mb-4">Filter by type:</p>
-                            <div className="flex flex-wrap gap-2">
+                            <div className="flex flex-wrap gap-2 relative z-10">
                                 {TOOL_CATEGORIES.map((cat, idx) => (
                                     <button
                                         key={idx}
                                         onClick={() => setActiveToolCategory(cat)}
                                         className={`px-3 py-1 rounded md:rounded-lg text-xs md:text-sm font-medium border transition-all ${activeToolCategory === cat
-                                            ? 'bg-neon-green text-black border-neon-green shadow-[0_0_10px_rgba(57,255,20,0.4)]'
+                                            ? 'bg-neon-green/20 text-neon-green border-neon-green shadow-[0_0_10px_rgba(57,255,20,0.4)]'
                                             : 'bg-transparent text-white border-gray-700 hover:border-gray-500'
                                             }`}
                                     >
