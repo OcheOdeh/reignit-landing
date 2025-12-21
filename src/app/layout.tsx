@@ -4,7 +4,7 @@ import './globals.css';
 import Layout from '@/components/layout/Layout';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import TelegramFloat from '@/components/layout/TelegramFloat';
+
 
 const inter = Inter({
   subsets: ['latin'],
@@ -34,7 +34,7 @@ export default function RootLayout({
         <Layout>{children}</Layout>
         <Analytics />
         <SpeedInsights />
-        <TelegramFloat />
+
       </body>
     </html>
   );

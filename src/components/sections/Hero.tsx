@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
@@ -134,6 +134,48 @@ const Hero: React.FC<HeroProps> = ({ onScrollDown }) => {
     };
   }, []);
 
+  // Scramble Effect
+  const [displayText, setDisplayText] = useState("RELEVANCE IS CURRENCY");
+  const targetText = "RELEVANCE IS CURRENCY";
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    const SCRAMBLE_SPEED = 30; // ms per frame
+    const PAUSE_DURATION = 3000; // ms between animations
+
+    const triggerAnimation = () => {
+      let iteration = 0;
+
+      const scrambleInterval = setInterval(() => {
+        setDisplayText((prev: string) =>
+          targetText
+            .split("")
+            .map((letter: string, index: number) => {
+              if (index < iteration) {
+                return targetText[index];
+              }
+              return "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[Math.floor(Math.random() * 26)];
+            })
+            .join("")
+        );
+
+        if (iteration >= targetText.length) {
+          clearInterval(scrambleInterval);
+        }
+
+        iteration += 1 / 3;
+      }, SCRAMBLE_SPEED);
+    };
+
+    // Initial trigger
+    setTimeout(triggerAnimation, 500);
+
+    // Repeat trigger
+    interval = setInterval(triggerAnimation, PAUSE_DURATION + (targetText.length * 3 * SCRAMBLE_SPEED));
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
       {/* WebGL Background */}
@@ -148,37 +190,32 @@ const Hero: React.FC<HeroProps> = ({ onScrollDown }) => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="mb-8"
+          className="mb-12"
         >
           <motion.h1
             className="text-4xl sm:text-6xl md:text-7xl font-display font-bold tracking-tighter text-white mb-4 leading-tight uppercase"
           >
-            Relevance is <span className="text-neon-green">Currency</span>. <br />
-            Stop <span className="text-neon-purple">Hiding</span>.
+            {/* Split for coloring "CURRENCY" */}
+            {displayText.split(" ").map((word: string, i: number) => (
+              <span key={i} className={word.includes("CURRENCY") ? "text-neon-green" : ""}>
+                {word}{" "}
+              </span>
+            ))}
           </motion.h1>
-          <motion.p
-            className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto font-sans"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-          >
-            The AI era has no silent billionaires. We build your influence—whether you show your face or not.
-          </motion.p>
+
         </motion.div>
 
-        <motion.div
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
-        >
-          <Link href="/agency" className="cta-primary w-full sm:w-auto text-center border-2 border-transparent hover:border-neon-green">
-            Start My Agency Plan
+        <div className="flex flex-wrap justify-center gap-6">
+          <Link href="/agency" className="px-8 py-3 rounded-full border border-gray-600 bg-black/50 text-white font-display font-bold uppercase tracking-wider hover:border-neon-green hover:text-neon-green hover:shadow-[0_0_15px_rgba(57,255,20,0.3)] transition-all transform hover:scale-105 backdrop-blur-sm">
+            Agency
           </Link>
-          <Link href="/toolkit" className="cta-secondary w-full sm:w-auto text-center hover:text-neon-purple hover:border-neon-purple">
-            Explore the Toolkit
+          <Link href="/toolkit" className="px-8 py-3 rounded-full border border-gray-600 bg-black/50 text-white font-display font-bold uppercase tracking-wider hover:border-neon-purple hover:text-neon-purple hover:shadow-[0_0_15px_rgba(188,19,254,0.3)] transition-all transform hover:scale-105 backdrop-blur-sm">
+            Toolkit
           </Link>
-        </motion.div>
+          <Link href="/community" className="px-8 py-3 rounded-full border border-gray-600 bg-black/50 text-white font-display font-bold uppercase tracking-wider hover:border-blue-500 hover:text-blue-500 hover:shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-all transform hover:scale-105 backdrop-blur-sm">
+            Community
+          </Link>
+        </div>
       </div>
     </section>
   );

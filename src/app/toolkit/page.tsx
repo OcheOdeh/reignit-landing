@@ -57,173 +57,160 @@ const RESOURCES = [
         link: "/toolkit/resources/professional-headshots-with-ai",
         updated: "1m"
     },
-    {
-        title: "Gemini CLI MCP library",
-        description: "Gemini CLI just became a super-toolbox — your favorite dev tools now plug in as extensions.",
-        category: "AI Video",
-        link: "/toolkit/gemini-cli",
-        updated: "4w"
-    },
+
     {
         title: "manus slides generation",
-        description: "your viedeo overviews can finally match your brand or aesthetic.for free",
+        description: "Your video overviews can finally match your brand or aesthetic. For free.",
         category: "AI Video",
-        link: "#",
+        link: "/toolkit/resources/notebooklm-video-overview-custom",
         updated: "1w"
     },
     {
         title: "Claude Use Cases",
         description: "nthropic just curated an impressive collection of use cases for Claude",
         category: "Claude",
-        link: "#",
+        link: "/toolkit/resources/claude-use-cases",
         updated: "3w"
     },
     {
         title: "nano banana pro official guide",
         description: "Google just dropped the complete Nano Banana Pro guide — 10 expert techniques to produce studio-quality assets with one model.",
         category: "AI Image",
-        link: "#",
+        link: "/toolkit/resources/nano-banana-pro-official-guide",
         updated: "1w"
     },
     {
         title: "customize your video overview in notebooklm",
         description: "your viedeo overviews can finally match your brand or aesthetic.for free",
         category: "productiviy",
-        link: "#",
+        link: "/toolkit/resources/customize-your-video-overview-in-notebooklm",
         updated: "1w"
     },
     {
         title: "Antigravity",
         description: "It’s an editor, an agent manager, and a browser all working together in one place",
         category: "AI Coding",
-        link: "#",
+        link: "/toolkit/resources/antigravity",
         updated: "1w"
     },
     {
         title: "google agents free resources",
         description: "it teaches everything from tools to MCP to production, completely free",
         category: "agents",
-        link: "#",
+        link: "/toolkit/resources/google-agents-free-resources",
         updated: "1w"
     },
     {
         title: "Claude use cases",
         description: "a cheat sheet for everything Claude can do",
         category: "Claude",
-        link: "#",
-        updated: "1w",
-        external: true
+        link: "/toolkit/resources/claude-use-cases",
+        updated: "1w"
     },
     {
         title: "Chatgpt 5.1 tips",
         description: "tips for ChatGPT 5.1",
         category: "ChatGPT",
-        link: "#",
+        link: "/toolkit/resources/chatgpt-5-1-tips",
         updated: "1w"
     },
     {
         title: "100 LLM apps templates",
         description: "100+ production-ready AI app templates, from RAG to voice agents",
         category: "agents templates",
-        link: "#",
-        updated: "3d",
-        external: true
+        link: "/toolkit/resources/100-llm-apps-templates",
+        updated: "3d"
     },
     {
         title: "claude skill market",
         description: "2,277 Claude Skills — all free, open-source, and ready to use",
         category: "Claude",
-        link: "#",
-        updated: "4d",
-        external: true
+        link: "/toolkit/resources/claude-skill-market",
+        updated: "4d"
     },
     {
         title: "google ai studio tutorials",
         description: "articel to help you build your app in ai studio in minutes",
         category: "AI Coding",
-        link: "#",
+        link: "/toolkit/resources/google-ai-studio-tutorials",
         updated: "1w"
     },
     {
         title: "google skills",
         description: "3,000+ AI courses from DeepMind, Cloud, and Google Education in one platform",
         category: "Tutorial",
-        link: "#",
+        link: "/toolkit/resources/google-skills",
         updated: "2w"
     },
     {
         title: "Modes Market Share Change",
         description: "Analysis of market share changes across different AI models.",
         category: "Analysis",
-        link: "#",
+        link: "/toolkit/resources/modes-market-share-change",
         updated: "2w"
     },
     {
         title: "google NotebookLM update 2",
         description: "Your AI research assistant that turns notes into knowledge",
         category: "notebooklm",
-        link: "#",
-        updated: "1w",
-        external: true
+        link: "/toolkit/resources/google-notebooklm-update-2",
+        updated: "1w"
     },
     {
         title: "DeepSeek OCR",
         description: "the secret to let ai quicker,cheaper and accurate.",
         category: "paper",
-        link: "#",
-        updated: "2w",
-        external: true
+        link: "/toolkit/resources/deepseek-ocr",
+        updated: "2w"
     },
     {
         title: "Claude Skill",
         description: "Master Claude AI with these essential skills and techniques.",
         category: "Claude",
-        link: "#",
-        updated: "3w",
-        external: true
+        link: "/toolkit/resources/claude-skill",
+        updated: "3w"
     },
     {
         title: "Sora2 Storyboard",
         description: "Storyboard resources for Sora2.",
         category: "AI Video",
-        link: "#",
+        link: "/toolkit/resources/sora2-storyboard",
         updated: "3w"
     },
     {
         title: "5 Free AI Resources for Non-Technical People",
         description: "Essential AI tools and resources that anyone can use, no coding required.",
         category: "Guide",
-        link: "#",
+        link: "/toolkit/resources/5-free-ai-resources-for-non-technical-people",
         updated: "1m"
     },
     {
         title: "7 FREE AI Resources",
         description: "Curated collection of the best free AI tools and platforms.",
         category: "Guide",
-        link: "#",
+        link: "/toolkit/resources/7-free-ai-resources",
         updated: "4w"
     },
     {
         title: "9 Free Resource",
         description: "Nine must-have free resources for AI enthusiasts and creators.",
         category: "Guide",
-        link: "#",
+        link: "/toolkit/resources/9-free-resource",
         updated: "4w"
     },
     {
         title: "5 YouTube Video",
         description: "Top 5 YouTube videos to learn AI from scratch.",
         category: "Guide",
-        link: "#",
+        link: "/toolkit/resources/5-youtube-video",
         updated: "4w"
     },
     {
         title: "6 Step to Master AI",
         description: "Complete roadmap to master AI in 6 simple steps.",
         category: "Guide",
-        link: "#",
-        updated: "3w",
-        external: true
+        link: "/toolkit/resources/6-step-to-master-ai",
+        updated: "3w"
     }
 ];
 
@@ -272,7 +259,7 @@ const TOOLS = [
     { title: "Adobe Firefly", description: "Adobe just made all Firefly models unlimited until Dec 1.", category: "AI Video", updated: "5d", external: true },
     { title: "gemini slides", description: "Gemini can now create full Google Slides from a single prompt with Canvas built right in", category: "Slides tool", updated: "5d", external: true },
     { title: "Eleven Labs AI Music", description: "AI music generation tool.", category: "TTS", updated: "6d", external: true },
-    { title: "Gemini CLI extensions", description: "Gemini CLI Extensions Overview and list with details", category: "AI Coding", updated: "6d" },
+
     { title: "kimi Ok Computer", description: "from Chat to Create, Kimi OK Computer turns a simple conversation into website, slides, and more.", category: "Apps building", updated: "1w" },
     { title: "fameo.ai", description: "Make Any Celebrity Say Anything", category: "AI Video", updated: "1w", external: true },
     { title: "github copilot agent HQ", description: "a new feature that lets you run Claude, OpenAI, Cognition, Jules, even xAI, all inside GitHub, side by side.", category: "AI Coding", updated: "1w", external: true },

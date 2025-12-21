@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import AuditWizard from '../forms/AuditWizard';
 import Logo from '../ui/Logo';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import TelegramModal from '../modals/TelegramModal';
 
 type NavbarProps = {
   isTransparent?: boolean;
@@ -13,6 +14,7 @@ const Navbar: React.FC<NavbarProps> = ({ isTransparent = true }) => {
   const [scrolled, setScrolled] = useState<boolean>(false);
   const [isAuditWizardOpen, setIsAuditWizardOpen] = useState<boolean>(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+  const [isTelegramModalOpen, setIsTelegramModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -73,9 +75,15 @@ const Navbar: React.FC<NavbarProps> = ({ isTransparent = true }) => {
 
           {/* Desktop CTAs */}
           <div className="hidden lg:flex">
-            <Link href="/agency" className="bg-accent text-white font-display font-semibold uppercase text-sm px-6 py-3 rounded-full transition-all hover:shadow-lg hover:scale-105">
-              Start Now
-            </Link>
+            <button
+              onClick={() => setIsTelegramModalOpen(true)}
+              className="bg-[#0088cc] text-white p-2 rounded-full shadow-[0_0_15px_rgba(0,136,204,0.5)] hover:bg-[#0077b5] hover:scale-110 transition-all group"
+              aria-label="Join Community"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className="group-hover:animate-pulse">
+                <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 11.944 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
+              </svg>
+            </button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -124,14 +132,19 @@ const Navbar: React.FC<NavbarProps> = ({ isTransparent = true }) => {
                 >
                   Community
                 </Link>
-                <div className="flex flex-col pt-3">
-                  <Link
-                    href="/agency"
-                    className="bg-accent text-white font-display font-semibold uppercase text-sm px-6 py-3 rounded-full transition-all hover:shadow-lg hover:scale-105 text-center"
-                    onClick={() => setMobileMenuOpen(false)}
+                <div className="flex flex-col pt-3 items-center">
+                  <button
+                    onClick={() => {
+                      setIsTelegramModalOpen(true);
+                      setMobileMenuOpen(false);
+                    }}
+                    className="bg-[#0088cc] text-white p-3 rounded-full shadow-[0_0_15px_rgba(0,136,204,0.5)] active:bg-[#0077b5] transition-all"
+                    aria-label="Join Community"
                   >
-                    Start Now
-                  </Link>
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 11.944 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
+                    </svg>
+                  </button>
                 </div>
               </div>
             </motion.div>
@@ -145,6 +158,9 @@ const Navbar: React.FC<NavbarProps> = ({ isTransparent = true }) => {
         onClose={handleCloseAuditWizard}
         embedded={false}
       />
+
+      {/* Telegram Modal */}
+      <TelegramModal isOpen={isTelegramModalOpen} onClose={() => setIsTelegramModalOpen(false)} />
     </>
   );
 };

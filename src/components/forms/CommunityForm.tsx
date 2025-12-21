@@ -47,8 +47,8 @@ export default function CommunityForm({ embedded = false }: CommunityFormProps) 
 
             {activeTab === 'email' ? (
                 <>
-                    <h2 className="text-2xl font-display font-bold text-white mb-2">Get the Blueprint</h2>
-                    <p className="text-gray-400 mb-6">Download our <span className="text-white font-semibold">Free AI Prompting & Safety Guide</span> and start moving safe.</p>
+                    <h2 className="text-2xl font-display font-bold text-white mb-2">Subscribe to our newsletter</h2>
+                    <p className="text-gray-400 mb-6">Stay updated with our latest news and announcements.</p>
 
                     {submitted ? (
                         <div className="bg-green-900/30 border border-green-500 text-green-400 p-4 rounded-lg text-center">
