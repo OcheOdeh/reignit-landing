@@ -4,13 +4,12 @@ import AuditNotificationEmail from '@/components/emails/AuditNotificationEmail';
 import AuditConfirmationEmail from '@/components/emails/AuditConfirmationEmail';
 import React from 'react';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 // Email address to send notifications to. Should be a verified domain on Resend.
 const NOTIFICATION_EMAIL = process.env.AUDIT_NOTIFICATION_EMAIL || 'sales@reignitinc.com';
 const FROM_EMAIL = process.env.AUDIT_FROM_EMAIL || 'noreply@reignitinc.com';
 
 export async function POST(req: NextRequest) {
+  const resend = new Resend(process.env.RESEND_API_KEY);
   try {
     const formData = await req.json();
     const { fullName, workEmail } = formData;

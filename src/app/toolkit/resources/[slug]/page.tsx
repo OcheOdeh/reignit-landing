@@ -1277,8 +1277,9 @@ const RESOURCES_CONTENT: Record<string, {
     }
 };
 
-export default function ResourcePage({ params }: { params: { slug: string } }) {
-    const resource = RESOURCES_CONTENT[params.slug];
+export default async function ResourcePage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const resource = RESOURCES_CONTENT[slug];
 
     if (!resource) {
         notFound();

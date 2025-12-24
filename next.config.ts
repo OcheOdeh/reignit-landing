@@ -7,6 +7,7 @@ const config: NextConfig = {
     ignoreDuringBuilds: true,
   },
   // Your other Next.js config options can go here
+  output: 'standalone',
 };
 
 export default config;

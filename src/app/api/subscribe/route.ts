@@ -4,13 +4,11 @@ import WelcomeEmail from '@/components/emails/WelcomeEmail';
 import NewSubscriberEmail from '@/components/emails/NewSubscriberEmail';
 import React from 'react';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-// Use existing environment variables or defaults
 const NOTIFICATION_EMAIL = process.env.AUDIT_NOTIFICATION_EMAIL || 'sales@reignitinc.com';
 const FROM_EMAIL = process.env.AUDIT_FROM_EMAIL || 'noreply@reignitinc.com';
 
 export async function POST(req: NextRequest) {
+    const resend = new Resend(process.env.RESEND_API_KEY);
     try {
         const { email } = await req.json();
 
