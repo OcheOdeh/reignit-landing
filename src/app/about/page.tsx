@@ -16,7 +16,7 @@ interface ValueCardProps {
 
 const ValueCard: React.FC<ValueCardProps> = ({ title, description, icon, delay }) => {
   return (
-    <motion.div 
+    <motion.div
       className="bg-gray-900 rounded-lg p-6 shadow-lg"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -36,7 +36,7 @@ export default function AboutPage() {
       {/* Hero Section */}
       <section className="py-20 bg-dark-canvas relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-primary-gradient-start/10 to-primary-gradient-end/5 opacity-30"></div>
-        
+
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
             className="max-w-4xl mx-auto text-center"
@@ -47,18 +47,18 @@ export default function AboutPage() {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-headline font-bold text-white mb-6">
               Reignit Inc. — <span className="text-accent">Practical AI, Real-World ROI</span>
             </h1>
-            
+
             <p className="text-xl text-neutral-smoke mb-8">
               We're a full-stack AI product studio and consulting house that helps businesses reignite growth with conversational bots, automation pipelines, agent platforms, and creative AI products. From day-one pilots to billion-user scale, we turn bleeding-edge research into bottom-line impact.
             </p>
           </motion.div>
         </div>
       </section>
-      
+
       {/* Core Values Section */}
       <section className="py-20 bg-dark-canvas">
         <div className="container mx-auto px-4">
-          <motion.div 
+          <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -72,47 +72,47 @@ export default function AboutPage() {
               These principles guide everything we do, from client interactions to product development.
             </p>
           </motion.div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <ValueCard 
-              title="Outcome-Obsessed" 
-              description="We measure success in client KPIs, not code commits." 
+            <ValueCard
+              title="Outcome-Obsessed"
+              description="We measure success in client KPIs, not code commits."
               icon={<span>📈</span>}
               delay={0.1}
             />
-            <ValueCard 
-              title="Human-Centric" 
-              description="AI should augment people, never replace their spark." 
+            <ValueCard
+              title="Human-Centric"
+              description="AI should augment people, never replace their spark."
               icon={<span>👤</span>}
               delay={0.2}
             />
-            <ValueCard 
-              title="Build → Learn → Iterate" 
-              description="30-day MVP cycles keep us ahead of the curve." 
+            <ValueCard
+              title="Build → Learn → Iterate"
+              description="30-day MVP cycles keep us ahead of the curve."
               icon={<span>🔄</span>}
               delay={0.3}
             />
-            <ValueCard 
-              title="Radical Transparency" 
-              description="Dashboards, shared docs, honest road-maps." 
+            <ValueCard
+              title="Radical Transparency"
+              description="Dashboards, shared docs, honest road-maps."
               icon={<span>🔍</span>}
               delay={0.4}
             />
-            <ValueCard 
-              title="Creative Play" 
-              description="Our AI Academy and game demos remind us tech can delight." 
+            <ValueCard
+              title="Creative Play"
+              description="Our AI Academy and game demos remind us tech can delight."
               icon={<span>🎮</span>}
               delay={0.5}
             />
           </div>
         </div>
       </section>
-      
+
       {/* Our Approach Section */}
       <section className="py-20 bg-gradient-to-b from-dark-canvas to-gray-900">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row items-center gap-12">
-            <motion.div 
+            <motion.div
               className="lg:w-1/2"
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -132,8 +132,8 @@ export default function AboutPage() {
                 Our team of experts brings together diverse skills in machine learning, software engineering, UX design, and business strategy to deliver holistic solutions that work in the real world.
               </p>
             </motion.div>
-            
-            <motion.div 
+
+            <motion.div
               className="lg:w-1/2 relative"
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -156,11 +156,11 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-      
+
       {/* CTA Section */}
       <section className="py-20 bg-dark-canvas">
         <div className="container mx-auto px-4">
-          <motion.div 
+          <motion.div
             className="max-w-3xl mx-auto text-center"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -173,12 +173,27 @@ export default function AboutPage() {
             <p className="text-xl text-neutral-smoke mb-8">
               Let's discuss how our AI solutions can help you achieve your business goals.
             </p>
-            <Link 
-              href="#audit" 
-              className="cta-primary text-center inline-block"
+            <Link
+              href="#audit"
+              className="cta-primary text-center inline-block mb-12"
             >
               Book Free AI Audit
             </Link>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left border-t border-gray-800 pt-12">
+              <div>
+                <h3 className="text-white font-bold mb-2">Visit Us</h3>
+                <p className="text-gray-400">5830 E 2nd street,<br />Casper, Wyoming</p>
+              </div>
+              <div>
+                <h3 className="text-white font-bold mb-2">Email Us</h3>
+                <a href="mailto:sales@reignitinc.com" className="text-gray-400 hover:text-accent transition-colors">sales@reignitinc.com</a>
+              </div>
+              <div>
+                <h3 className="text-white font-bold mb-2">Call Us</h3>
+                <a href="tel:+13395655737" className="text-gray-400 hover:text-accent transition-colors">+1 (339) 565-5737</a>
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>

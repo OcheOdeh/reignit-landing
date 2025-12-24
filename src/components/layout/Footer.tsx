@@ -43,26 +43,21 @@ const Footer: React.FC = () => {
 
           <div className="col-span-1">
             <h3 className="text-lg font-headline font-semibold text-white mb-4">Company</h3>
-            <ul className="space-y-2">
+            <ul className="space-y-4">
               <li>
                 <Link href="/about" className="text-gray-400 hover:text-accent transition-colors">
                   About Us
                 </Link>
               </li>
-              <li>
-                <Link href="/careers" className="text-gray-400 hover:text-accent transition-colors">
-                  Careers
-                </Link>
+              <li className="text-gray-400 text-sm">
+                <span className="block text-white font-semibold mb-1">Visit Us</span>
+                5830 E 2nd street,<br />
+                Casper, Wyoming
               </li>
-              <li>
-                <Link href="/blog" className="text-gray-400 hover:text-accent transition-colors">
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="text-gray-400 hover:text-accent transition-colors">
-                  Contact
-                </Link>
+              <li className="text-gray-400 text-sm">
+                <span className="block text-white font-semibold mb-1">Contact</span>
+                <a href="mailto:sales@reignitinc.com" className="hover:text-accent transition-colors block">sales@reignitinc.com</a>
+                <a href="tel:+13395655737" className="hover:text-accent transition-colors block">+1 (339) 565-5737</a>
               </li>
             </ul>
           </div>
@@ -87,14 +82,14 @@ const Footer: React.FC = () => {
               </li> */}
             </ul>
           </div>
-        </div>
+        </div >
 
         <div className="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-500"> {new Date().getFullYear()} Reignit Inc. All rights reserved.</p>
 
         </div>
-      </div>
-    </footer>
+      </div >
+    </footer >
   );
 };
 
