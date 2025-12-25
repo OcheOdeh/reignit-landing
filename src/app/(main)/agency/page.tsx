@@ -79,7 +79,7 @@ export default function AgencyPage() {
                             </div>
                             <div className="bg-black/40 p-6 rounded-2xl border border-gray-800 mt-auto">
                                 <h4 className="text-blue-400 font-bold text-lg mb-2">Our Solution: Autopilot Management</h4>
-                                <p className="text-gray-400 text-base leading-relaxed">You focus on your job; we become your digital hands. We script, edit, and post 3-6 times a week. You just sit back and watch the engagement grow.</p>
+                                <p className="text-gray-400 text-base leading-relaxed">Our team handles the scripting, editing, and publishing while you take care of your daily tasks. We act as your digital hands, letting you focus on work while your engagement grows</p>
                             </div>
                         </motion.div>
 
