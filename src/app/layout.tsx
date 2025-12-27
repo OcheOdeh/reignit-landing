@@ -21,6 +21,11 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: 'Reignit Inc | AI-Powered Business Solutions',
   description: 'Custom AI chatbots, workflow automation, and innovative product development.',
+  icons: {
+    icon: [
+      { url: '/images/reignit-logo.svg', type: 'image/svg+xml' },
+    ],
+  },
 };
 
 export default function RootLayout({
