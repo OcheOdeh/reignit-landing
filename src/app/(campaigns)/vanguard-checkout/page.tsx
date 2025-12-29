@@ -39,13 +39,13 @@ const AUTOPILOT_INFO = {
 };
 
 const PERKS = [
-    { name: 'UK/US TikTok Account (1k-5k followers)', priceMember: 0, priceNonMember: 50.00 },
-    { name: 'How to Prompt', priceMember: 0, priceNonMember: 50.00 }, // Assumed value
-    { name: 'AI Tool uses', priceMember: 0, priceNonMember: 50.00 }, // Assumed value
-    { name: 'Spend less on AI usage', priceMember: 0, priceNonMember: 50.00 }, // Assumed value
-    { name: 'US Virtual Card/Bank account Setup + $2 Free Credit', priceMember: 0, priceNonMember: 45.00 },
-    { name: 'Youtube growth and monetization handbook', priceMember: 0, priceNonMember: 50.00 }, // Assumed value
-    { name: 'Niche-to-Context Pathway Handbook', priceMember: 0, priceNonMember: 50.00 }, // Assumed value
+    { name: 'UK/US TikTok Account (1k-5k followers)', labelNonMember: 'Not Available', value: 50.00 },
+    { name: 'How to Prompt', labelNonMember: 'free', value: 0 },
+    { name: 'AI Tool uses', labelNonMember: 'free', value: 0 },
+    { name: 'Spend less on AI usage', labelNonMember: 'Not Available', value: 50.00 },
+    { name: 'US Virtual Card/Bank account Setup + $2 Free Credit', labelNonMember: 'free', value: 0 },
+    { name: 'Youtube growth and monetization handbook', labelNonMember: 'Not Available', value: 50.00 },
+    { name: 'Niche-to-Context Pathway Handbook', labelNonMember: 'Not Available', value: 50.00 },
 ];
 
 export default function VanguardCheckoutPage() {
@@ -103,7 +103,7 @@ export default function VanguardCheckoutPage() {
             // The logic from the HTML script:
 
             // Hard coded perk value for display impact
-            const perkValue = PERKS.reduce((acc, p) => acc + p.priceNonMember, 0);
+            const perkValue = PERKS.reduce((acc, p) => acc + p.value, 0);
 
             // Calculate saved amount on services
             let serviceSavings = 0;
@@ -346,7 +346,7 @@ export default function VanguardCheckoutPage() {
                             <div key={i} className={`flex justify-between items-center py-2 ${i < PERKS.length - 1 ? 'border-b border-slate-200' : ''}`}>
                                 <div className="text-xs font-medium text-slate-700">{perk.name}</div>
                                 <div className={`font-bold text-sm ${isMember ? 'text-green-600' : 'text-slate-800'}`}>
-                                    {isMember ? 'FREE' : `$${perk.priceNonMember.toFixed(2)}`}
+                                    {isMember ? 'FREE' : perk.labelNonMember}
                                 </div>
                             </div>
                         ))}
