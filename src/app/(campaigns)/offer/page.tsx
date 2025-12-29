@@ -1,6 +1,7 @@
 "use client";
 
 import CampaignHero from '@/components/campaign/CampaignHero';
+import CampaignNavbar from '@/components/campaign/CampaignNavbar';
 import CampaignMedia from '@/components/campaign/CampaignMedia';
 import CampaignFeatures from '@/components/campaign/CampaignFeatures';
 import CampaignCTA from '@/components/campaign/CampaignCTA';
