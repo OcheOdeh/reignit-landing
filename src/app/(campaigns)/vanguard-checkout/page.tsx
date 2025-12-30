@@ -10,10 +10,19 @@ const SERVICES = [
         id: 'us-business',
         title: 'US Business Registration',
         description: 'Go global and be open to more opportunities with this.',
-        items: ['LLC Formation & EIN', 'Mercury Bank & Stripe Setup', 'Registered Agent Service'],
+        items: [], // Removed items as requested
         tooltip: 'Includes: LLC formation, EIN, Article of Organisation, Certificate of Organisation, US Bank account setup, Stripe Global payment, U.S. Business Address.',
         priceMember: 24.12,
         priceNonMember: 72.36,
+    },
+    {
+        id: 'nigeria-business',
+        title: 'Nigeria Business Registration-Avoid excess taxes and be secured',
+        description: 'Get your business registered and compliant.',
+        items: [],
+        tooltip: 'Includes: Certificate of Incorporation, Memorandum & Article of Association (Memart), Shareholder Structure, SCUML Certificate, TIN Certificate.',
+        priceMember: 20.00,
+        priceNonMember: 50.00,
     },
     {
         id: 'website-build',
@@ -22,7 +31,7 @@ const SERVICES = [
         items: ['Domain Name', 'Professional Email', 'Visual Identity Design'],
         tooltip: 'Includes: Domain Name & Professional Email, Visual Identity Design (Create an attention-grabbing Logo).',
         priceMember: 100.00,
-        priceNonMember: 300.00, // Assumed 3x for consistency if not specified, though user just said "Charge $100". I will assume standard member price logic unless fixed. Actually user said "charge $100", usually that implies the base price. Let's make it 100 member, 300 non-member for consistency with "Outsiders pay triple".
+        priceNonMember: 300.00,
     }
 ];
 
@@ -50,6 +59,7 @@ const PERKS = [
 
 export default function VanguardCheckoutPage() {
     const [isMember, setIsMember] = useState(true);
+    const [isExistingMember, setIsExistingMember] = useState(false);
     const [selectedServices, setSelectedServices] = useState<string[]>([]);
     const [selectedAutopilot, setSelectedAutopilot] = useState<number | null>(null);
     const [total, setTotal] = useState(COMMUNITY_PRICE);
@@ -64,11 +74,34 @@ export default function VanguardCheckoutPage() {
         }
     };
 
+    // Handle membership toggles ensuring mutual exclusivity
+    const toggleMembership = () => {
+        if (!isMember) {
+            setIsMember(true);
+            setIsExistingMember(false);
+        } else {
+            setIsMember(false);
+        }
+    };
+
+    const toggleExistingMember = () => {
+        if (!isExistingMember) {
+            setIsExistingMember(true);
+            setIsMember(false);
+        } else {
+            setIsExistingMember(false);
+            // Default back to not being a member of any kind, or maybe prompt to join?
+            // User flow: Uncheck existing -> standard prices.
+        }
+    };
+
+    const isMemberOrExisting = isMember || isExistingMember;
+
     useEffect(() => {
         let newTotal = 0;
         let nonMemberTotal = 0;
 
-        // 1. Community Fee
+        // 1. Community Fee (Only if joining now)
         if (isMember) {
             newTotal += COMMUNITY_PRICE;
             nonMemberTotal += COMMUNITY_PRICE;
@@ -77,7 +110,7 @@ export default function VanguardCheckoutPage() {
         // 2. Services
         SERVICES.forEach(s => {
             if (selectedServices.includes(s.id)) {
-                newTotal += isMember ? s.priceMember : s.priceNonMember;
+                newTotal += isMemberOrExisting ? s.priceMember : s.priceNonMember;
                 nonMemberTotal += s.priceNonMember;
             }
         });
@@ -86,23 +119,16 @@ export default function VanguardCheckoutPage() {
         if (selectedAutopilot) {
             const plan = AUTOPILOT_PLANS.find(p => p.id === selectedAutopilot);
             if (plan) {
-                newTotal += isMember ? plan.priceMember : plan.priceNonMember;
+                newTotal += isMemberOrExisting ? plan.priceMember : plan.priceNonMember;
                 nonMemberTotal += plan.priceNonMember;
             }
         }
 
-        // 4. Perks (Visual only logic as per request - mostly)
-        // If not member, perks have a cost but user didn't ask to add them to total explicitly in the JS provided
-        // "We will just visually show the price, but NOT add it to total unless we added checkboxes"
-
         setTotal(newTotal);
 
         // Savings Display Logic
-        if (isMember) {
+        if (isMemberOrExisting) {
             let potentialCost = 0;
-            // The logic from the HTML script:
-
-            // Hard coded perk value for display impact
             const perkValue = PERKS.reduce((acc, p) => acc + p.value, 0);
 
             // Calculate saved amount on services
@@ -117,9 +143,9 @@ export default function VanguardCheckoutPage() {
                 if (plan) serviceSavings += (plan.priceNonMember - plan.priceMember);
             }
 
-            const netSavings = serviceSavings + perkValue - COMMUNITY_PRICE;
+            const netSavings = serviceSavings + perkValue - (isMember ? COMMUNITY_PRICE : 0);
 
-            if (newTotal === COMMUNITY_PRICE && selectedServices.length === 0 && !selectedAutopilot) {
+            if (isMember && newTotal === COMMUNITY_PRICE && selectedServices.length === 0 && !selectedAutopilot) {
                 setSavingsText(`Unlocks $${perkValue} in free value`);
                 setSavingsClass("text-green-600 bg-green-50");
             } else if (netSavings > 0) {
@@ -134,7 +160,7 @@ export default function VanguardCheckoutPage() {
             setSavingsClass("text-red-500 bg-red-50");
         }
 
-    }, [isMember, selectedServices, selectedAutopilot]);
+    }, [isMember, isExistingMember, selectedServices, selectedAutopilot, isMemberOrExisting]);
 
     return (
         <div className="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-display pb-40">
@@ -191,7 +217,7 @@ export default function VanguardCheckoutPage() {
                                     <span className="material-symbols-outlined text-blue-600 text-base">verified</span>
                                 </h3>
                                 <p className="text-xs text-slate-500 mt-1 max-w-[220px]">
-                                    Full support. Networking. Investments. And massive service discounts.
+                                    Full support. Earn Online. Investments. And massive service discounts.
                                 </p>
                             </div>
                             <div className="text-right">
@@ -208,7 +234,7 @@ export default function VanguardCheckoutPage() {
                                         id="community-toggle"
                                         className="peer h-6 w-6 cursor-pointer appearance-none rounded-md border border-slate-300 transition-all checked:border-blue-600 checked:bg-blue-600"
                                         checked={isMember}
-                                        onChange={(e) => setIsMember(e.target.checked)}
+                                        onChange={toggleMembership}
                                     />
                                     <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100">
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
@@ -223,8 +249,30 @@ export default function VanguardCheckoutPage() {
                     </div>
                 </section>
 
-                {/* Warning Banner */}
+                {/* Already a Member Toggle */}
                 {!isMember && (
+                    <div className="flex justify-end -mt-2">
+                        <label className="flex items-center gap-2 cursor-pointer group p-2 rounded-lg hover:bg-slate-100 transition-colors">
+                            <div className="relative flex items-center">
+                                <input
+                                    type="checkbox"
+                                    className="peer h-5 w-5 cursor-pointer appearance-none rounded border border-slate-300 transition-all checked:border-blue-600 checked:bg-blue-600"
+                                    checked={isExistingMember}
+                                    onChange={toggleExistingMember}
+                                />
+                                <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                                </span>
+                            </div>
+                            <span className="text-xs font-semibold text-slate-500 group-hover:text-blue-600 select-none">
+                                I'm already a member
+                            </span>
+                        </label>
+                    </div>
+                )}
+
+                {/* Warning Banner (only if neither is active) */}
+                {!isMemberOrExisting && (
                     <div id="warning-banner" className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-sm font-medium flex items-center gap-3 shadow-sm animate-[shake_0.82s_cubic-bezier(.36,.07,.19,.97)_both]">
                         <span className="material-symbols-outlined text-xl">warning</span>
                         <span><strong>Stop.</strong> You are about to overpay by 300%. Check the box above to save money.</span>
@@ -273,10 +321,10 @@ export default function VanguardCheckoutPage() {
 
                                     <div className="flex items-center gap-2 mt-3">
                                         <span className="text-xl font-bold text-slate-900">
-                                            ${isMember ? service.priceMember : service.priceNonMember}
+                                            ${isMemberOrExisting ? service.priceMember : service.priceNonMember}
                                         </span>
-                                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${isMember ? 'bg-blue-600/10 text-blue-600' : 'bg-red-100 text-red-700'}`}>
-                                            {isMember ? 'Member Price' : 'Non-Member (x3)'}
+                                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${isMemberOrExisting ? 'bg-blue-600/10 text-blue-600' : 'bg-red-100 text-red-700'}`}>
+                                            {isMemberOrExisting ? 'Member Price' : 'Non-Member (x3)'}
                                         </span>
                                     </div>
                                 </div>
@@ -318,7 +366,7 @@ export default function VanguardCheckoutPage() {
                                         <div className="font-bold text-sm text-slate-800">{plan.name}</div>
                                         <div className="flex items-center gap-2 mt-1">
                                             <span className="text-sm font-bold text-slate-600">
-                                                ${isMember ? plan.priceMember : plan.priceNonMember}
+                                                ${isMemberOrExisting ? plan.priceMember : plan.priceNonMember}
                                             </span>
                                             <span className="text-[10px] text-slate-400">/month</span>
                                         </div>
@@ -345,13 +393,13 @@ export default function VanguardCheckoutPage() {
                         {PERKS.map((perk, i) => (
                             <div key={i} className={`flex justify-between items-center py-2 ${i < PERKS.length - 1 ? 'border-b border-slate-200' : ''}`}>
                                 <div className="text-xs font-medium text-slate-700">{perk.name}</div>
-                                <div className={`font-bold text-sm ${isMember ? 'text-green-600' : 'text-slate-800'}`}>
-                                    {isMember ? 'FREE' : perk.labelNonMember}
+                                <div className={`font-bold text-sm ${isMemberOrExisting ? 'text-green-600' : 'text-slate-800'}`}>
+                                    {isMemberOrExisting ? 'FREE' : perk.labelNonMember}
                                 </div>
                             </div>
                         ))}
 
-                        {!isMember && (
+                        {!isMemberOrExisting && (
                             <div className="mt-3 text-[10px] text-red-600 bg-red-50 p-2 rounded italic">
                                 *Without membership, these perks are charged at standard consulting rates.
                             </div>
@@ -366,9 +414,9 @@ export default function VanguardCheckoutPage() {
                 <div className="max-w-lg mx-auto flex flex-col gap-3">
 
                     <div className="flex justify-between items-end px-1">
-                        <div className="flex flex-col">
+                        <div className="flex-col">
                             <span className="text-xs text-slate-400 font-medium">Total Due Now</span>
-                            <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full mt-1 ${savingsClass}`}>
+                            <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full mt-1 table ${savingsClass}`}>
                                 {savingsText}
                             </span>
                         </div>
