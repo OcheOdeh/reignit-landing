@@ -57,13 +57,15 @@ const AUTOPILOT_INFO = {
 };
 
 const PERKS = [
-    { name: 'UK/US TikTok Account (1k-5k followers)', labelNonMember: 'Not Available', value: 50.00 },
-    { name: 'How to Prompt', labelNonMember: 'free', value: 0 },
-    { name: 'AI Tool uses', labelNonMember: 'free', value: 0 },
-    { name: 'Spend less on AI usage', labelNonMember: 'Not Available', value: 50.00 },
-    { name: 'US Virtual Card/Bank account Setup + $2 Free Credit', labelNonMember: 'free', value: 0 },
-    { name: 'Youtube growth and monetization handbook', labelNonMember: 'Not Available', value: 50.00 },
-    { name: 'Niche-to-Context Pathway Handbook', labelNonMember: 'Not Available', value: 50.00 },
+    { name: 'UK/US TikTok Account (1k-5k followers)', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
+    { name: 'How to Prompt', labelNonMember: 'free', labelMember: 'FREE', value: 0 },
+    { name: 'AI Tool uses', labelNonMember: 'free', labelMember: 'FREE', value: 0 },
+    { name: 'Spend less on AI usage', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
+    { name: 'US Virtual Card/Bank account Setup + $2 Free Credit', labelNonMember: 'free', labelMember: 'FREE', value: 0 },
+    { name: 'Online Monetization Handbook', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
+    { name: 'Niche-to-Context Pathway Handbook', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
+    { name: 'Building and Investing in Startup partnership program', labelNonMember: 'Available', labelMember: 'Available', value: 0 },
+    { name: 'Consultation', labelNonMember: 'Not Available', labelMember: 'FREE', value: 0 },
 ];
 
 export default function VanguardCheckoutPage() {
@@ -373,7 +375,14 @@ export default function VanguardCheckoutPage() {
                         </h3>
                         <div className="space-y-3">
                             {AUTOPILOT_PLANS.map(plan => (
-                                <label key={plan.id} className="flex items-center justify-between p-3 rounded-lg border border-slate-100 hover:bg-slate-50 hover:border-blue-600/30 cursor-pointer transition-all">
+                                <label
+                                    key={plan.id}
+                                    className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-all ${selectedAutopilot === plan.id ? 'bg-blue-50 border-blue-600 ring-1 ring-blue-600' : 'border-slate-100 hover:bg-slate-50 hover:border-blue-600/30'}`}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setSelectedAutopilot(selectedAutopilot === plan.id ? null : plan.id);
+                                    }}
+                                >
                                     <div>
                                         <div className="font-bold text-sm text-slate-800">{plan.name}</div>
                                         <div className="flex items-center gap-2 mt-1">
@@ -406,7 +415,7 @@ export default function VanguardCheckoutPage() {
                             <div key={i} className={`flex justify-between items-center py-2 ${i < PERKS.length - 1 ? 'border-b border-slate-200' : ''}`}>
                                 <div className="text-xs font-medium text-slate-700">{perk.name}</div>
                                 <div className={`font-bold text-sm ${isMemberOrExisting ? 'text-green-600' : 'text-slate-800'}`}>
-                                    {isMemberOrExisting ? 'FREE' : perk.labelNonMember}
+                                    {isMemberOrExisting ? perk.labelMember : perk.labelNonMember}
                                 </div>
                             </div>
                         ))}
@@ -422,26 +431,28 @@ export default function VanguardCheckoutPage() {
             </main>
 
             {/* Footer */}
-            <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-slate-200 shadow-[0_-5px_20px_-5px_rgba(0,0,0,0.1)] z-50">
-                <div className="max-w-lg mx-auto flex flex-col gap-3">
+            <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-center pointer-events-none">
+                <div className="w-full max-w-lg bg-white p-4 border-t border-slate-200 shadow-[0_-5px_20px_-5px_rgba(0,0,0,0.1)] pointer-events-auto">
+                    <div className="flex flex-col gap-3">
 
-                    <div className="flex justify-between items-end px-1">
-                        <div className="flex-col">
-                            <span className="text-xs text-slate-400 font-medium">Total Due Now</span>
-                            <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full mt-1 table ${savingsClass}`}>
-                                {savingsText}
-                            </span>
+                        <div className="flex justify-between items-end px-1">
+                            <div className="flex-col">
+                                <span className="text-xs text-slate-400 font-medium">Total Due Now</span>
+                                <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full mt-1 table ${savingsClass}`}>
+                                    {savingsText}
+                                </span>
+                            </div>
+                            <div className="text-right">
+                                <span className="text-3xl font-black text-slate-900 tracking-tighter">${total.toFixed(2)}</span>
+                            </div>
                         </div>
-                        <div className="text-right">
-                            <span className="text-3xl font-black text-slate-900 tracking-tighter">${total.toFixed(2)}</span>
-                        </div>
+
+                        <a href="https://stripe.com" target="_blank" className="relative overflow-hidden w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-800 text-white font-bold h-14 rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-blue-600/30 group">
+                            <span className="relative z-10 text-lg">Click to Pay</span>
+                            <span className="material-symbols-outlined relative z-10 text-xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                            <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent z-0"></div>
+                        </a>
                     </div>
-
-                    <a href="https://stripe.com" target="_blank" className="relative overflow-hidden w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-800 text-white font-bold h-14 rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-blue-600/30 group">
-                        <span className="relative z-10 text-lg">Click to Pay</span>
-                        <span className="material-symbols-outlined relative z-10 text-xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                        <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent z-0"></div>
-                    </a>
                 </div>
             </div>
         </div>
