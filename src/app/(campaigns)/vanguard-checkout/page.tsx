@@ -52,7 +52,7 @@ const AUTOPILOT_PLANS = [
 ];
 
 const AUTOPILOT_INFO = {
-    description: "You're a busy bee, you need a Digital Hand (Autopilot). We script, edit, post and schedule posts every day of the week depending on your plan.",
+    description: "Whether you want a Faceless Brand or a Personal Brand, we script, edit, and post.",
     winReason: "Why it wins: It solves the \"I have no time\" problem instantly."
 };
 
@@ -64,7 +64,13 @@ const PERKS = [
     { name: 'US Virtual Card/Bank account Setup + $2 Free Credit', labelNonMember: 'free', labelMember: 'FREE', value: 0 },
     { name: 'Online Monetization Handbook', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
     { name: 'Niche-to-Context Pathway Handbook', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
-    { name: 'Building and Investing in Startup partnership program', labelNonMember: 'Available', labelMember: 'Available', value: 0 },
+    {
+        name: 'Building and Investing in Startup partnership program',
+        labelNonMember: 'Click Here',
+        labelMember: 'Click Here',
+        value: 0,
+        link: '/investors'
+    },
     { name: 'Consultation', labelNonMember: 'Not Available', labelMember: 'FREE', value: 0 },
 ];
 
@@ -412,12 +418,32 @@ export default function VanguardCheckoutPage() {
                         </h3>
 
                         {PERKS.map((perk, i) => (
-                            <div key={i} className={`flex justify-between items-center py-2 ${i < PERKS.length - 1 ? 'border-b border-slate-200' : ''}`}>
-                                <div className="text-xs font-medium text-slate-700">{perk.name}</div>
-                                <div className={`font-bold text-sm ${isMemberOrExisting ? 'text-green-600' : 'text-slate-800'}`}>
-                                    {isMemberOrExisting ? perk.labelMember : perk.labelNonMember}
+                            // @ts-ignore
+                            perk.link ? (
+                                <a
+                                    key={i}
+                                    href={perk.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={`block mt-3 mb-2 p-3 bg-blue-600 rounded-xl relative overflow-hidden group hover:bg-blue-700 transition-colors shadow-lg shadow-blue-900/10`}
+                                >
+                                    <div className="relative z-10 flex justify-between items-center text-white">
+                                        <div className="text-sm font-bold pr-4">{perk.name}</div>
+                                        <div className="flex items-center gap-1 text-xs font-bold bg-white/20 px-2 py-1 rounded whitespace-nowrap group-hover:bg-white/30 transition-colors">
+                                            {isMemberOrExisting ? perk.labelMember : perk.labelNonMember}
+                                            <span className="material-symbols-outlined text-[14px]">open_in_new</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            ) : (
+                                <div key={i} className={`flex justify-between items-center py-2 ${i < PERKS.length - 1 ? 'border-b border-slate-200' : ''}`}>
+                                    <div className="text-xs font-medium text-slate-700">{perk.name}</div>
+                                    <div className={`font-bold text-sm ${isMemberOrExisting ? 'text-green-600' : 'text-slate-800'}`}>
+                                        {/* @ts-ignore */}
+                                        {isMemberOrExisting ? perk.labelMember : perk.labelNonMember}
+                                    </div>
                                 </div>
-                            </div>
+                            )
                         ))}
 
                         {!isMemberOrExisting && (
