@@ -10,8 +10,8 @@ const SERVICES = [
         id: 'us-business',
         title: 'US Business Registration',
         description: 'Go global and be open to more opportunities with this.',
-        items: [], // Removed items as requested
-        tooltip: 'Includes: LLC formation, EIN, Article of Organisation, Certificate of Organisation, US Bank account setup, Stripe Global payment, U.S. Business Address.',
+        items: [],
+        tooltip: 'Get all of these services for less than $200: LLC formation, EIN, Article of Organisation, Certificate of Organisation, US Bank account setup, Stripe Global payment, U.S. Business Address.',
         priceMember: 24.12,
         priceNonMember: 72.36,
     },
@@ -28,10 +28,19 @@ const SERVICES = [
         id: 'website-build',
         title: 'Website',
         description: 'Build a website for your business without hiring an expensive agency to build it for you.',
-        items: ['Domain Name', 'Professional Email', 'Visual Identity Design'],
-        tooltip: 'Includes: Domain Name & Professional Email, Visual Identity Design (Create an attention-grabbing Logo).',
+        items: [],
+        tooltip: 'Includes: Domain Name & Professional Email, Visual Identity Design.',
         priceMember: 100.00,
         priceNonMember: 300.00,
+    },
+    {
+        id: 'business-branding',
+        title: 'Business Branding-Be identified by that unique signature',
+        description: 'Create a unique identity for your business.',
+        items: [],
+        tooltip: 'Visual Identity Design-Full logo presentation, Letterhead design, Id card design, Business card design, Invoice design, waybill design, Logo stamp format design (All soft copies. Reach out directly if you\'d like hard copies)',
+        priceMember: 15.00,
+        priceNonMember: 30.00,
     }
 ];
 
@@ -218,6 +227,9 @@ export default function VanguardCheckoutPage() {
                                 </h3>
                                 <p className="text-xs text-slate-500 mt-1 max-w-[220px]">
                                     Full support. Earn Online. Investments. And massive service discounts.
+                                    <span className="block mt-1 text-[10px] font-bold text-blue-600">
+                                        (IF YOU ARE ALREADY A MEMBER UN-TICK HERE AND CHOOSE THE &apos;I&apos;M ALREADY A MEMBER&apos; BOX FOR MEMBERSHIP DISCOUNTS)
+                                    </span>
                                 </p>
                             </div>
                             <div className="text-right">
