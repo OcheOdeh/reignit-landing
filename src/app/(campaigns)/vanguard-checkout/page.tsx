@@ -11,7 +11,7 @@ const SERVICES = [
         title: 'US Business Registration',
         description: 'Go global and be open to more opportunities with this.',
         items: [],
-        tooltip: 'Get all of these services for less than $200: LLC formation, EIN, Article of Organisation, Certificate of Organisation, US Bank account setup, Stripe Global payment, U.S. Business Address.',
+        tooltip: 'Get all of these services for less than $200: LLC, C-Corp, S-Corp and Non-Profit Incorporation Services, EIN, Article of Organisation, Certificate of Organisation, US Bank account setup, Stripe Global payment, U.S. Business Address.',
         priceMember: 24.12,
         priceNonMember: 72.36,
     },
@@ -52,7 +52,7 @@ const AUTOPILOT_PLANS = [
 ];
 
 const AUTOPILOT_INFO = {
-    description: "Whether you want a Faceless Brand or a Personal Brand, we script, edit, and post.",
+    description: "Whether you want a Faceless Brand or a Personal Brand, we script and edit for you.",
     winReason: "Why it wins: It solves the \"I have no time\" problem instantly."
 };
 
