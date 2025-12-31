@@ -35,7 +35,7 @@ export async function POST(request: Request) {
         }
 
         // Updated Links
-        const COMMUNITY_LINK = "https://t.me/ReignitTheAIVanguard";
+        const COMMUNITY_LINK = "https://t.me/+Xc2_CgTRGy0wY2Zk";
         const ADMIN_LINK_1 = "https://t.me/kenneth_reignit";
         const ADMIN_LINK_2 = "https://t.me/codd_AI_Vanguard";
 

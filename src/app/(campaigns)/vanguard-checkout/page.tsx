@@ -26,15 +26,6 @@ const SERVICES = [
         priceNonMember: 75.00,
     },
     {
-        id: 'test-service',
-        title: 'System Integration Test (₦1,000)',
-        description: 'Temporary item to verify payment flow in NGN (Bypasses Int. restrictions).',
-        items: [],
-        tooltip: 'Select this to perform a real money test of ₦1,000.',
-        priceMember: 1000.00,
-        priceNonMember: 1000.00,
-    },
-    {
         id: 'website-build',
         title: 'Website',
         description: 'Build a website for your business without hiring an expensive agency to build it for you.',
@@ -98,10 +89,10 @@ export default function VanguardCheckoutPage() {
 
     // Flutterwave Config
     const config = {
-        public_key: 'FLWPUBK_TEST-58322558bd0d1d0b282ebbf2ae5eab15-X',
+        public_key: 'FLWPUBK-1d2ecceb9d6e212459f3940feb53f444-X',
         tx_ref: Date.now().toString(),
         amount: total,
-        currency: selectedServices.includes('test-service') ? 'NGN' : 'USD', // Use NGN for test service
+        currency: 'USD',
         payment_options: 'card,mobilemoney,ussd',
         customer: {
             email: email,
