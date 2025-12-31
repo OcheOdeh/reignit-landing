@@ -61,7 +61,7 @@ const PERKS = [
     { name: 'How to Prompt', labelNonMember: 'free', labelMember: 'FREE', value: 0 },
     { name: 'AI Tool uses', labelNonMember: 'free', labelMember: 'FREE', value: 0 },
     { name: 'Spend less on AI usage', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
-    { name: 'US Virtual Card/Bank account Setup + $2 Free Credit', labelNonMember: 'free', labelMember: 'FREE', value: 0 },
+    { name: 'US Virtual Card/Bank account Setup + $2 Free Credit', labelNonMember: 'Not Available', labelMember: 'FREE', value: 0 },
     { name: 'Online Monetization Handbook', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
     { name: 'Niche-to-Context Pathway Handbook', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
     {
