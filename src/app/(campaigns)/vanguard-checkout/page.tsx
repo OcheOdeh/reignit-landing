@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 
 // Pricing Constants
 const COMMUNITY_PRICE = 34.46;
@@ -12,17 +13,17 @@ const SERVICES = [
         description: 'Go global and be open to more opportunities with this.',
         items: [],
         tooltip: 'Get all of these services for less than $200: LLC, C-Corp, S-Corp and Non-Profit Incorporation Services, EIN, Article of Organisation, Certificate of Organisation, US Bank account setup, Stripe Global payment, U.S. Business Address.',
-        priceMember: 24.12,
-        priceNonMember: 72.36,
+        priceMember: 30.00,
+        priceNonMember: 90.00,
     },
     {
         id: 'nigeria-business',
         title: 'Nigeria Business Registration-Avoid excess taxes and be secured',
         description: 'Get your business registered and compliant.',
         items: [],
-        tooltip: 'Includes: Certificate of Incorporation, Memorandum & Article of Association (Memart), Shareholder Structure, SCUML Certificate, TIN Certificate.',
-        priceMember: 20.00,
-        priceNonMember: 50.00,
+        tooltip: 'Includes: Certificate of Incorporation, Memorandum & Article of Association (Memart), Shareholder Structure, SCUML Certificate, TIN Certificate. Set up Merchant prepayment for your business',
+        priceMember: 25.00,
+        priceNonMember: 75.00,
     },
     {
         id: 'website-build',
@@ -63,6 +64,7 @@ const PERKS = [
     { name: 'Spend less on AI usage', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
     { name: 'US Virtual Card/Bank account Setup + $2 Free Credit', labelNonMember: 'Not Available', labelMember: 'FREE', value: 0 },
     { name: 'Online Monetization Handbook V.1', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
+    { name: 'Nigeria Tax System and how to be safe Handbook', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
     { name: 'Niche-to-Context Pathway Handbook', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
     {
         name: 'Building and Investing in Startup partnership program',
@@ -83,6 +85,28 @@ export default function VanguardCheckoutPage() {
     const [total, setTotal] = useState(COMMUNITY_PRICE);
     const [savingsText, setSavingsText] = useState("");
     const [savingsClass, setSavingsClass] = useState("");
+    const [email, setEmail] = useState(""); // Email state
+
+    // Flutterwave Hook
+    const config = {
+        public_key: 'FLWPUBK-1d2ecceb9d6e212459f3940feb53f444-X',
+        tx_ref: Date.now().toString(),
+        amount: total,
+        currency: 'USD',
+        payment_options: 'card,mobilemoney,ussd',
+        customer: {
+            email: email,
+            phone_number: '',
+            name: 'Reignit User',
+        },
+        customizations: {
+            title: 'Reignit AI Vanguard',
+            description: 'Payment for services',
+            logo: 'https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg',
+        },
+    };
+
+    const handleFlutterwavePayment = useFlutterwave(config);
 
     const toggleService = (id: string) => {
         if (selectedServices.includes(id)) {
@@ -503,6 +527,16 @@ export default function VanguardCheckoutPage() {
             <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-center pointer-events-none">
                 <div className="w-full max-w-lg bg-white p-4 border-t border-slate-200 shadow-[0_-5px_20px_-5px_rgba(0,0,0,0.1)] pointer-events-auto">
                     <div className="flex flex-col gap-3">
+                        {/* Email Input */}
+                        <div className="w-full">
+                            <input
+                                type="email"
+                                placeholder="Enter your email to receive receipt"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="w-full p-3 rounded-xl border border-slate-300 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none text-sm"
+                            />
+                        </div>
 
                         <div className="flex justify-between items-end px-1">
                             <div className="flex-col">
@@ -516,11 +550,47 @@ export default function VanguardCheckoutPage() {
                             </div>
                         </div>
 
-                        <a href="https://stripe.com" target="_blank" className="relative overflow-hidden w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-800 text-white font-bold h-14 rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-blue-600/30 group">
+                        <button
+                            onClick={() => {
+                                if (email) {
+                                    handleFlutterwavePayment({
+                                        callback: async (response) => {
+                                            console.log("Payment Response:", response);
+
+                                            if (response.status === "successful" || response.status === "completed") {
+                                                // Trigger automated email
+                                                try {
+                                                    await fetch('/api/payment-success', {
+                                                        method: 'POST',
+                                                        headers: { 'Content-Type': 'application/json' },
+                                                        body: JSON.stringify({
+                                                            email: email,
+                                                            amount: total,
+                                                            name: response.customer.name || 'Valued Member',
+                                                            transaction_id: response.transaction_id
+                                                        })
+                                                    });
+                                                    alert("Payment Successful! Please check your email for the Community Link.");
+                                                } catch (err) {
+                                                    console.error("Failed to send email:", err);
+                                                    alert("Payment Successful, but email sending failed. Please contact admin.");
+                                                }
+                                            }
+
+                                            closePaymentModal();
+                                        },
+                                        onClose: () => { },
+                                    });
+                                } else {
+                                    alert("Please enter your email address provided.");
+                                }
+                            }}
+                            className="relative overflow-hidden w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-800 text-white font-bold h-14 rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-blue-600/30 group disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
                             <span className="relative z-10 text-lg">Click to Pay</span>
                             <span className="material-symbols-outlined relative z-10 text-xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
                             <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent z-0"></div>
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>

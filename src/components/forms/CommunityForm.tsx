@@ -116,7 +116,7 @@ export default function CommunityForm({ embedded = false }: CommunityFormProps) 
                     <h2 className="text-2xl font-display font-bold text-white mb-2">Join the Community</h2>
                     <p className="text-gray-400 mb-6">Get real-time updates, signals, and community support directly on Telegram.</p>
                     <a
-                        href="https://t.me/ReignitTheAIVanguard"
+                        href="https://tally.so/r/rjBZKX"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="block w-full bg-[#0088cc] text-white font-display font-bold uppercase py-4 rounded-lg hover:shadow-[0_0_20px_rgba(0,136,204,0.4)] transition-all transform hover:scale-[1.02]"
