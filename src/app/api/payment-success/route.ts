@@ -8,11 +8,38 @@ export async function POST(request: Request) {
         const body = await request.json();
         const { email, amount, name, transaction_id } = body;
 
+        // 1. Verify Transaction with Flutterwave
+        const flwResponse = await fetch(`https://api.flutterwave.com/v3/transactions/${transaction_id}/verify`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${process.env.FLUTTERWAVE_SECRET_KEY}`
+            }
+        });
+
+        const flwData = await flwResponse.json();
+
+        if (flwData.status !== 'success') {
+            return NextResponse.json({ error: 'Transaction verification failed' }, { status: 400 });
+        }
+
+        const transaction = flwData.data;
+
+        // 2. Validate Payment Details
+        if (
+            transaction.status !== "successful" ||
+            transaction.currency !== "USD" ||
+            transaction.amount < amount
+        ) {
+            return NextResponse.json({ error: 'Invalid transaction details' }, { status: 400 });
+        }
+
         // Updated Links
         const COMMUNITY_LINK = "https://t.me/ReignitTheAIVanguard";
         const ADMIN_LINK_1 = "https://t.me/kenneth_reignit";
         const ADMIN_LINK_2 = "https://t.me/codd_AI_Vanguard";
 
+        // 3. Send Email
         const { data, error } = await resend.emails.send({
             from: 'Reignit AI Vanguard <noreply@reignitinc.com>', // Ensure this domain is verified in Resend
             to: [email],

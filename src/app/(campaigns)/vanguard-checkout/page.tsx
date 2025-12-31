@@ -26,6 +26,15 @@ const SERVICES = [
         priceNonMember: 75.00,
     },
     {
+        id: 'test-service',
+        title: 'System Integration Test (₦1,000)',
+        description: 'Temporary item to verify payment flow in NGN (Bypasses Int. restrictions).',
+        items: [],
+        tooltip: 'Select this to perform a real money test of ₦1,000.',
+        priceMember: 1000.00,
+        priceNonMember: 1000.00,
+    },
+    {
         id: 'website-build',
         title: 'Website',
         description: 'Build a website for your business without hiring an expensive agency to build it for you.',
@@ -87,21 +96,21 @@ export default function VanguardCheckoutPage() {
     const [savingsClass, setSavingsClass] = useState("");
     const [email, setEmail] = useState(""); // Email state
 
-    // Flutterwave Hook
+    // Flutterwave Config
     const config = {
-        public_key: 'FLWPUBK-1d2ecceb9d6e212459f3940feb53f444-X',
+        public_key: 'FLWPUBK_TEST-58322558bd0d1d0b282ebbf2ae5eab15-X',
         tx_ref: Date.now().toString(),
         amount: total,
-        currency: 'USD',
+        currency: selectedServices.includes('test-service') ? 'NGN' : 'USD', // Use NGN for test service
         payment_options: 'card,mobilemoney,ussd',
         customer: {
             email: email,
             phone_number: '',
-            name: 'Reignit User',
+            name: 'Valued Member',
         },
         customizations: {
-            title: 'Reignit AI Vanguard',
-            description: 'Payment for services',
+            title: 'Reignit Payment',
+            description: selectedServices.length > 0 ? selectedServices[0] : 'Membership Payment',
             logo: 'https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg',
         },
     };
