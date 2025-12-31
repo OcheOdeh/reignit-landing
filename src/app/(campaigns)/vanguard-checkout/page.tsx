@@ -62,7 +62,7 @@ const PERKS = [
     { name: 'AI Tool uses', labelNonMember: 'free', labelMember: 'FREE', value: 0 },
     { name: 'Spend less on AI usage', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
     { name: 'US Virtual Card/Bank account Setup + $2 Free Credit', labelNonMember: 'Not Available', labelMember: 'FREE', value: 0 },
-    { name: 'Online Monetization Handbook', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
+    { name: 'Online Monetization Handbook V.1', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
     { name: 'Niche-to-Context Pathway Handbook', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
     {
         name: 'Building and Investing in Startup partnership program',
@@ -79,6 +79,7 @@ export default function VanguardCheckoutPage() {
     const [isExistingMember, setIsExistingMember] = useState(false);
     const [selectedServices, setSelectedServices] = useState<string[]>([]);
     const [selectedAutopilot, setSelectedAutopilot] = useState<number | null>(null);
+    const [selectedHandbookV2, setSelectedHandbookV2] = useState(false);
     const [total, setTotal] = useState(COMMUNITY_PRICE);
     const [savingsText, setSavingsText] = useState("");
     const [savingsClass, setSavingsClass] = useState("");
@@ -141,6 +142,12 @@ export default function VanguardCheckoutPage() {
             }
         }
 
+        // 4. Handbook V.2
+        if (selectedHandbookV2) {
+            newTotal += isMemberOrExisting ? 30.00 : 90.00;
+            nonMemberTotal += 90.00;
+        }
+
         setTotal(newTotal);
 
         // Savings Display Logic
@@ -159,10 +166,13 @@ export default function VanguardCheckoutPage() {
                 const plan = AUTOPILOT_PLANS.find(p => p.id === selectedAutopilot);
                 if (plan) serviceSavings += (plan.priceNonMember - plan.priceMember);
             }
+            if (selectedHandbookV2) {
+                serviceSavings += (90.00 - 30.00);
+            }
 
             const netSavings = serviceSavings + perkValue - (isMember ? COMMUNITY_PRICE : 0);
 
-            if (isMember && newTotal === COMMUNITY_PRICE && selectedServices.length === 0 && !selectedAutopilot) {
+            if (isMember && newTotal === COMMUNITY_PRICE && selectedServices.length === 0 && !selectedAutopilot && !selectedHandbookV2) {
                 setSavingsText(`Unlocks $${perkValue} in free value`);
                 setSavingsClass("text-green-600 bg-green-50");
             } else if (netSavings > 0) {
@@ -407,6 +417,39 @@ export default function VanguardCheckoutPage() {
                                     />
                                 </label>
                             ))}
+                        </div>
+                    </div>
+
+                    {/* Online Monetization Handbook V.2 */}
+                    <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+                        <div className="flex justify-between items-start gap-3">
+                            <div className="flex-1">
+                                <h4 className="font-bold text-base text-slate-900">Online Monetization Handbook V.2</h4>
+                                <p className="text-xs text-slate-500 mt-1 mb-2 italic">
+                                    Advanced strategies for scaling your digital income.
+                                </p>
+                                <div className="flex items-center gap-2 mt-3">
+                                    <span className="text-xl font-bold text-slate-900">
+                                        ${isMemberOrExisting ? '30.00' : '90.00'}
+                                    </span>
+                                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${isMemberOrExisting ? 'bg-blue-600/10 text-blue-600' : 'bg-red-100 text-red-700'}`}>
+                                        {isMemberOrExisting ? 'Member Price' : 'Non-Member (x3)'}
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="relative flex items-center">
+                                <input
+                                    type="checkbox"
+                                    className="h-6 w-6 cursor-pointer appearance-none rounded-md border border-slate-300 transition-all checked:border-blue-600 checked:bg-blue-600"
+                                    checked={selectedHandbookV2}
+                                    onChange={() => setSelectedHandbookV2(!selectedHandbookV2)}
+                                />
+                                <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0">
+                                    {selectedHandbookV2 && (
+                                        <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                                    )}
+                                </span>
+                            </div>
                         </div>
                     </div>
 
