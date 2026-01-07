@@ -42,7 +42,22 @@ const SERVICES = [
         tooltip: 'Visual Identity Design-Full logo presentation, Letterhead design, Id card design, Business card design, Invoice design, waybill design, Logo stamp format design (All soft copies. Reach out directly if you\'d like hard copies)',
         priceMember: 15.00,
         priceNonMember: 30.00,
+    },
+    {
+        id: 'custom-brand-identity',
+        title: 'Custom Brand Identity (Request Quote)',
+        description: 'Request for your custom videos/pictures for personal, promotional and business purposes. Members get massive discounts.',
+        items: [],
+        tooltip: 'Custom video and picture production tailored to your specific needs.',
+        priceMember: 0,
+        priceNonMember: 0,
     }
+];
+
+const US_PACKAGES = [
+    { id: 1, name: 'New Mexico (Budget Option)', price: 162.00 },
+    { id: 2, name: 'Wyoming (Standard Option)', price: 214.00 },
+    { id: 3, name: 'Delaware (Premium Option)', price: 253.00 },
 ];
 
 const AUTOPILOT_PLANS = [
@@ -53,14 +68,16 @@ const AUTOPILOT_PLANS = [
 ];
 
 const AUTOPILOT_INFO = {
-    description: "Whether you want a Faceless Brand or a Personal Brand, we script and edit for you.",
-    winReason: "Why it wins: It solves the \"I have no time\" problem instantly."
+    description: "Our Digital Hands script, edit, and deliver premium stock footage so you never have to be on camera.",
+    winReason: "Why it wins: It solves the \"I have no time to film\" problem instantly."
 };
 
 const PERKS = [
     { name: 'UK/US TikTok Account (1k-5k followers)', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
-    { name: 'How to Prompt', labelNonMember: 'free', labelMember: 'FREE', value: 0 },
+    { name: 'How to Prompt(Prompt Engineering)', labelNonMember: 'free', labelMember: 'FREE', value: 0 },
     { name: 'AI Tool uses', labelNonMember: 'free', labelMember: 'FREE', value: 0 },
+    { name: 'AI Automation and Agents', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
+    { name: 'Answer & Generative Engine Optimisation', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
     { name: 'Spend less on AI usage', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
     { name: 'US Virtual Card/Bank account Setup + $2 Free Credit', labelNonMember: 'Not Available', labelMember: 'FREE', value: 0 },
     { name: 'Online Monetization Handbook V.1', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
@@ -81,6 +98,7 @@ export default function VanguardCheckoutPage() {
     const [isExistingMember, setIsExistingMember] = useState(false);
     const [selectedServices, setSelectedServices] = useState<string[]>([]);
     const [selectedAutopilot, setSelectedAutopilot] = useState<number | null>(null);
+    const [selectedUSPackage, setSelectedUSPackage] = useState<number | null>(null);
     const [selectedHandbookV2, setSelectedHandbookV2] = useState(false);
     const [total, setTotal] = useState(COMMUNITY_PRICE);
     const [savingsText, setSavingsText] = useState("");
@@ -166,7 +184,16 @@ export default function VanguardCheckoutPage() {
             }
         }
 
-        // 4. Handbook V.2
+        // 4. US Packages
+        if (selectedUSPackage) {
+            const pkg = US_PACKAGES.find(p => p.id === selectedUSPackage);
+            if (pkg) {
+                newTotal += pkg.price;
+                nonMemberTotal += pkg.price;
+            }
+        }
+
+        // 5. Handbook V.2
         if (selectedHandbookV2) {
             newTotal += isMemberOrExisting ? 30.00 : 90.00;
             nonMemberTotal += 90.00;
@@ -196,7 +223,7 @@ export default function VanguardCheckoutPage() {
 
             const netSavings = serviceSavings + perkValue - (isMember ? COMMUNITY_PRICE : 0);
 
-            if (isMember && newTotal === COMMUNITY_PRICE && selectedServices.length === 0 && !selectedAutopilot && !selectedHandbookV2) {
+            if (isMember && newTotal === COMMUNITY_PRICE && selectedServices.length === 0 && !selectedAutopilot && !selectedHandbookV2 && !selectedUSPackage) {
                 setSavingsText(`Unlocks $${perkValue} in free value`);
                 setSavingsClass("text-green-600 bg-green-50");
             } else if (netSavings > 0) {
@@ -211,7 +238,7 @@ export default function VanguardCheckoutPage() {
             setSavingsClass("text-red-500 bg-red-50");
         }
 
-    }, [isMember, isExistingMember, selectedServices, selectedAutopilot, isMemberOrExisting]);
+    }, [isMember, isExistingMember, selectedServices, selectedAutopilot, selectedUSPackage, selectedHandbookV2, isMemberOrExisting]);
 
     return (
         <div className="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-display pb-40">
@@ -319,7 +346,7 @@ export default function VanguardCheckoutPage() {
                                 </span>
                             </div>
                             <span className="text-xs font-semibold text-slate-500 group-hover:text-blue-600 select-none">
-                                I'm already a member
+                                I&apos;m already a member
                             </span>
                         </label>
                     </div>
@@ -343,60 +370,115 @@ export default function VanguardCheckoutPage() {
 
                     {/* Services Loop */}
                     {SERVICES.map(service => (
-                        <div key={service.id} className="service-card group rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-all hover:border-blue-600 hover:shadow-md">
-                            <div className="flex justify-between items-start gap-3">
-                                <div className="flex-1">
-                                    <div className="flex items-center">
-                                        <h4 className="font-bold text-base text-slate-900">{service.title}</h4>
-                                        {/* @ts-ignore */}
-                                        {service.tooltip && (
-                                            <div className="group relative ml-2 inline-flex items-center">
-                                                <span className="material-symbols-outlined text-slate-400 text-[18px] cursor-help">info</span>
-                                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-slate-900 text-white text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none leading-relaxed">
-                                                    {/* @ts-ignore */}
-                                                    {service.tooltip}
-                                                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-900"></div>
+                        <React.Fragment key={service.id}>
+                            <div className="service-card group rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-all hover:border-blue-600 hover:shadow-md">
+                                <div className="flex justify-between items-start gap-3">
+                                    <div className="flex-1">
+                                        <div className="flex items-center">
+                                            <h4 className="font-bold text-base text-slate-900">{service.title}</h4>
+                                            {/* @ts-ignore */}
+                                            {service.tooltip && (
+                                                <div className="group relative ml-2 inline-flex items-center">
+                                                    <span className="material-symbols-outlined text-slate-400 text-[18px] cursor-help">info</span>
+                                                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-slate-900 text-white text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none leading-relaxed">
+                                                        {/* @ts-ignore */}
+                                                        {service.tooltip}
+                                                        <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-900"></div>
+                                                    </div>
                                                 </div>
+                                            )}
+                                        </div>
+                                        {/* @ts-ignore */}
+                                        {service.description && (
+                                            <p className="text-xs text-slate-500 mt-1 mb-2 italic">
+                                                {/* @ts-ignore */}
+                                                {service.description}
+                                            </p>
+                                        )}
+                                        <ul className="mt-2 space-y-1">
+                                            {service.items.map((item, i) => (
+                                                <li key={i} className="text-xs text-slate-500 flex items-center gap-1.5"><span className="w-1 h-1 bg-slate-400 rounded-full"></span>{item}</li>
+                                            ))}
+                                        </ul>
+
+                                        {service.priceMember === 0 ? (
+                                            <div className="mt-3">
+                                                <span className="text-sm font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-lg">
+                                                    Request Quote
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            <div className="flex items-center gap-2 mt-3">
+                                                <span className="text-xl font-bold text-slate-900">
+                                                    ${isMemberOrExisting ? service.priceMember : service.priceNonMember}
+                                                </span>
+                                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${isMemberOrExisting ? 'bg-blue-600/10 text-blue-600' : 'bg-red-100 text-red-700'}`}>
+                                                    {isMemberOrExisting ? 'Member Price' : 'Non-Member (x3)'}
+                                                </span>
                                             </div>
                                         )}
                                     </div>
-                                    {/* @ts-ignore */}
-                                    {service.description && (
-                                        <p className="text-xs text-slate-500 mt-1 mb-2 italic">
-                                            {/* @ts-ignore */}
-                                            {service.description}
-                                        </p>
-                                    )}
-                                    <ul className="mt-2 space-y-1">
-                                        {service.items.map((item, i) => (
-                                            <li key={i} className="text-xs text-slate-500 flex items-center gap-1.5"><span className="w-1 h-1 bg-slate-400 rounded-full"></span>{item}</li>
-                                        ))}
-                                    </ul>
-
-                                    <div className="flex items-center gap-2 mt-3">
-                                        <span className="text-xl font-bold text-slate-900">
-                                            ${isMemberOrExisting ? service.priceMember : service.priceNonMember}
-                                        </span>
-                                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${isMemberOrExisting ? 'bg-blue-600/10 text-blue-600' : 'bg-red-100 text-red-700'}`}>
-                                            {isMemberOrExisting ? 'Member Price' : 'Non-Member (x3)'}
+                                    <div className="relative flex items-center">
+                                        <input
+                                            type="checkbox"
+                                            className="h-6 w-6 cursor-pointer appearance-none rounded-md border border-slate-300 transition-all checked:border-blue-600 checked:bg-blue-600"
+                                            checked={selectedServices.includes(service.id)}
+                                            onChange={() => toggleService(service.id)}
+                                        />
+                                        <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0">
+                                            {selectedServices.includes(service.id) && (
+                                                <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                                            )}
                                         </span>
                                     </div>
                                 </div>
-                                <div className="relative flex items-center">
-                                    <input
-                                        type="checkbox"
-                                        className="h-6 w-6 cursor-pointer appearance-none rounded-md border border-slate-300 transition-all checked:border-blue-600 checked:bg-blue-600"
-                                        checked={selectedServices.includes(service.id)}
-                                        onChange={() => toggleService(service.id)}
-                                    />
-                                    <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0">
-                                        {selectedServices.includes(service.id) && (
-                                            <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
-                                        )}
-                                    </span>
-                                </div>
                             </div>
-                        </div>
+
+                            {/* Inject US Packages Section after Nigeria Business (id: nigeria-business) */}
+                            {service.id === 'nigeria-business' && (
+                                <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+                                    <h3 className="font-bold text-sm text-slate-900 mb-4 flex items-center gap-2">
+                                        <span className="material-symbols-outlined text-blue-600">flag</span>
+                                        US all inclusive Packages-Returning from completion of FORM 3C, please choose your package
+                                        <div className="group relative ml-1 inline-flex items-center">
+                                            <span className="material-symbols-outlined text-slate-400 text-[18px] cursor-help">info</span>
+                                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-slate-900 text-white text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none leading-relaxed">
+                                                <p className="mb-2">please choose this if you have completed FORM 3C. DO NOT choose if you have not completed FORM 3C</p>
+                                                <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-900"></div>
+                                            </div>
+                                        </div>
+                                    </h3>
+                                    <div className="space-y-3">
+                                        {US_PACKAGES.map(pkg => (
+                                            <label
+                                                key={pkg.id}
+                                                className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-all ${selectedUSPackage === pkg.id ? 'bg-blue-50 border-blue-600 ring-1 ring-blue-600' : 'border-slate-100 hover:bg-slate-50 hover:border-blue-600/30'}`}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    setSelectedUSPackage(selectedUSPackage === pkg.id ? null : pkg.id);
+                                                }}
+                                            >
+                                                <div>
+                                                    <div className="font-bold text-sm text-slate-800">{pkg.name}</div>
+                                                    <div className="flex items-center gap-2 mt-1">
+                                                        <span className="text-sm font-bold text-slate-600">
+                                                            ${pkg.price}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <input
+                                                    type="radio"
+                                                    name="us-package"
+                                                    className="h-5 w-5 text-blue-600 border-slate-300 focus:ring-blue-600"
+                                                    checked={selectedUSPackage === pkg.id}
+                                                    onChange={() => setSelectedUSPackage(pkg.id)}
+                                                />
+                                            </label>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </React.Fragment>
                     ))}
 
                     {/* Autopilot Section */}
@@ -541,8 +623,10 @@ export default function VanguardCheckoutPage() {
                         <div className="flex justify-between items-end px-1">
                             <div className="flex-col">
                                 <span className="text-xs text-slate-400 font-medium">Total Due Now</span>
-                                <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full mt-1 table ${savingsClass}`}>
-                                    {savingsText}
+                                <span className="flex items-center gap-1">
+                                    <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full mt-1 table ${savingsClass}`}>
+                                        {savingsText}
+                                    </span>
                                 </span>
                             </div>
                             <div className="text-right">
