@@ -285,7 +285,7 @@ export default function VanguardCheckoutPage() {
         const publicKey = process.env.NEXT_PUBLIC_SQUAD_PUBLIC_KEY;
         if (!publicKey) {
             console.error("Missing NEXT_PUBLIC_SQUAD_PUBLIC_KEY");
-            alert("Payment configuration error: Missing Public Key.");
+            alert("Payment error: Public Key missing (v2). Please check keys.");
             return;
         }
 
