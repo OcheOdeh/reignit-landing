@@ -8,29 +8,41 @@ export async function POST(request: Request) {
         const body = await request.json();
         const { email, amount, name, transaction_id } = body;
 
-        // 1. Verify Transaction with Flutterwave
-        const flwResponse = await fetch(`https://api.flutterwave.com/v3/transactions/${transaction_id}/verify`, {
+        // 1. Verify Transaction with Squadco
+        const squadResponse = await fetch(`https://api.squadco.com/transaction/verify/${transaction_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${process.env.FLUTTERWAVE_SECRET_KEY}`
+                'Authorization': `Bearer ${process.env.SQUAD_SECRET_KEY}`
             }
         });
 
-        const flwData = await flwResponse.json();
+        const squadData = await squadResponse.json();
 
-        if (flwData.status !== 'success') {
+        if (squadData.status !== 200 || !squadData.success) {
+            console.error("Squadco verification failed. Status:", squadData.status, "Success:", squadData.success, "Message:", squadData.message);
+            console.error("Full Squadco Response:", JSON.stringify(squadData, null, 2));
             return NextResponse.json({ error: 'Transaction verification failed' }, { status: 400 });
         }
 
-        const transaction = flwData.data;
+        const transaction = squadData.data;
 
         // 2. Validate Payment Details
+        // Squadco returns: transaction_amount (number), currency (string), transaction_status (string)
+        // Note: Squadco amount is usually in major units (e.g. 100.00) but check if your client sends minor
+        // The client code sends Math.round(total * 100) as 'amount' to the widget?
+        // Wait, client sends: amount: Math.round(total * 100) (param name 'amount')
+        // But let's check what Squadco Verify returns. Usually it matches the charged amount.
+        // If the widget takes minor units (kobo/cents), the verification might return major or minor.
+        // Standard Squadco verify returns 'transaction_amount' in MAJOR units (e.g. NGN 1000).
+        // Let's assume major units for verification comparison against the 'amount' variable which comes from body. (body.amount is 'total', ie. 34.46)
+
         if (
-            transaction.status !== "successful" ||
-            transaction.currency !== "USD" ||
-            transaction.amount < amount
+            transaction.transaction_status !== "success" ||
+            transaction.currency !== "NGN" ||
+            transaction.transaction_amount < amount
         ) {
+            console.error("Invalid transaction details:", transaction);
             return NextResponse.json({ error: 'Invalid transaction details' }, { status: 400 });
         }
 

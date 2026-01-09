@@ -39,8 +39,8 @@ export default function RootLayout({
       <body className={`${inter.variable} ${plusJakartaSans.variable} font-sans`}>
         {children}
         <AssessmentButton />
-        <Analytics />
-        <SpeedInsights />
+        {/* <Analytics /> */}
+        {/* <SpeedInsights /> */}
       </body>
     </html>
   );

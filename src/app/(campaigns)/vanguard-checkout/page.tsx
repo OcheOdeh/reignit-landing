@@ -1,10 +1,11 @@
 "use client";
 
+
 import React, { useState, useEffect } from 'react';
-import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 
 // Pricing Constants
 const COMMUNITY_PRICE = 34.46;
+const EXCHANGE_RATE = 1500;
 
 const SERVICES = [
     {
@@ -104,27 +105,58 @@ export default function VanguardCheckoutPage() {
     const [savingsText, setSavingsText] = useState("");
     const [savingsClass, setSavingsClass] = useState("");
     const [email, setEmail] = useState(""); // Email state
+    const [isSquadLoaded, setIsSquadLoaded] = useState(false);
 
-    // Flutterwave Config
-    const config = {
-        public_key: 'FLWPUBK-1d2ecceb9d6e212459f3940feb53f444-X',
-        tx_ref: Date.now().toString(),
-        amount: total,
-        currency: 'USD',
-        payment_options: 'card,mobilemoney,ussd',
-        customer: {
-            email: email,
-            phone_number: '',
-            name: 'Valued Member',
-        },
-        customizations: {
-            title: 'Reignit Payment',
-            description: selectedServices.length > 0 ? selectedServices[0] : 'Membership Payment',
-            logo: 'https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg',
-        },
-    };
+    useEffect(() => {
+        // 1. Check if script is already moving or loaded
+        const existingScript = document.getElementById('squad-script');
 
-    const handleFlutterwavePayment = useFlutterwave(config);
+        const checkGlobal = () => {
+            // @ts-ignore
+            if (typeof window !== 'undefined' && (window.squad || window.Squad || window.SquadPay)) {
+                console.log('Squad global detected');
+                setIsSquadLoaded(true);
+                return true;
+            }
+            return false;
+        };
+
+        if (checkGlobal()) return;
+
+        // 2. Load script if not present
+        if (!existingScript) {
+            const script = document.createElement('script');
+            script.src = 'https://checkout.squadco.com/widget/squad.min.js';
+            script.id = 'squad-script';
+            script.async = true;
+
+            script.onload = () => {
+                console.log('Squad script loaded');
+                // Poll for the global variable
+                const checkInterval = setInterval(() => {
+                    if (checkGlobal()) {
+                        clearInterval(checkInterval);
+                    }
+                }, 500);
+
+                // Safety timeout to stop polling
+                setTimeout(() => clearInterval(checkInterval), 5000);
+            };
+
+            document.body.appendChild(script);
+        } else {
+            // Script exists but global not ready? Poll.
+            const checkInterval = setInterval(() => {
+                if (checkGlobal()) {
+                    clearInterval(checkInterval);
+                }
+            }, 500);
+            setTimeout(() => clearInterval(checkInterval), 5000);
+        }
+    }, []);
+
+    // Payment Configuration
+
 
     const toggleService = (id: string) => {
         if (selectedServices.includes(id)) {
@@ -240,8 +272,93 @@ export default function VanguardCheckoutPage() {
 
     }, [isMember, isExistingMember, selectedServices, selectedAutopilot, selectedUSPackage, selectedHandbookV2, isMemberOrExisting]);
 
+    useEffect(() => {
+        console.log("VanguardCheckoutPage MOUNTED/HYDRATED");
+    }, []);
+
+    const handlePayment = () => {
+        if (!email) {
+            alert("Please enter your email address provided.");
+            return;
+        }
+
+        const publicKey = process.env.NEXT_PUBLIC_SQUAD_PUBLIC_KEY;
+        if (!publicKey) {
+            console.error("Missing NEXT_PUBLIC_SQUAD_PUBLIC_KEY");
+            alert("Payment configuration error: Missing Public Key.");
+            return;
+        }
+
+        // @ts-ignore
+        const SquadConstructor = window.squad || window.Squad || window.SquadPay;
+
+        if (typeof window !== 'undefined' && SquadConstructor) {
+            console.log("Initializing Squadco with key:", publicKey.substring(0, 10) + "...");
+
+            const paymentData = {
+                onClose: () => { console.log('Widget closed'); },
+                onLoad: () => { console.log('Widget loaded successfully'); },
+                onSuccess: async (response: any) => {
+                    console.log("Payment Successful:", response);
+
+                    // Show immediate feedback
+                    alert("Payment processing... Please check your email shortly.");
+
+                    try {
+                        await fetch('/api/payment-success', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                email: email,
+                                amount: Math.round(total * EXCHANGE_RATE), // Send amount paid in NGN
+                                name: 'Valued Member',
+                                transaction_id: response.transaction_ref || response.reference
+                            })
+                        });
+                        // alert("Payment verification email sent!"); // Optional, maybe redundant with above
+                    } catch (err) {
+                        console.error("Failed to track payment:", err);
+                        // Don't scare the user if payment worked but tracking failed, or do? 
+                        // It's better to log it; they already paid.
+                    }
+                },
+                key: publicKey,
+                email: email,
+                amount: Math.round(total * EXCHANGE_RATE * 100), // Convert to NGN kobo
+                currency_code: "NGN"
+            };
+
+            try {
+                // @ts-ignore
+                const squadInstance = new SquadConstructor(paymentData);
+
+                if (typeof squadInstance.setup === 'function') {
+                    squadInstance.setup();
+                    squadInstance.open();
+                } else if (typeof squadInstance.open === 'function') {
+                    squadInstance.open();
+                } else {
+                    console.warn("Squad setup/open not found, trying function call fallback");
+                    SquadConstructor(paymentData);
+                }
+            } catch (e) {
+                console.error("Payment init error:", e);
+                // Fallback attempt
+                try {
+                    SquadConstructor(paymentData);
+                } catch (e2) {
+                    console.error("Payment fallback init error:", e2);
+                    alert("Payment system error. Please refresh and try again.");
+                }
+            }
+        } else {
+            console.error("Squad global not found");
+            alert("Payment system is initializing. Please wait a few seconds and try again.");
+        }
+    };
+
     return (
-        <div className="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-display pb-40">
+        <div className="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-display pb-40 overflow-x-hidden">
             {/* Inject Google Material Symbols */}
             <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
 
@@ -255,7 +372,7 @@ export default function VanguardCheckoutPage() {
                             <p className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">Secure Infrastructure Checkout</p>
                         </div>
                     </div>
-                    <div className="text-xs font-bold px-3 py-1 bg-green-100 text-green-700 rounded-full flex items-center gap-1">
+                    <div className="text-xs font-bold px-3 py-1 bg-green-100 text-green-700 rounded-full flex items-center gap-1 shrink-0">
                         <span className="material-symbols-outlined text-[16px]">lock</span>
                         AES-256 Secured
                     </div>
@@ -270,10 +387,10 @@ export default function VanguardCheckoutPage() {
                         Outsiders pay triple. Insiders pay cost.<br />
                         <span className="font-bold text-blue-600">Join the community to save immediately.</span>
                     </p>
-                    <div className="inline-flex items-center gap-1.5 bg-blue-50 px-3 py-1.5 rounded-full border border-blue-100 mt-1 mx-auto">
+                    <div className="inline-flex items-center gap-1.5 bg-blue-50 px-3 py-1.5 rounded-full border border-blue-100 mt-1 mx-auto text-center">
                         <span className="material-symbols-outlined text-blue-600 text-[16px]">credit_card</span>
                         <span className="text-[11px] font-bold text-blue-800">
-                            You can pay with your local card, only have the $ equivalent on your acc.
+                            You can pay with your local card.
                         </span>
                     </div>
                 </div>
@@ -380,7 +497,7 @@ export default function VanguardCheckoutPage() {
                                             {service.tooltip && (
                                                 <div className="group relative ml-2 inline-flex items-center">
                                                     <span className="material-symbols-outlined text-slate-400 text-[18px] cursor-help">info</span>
-                                                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-slate-900 text-white text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none leading-relaxed">
+                                                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 sm:w-64 p-3 bg-slate-900 text-white text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none leading-relaxed">
                                                         {/* @ts-ignore */}
                                                         {service.tooltip}
                                                         <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-900"></div>
@@ -442,7 +559,7 @@ export default function VanguardCheckoutPage() {
                                         US all inclusive Packages-Returning from completion of FORM 3C, please choose your package
                                         <div className="group relative ml-1 inline-flex items-center">
                                             <span className="material-symbols-outlined text-slate-400 text-[18px] cursor-help">info</span>
-                                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-slate-900 text-white text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none leading-relaxed">
+                                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 sm:w-64 p-3 bg-slate-900 text-white text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none leading-relaxed">
                                                 <p className="mb-2">please choose this if you have completed FORM 3C. DO NOT choose if you have not completed FORM 3C</p>
                                                 <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-900"></div>
                                             </div>
@@ -488,7 +605,7 @@ export default function VanguardCheckoutPage() {
                             Autopilot Management
                             <div className="group relative ml-1 inline-flex items-center">
                                 <span className="material-symbols-outlined text-slate-400 text-[18px] cursor-help">info</span>
-                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-slate-900 text-white text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none leading-relaxed">
+                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 sm:w-64 p-3 bg-slate-900 text-white text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none leading-relaxed">
                                     <p className="mb-2">{AUTOPILOT_INFO.description}</p>
                                     <p className="font-bold text-yellow-400">{AUTOPILOT_INFO.winReason}</p>
                                     <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-900"></div>
@@ -605,6 +722,7 @@ export default function VanguardCheckoutPage() {
                 </div>
             </main>
 
+
             {/* Footer */}
             <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-center pointer-events-none">
                 <div className="w-full max-w-lg bg-white p-4 border-t border-slate-200 shadow-[0_-5px_20px_-5px_rgba(0,0,0,0.1)] pointer-events-auto">
@@ -631,45 +749,13 @@ export default function VanguardCheckoutPage() {
                             </div>
                             <div className="text-right">
                                 <span className="text-3xl font-black text-slate-900 tracking-tighter">${total.toFixed(2)}</span>
+                                <div className="text-xs text-slate-500 font-medium">~₦{(total * EXCHANGE_RATE).toLocaleString()}</div>
                             </div>
                         </div>
 
                         <button
-                            onClick={() => {
-                                if (email) {
-                                    handleFlutterwavePayment({
-                                        callback: async (response) => {
-                                            console.log("Payment Response:", response);
-
-                                            if (response.status === "successful" || response.status === "completed") {
-                                                // Trigger automated email
-                                                try {
-                                                    await fetch('/api/payment-success', {
-                                                        method: 'POST',
-                                                        headers: { 'Content-Type': 'application/json' },
-                                                        body: JSON.stringify({
-                                                            email: email,
-                                                            amount: total,
-                                                            name: response.customer.name || 'Valued Member',
-                                                            transaction_id: response.transaction_id
-                                                        })
-                                                    });
-                                                    alert("Payment Successful! Please check your email for the Community Link.");
-                                                } catch (err) {
-                                                    console.error("Failed to send email:", err);
-                                                    alert("Payment Successful, but email sending failed. Please contact admin.");
-                                                }
-                                            }
-
-                                            closePaymentModal();
-                                        },
-                                        onClose: () => { },
-                                    });
-                                } else {
-                                    alert("Please enter your email address provided.");
-                                }
-                            }}
-                            className="relative overflow-hidden w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-800 text-white font-bold h-14 rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-blue-600/30 group disabled:opacity-50 disabled:cursor-not-allowed"
+                            onClick={handlePayment}
+                            className="relative overflow-hidden w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-800 text-white font-bold h-14 rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-blue-600/30 group disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-slate-400"
                         >
                             <span className="relative z-10 text-lg">Click to Pay</span>
                             <span className="material-symbols-outlined relative z-10 text-xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
