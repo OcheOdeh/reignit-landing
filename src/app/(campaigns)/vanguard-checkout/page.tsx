@@ -282,7 +282,8 @@ export default function VanguardCheckoutPage() {
             return;
         }
 
-        const publicKey = process.env.NEXT_PUBLIC_SQUAD_PUBLIC_KEY;
+        // Hardcoded Public Key to resolve Vercel Env Var propagation issue
+        const publicKey = "pk_10c932475b0034a2da4ea00fe17180caf9d71cab";
         if (!publicKey) {
             console.error("Missing NEXT_PUBLIC_SQUAD_PUBLIC_KEY");
             alert("Payment error: Public Key missing (v2). Please check keys.");
