@@ -361,7 +361,7 @@ export default function VanguardCheckoutPage() {
     return (
         <div className="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-display pb-40 overflow-x-hidden">
             {/* Inject Google Material Symbols */}
-            <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+            <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet" />
 
             {/* Navbar */}
             <div className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">

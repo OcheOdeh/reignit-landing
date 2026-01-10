@@ -49,11 +49,11 @@ export async function POST(request: Request) {
         // Updated Links
         const COMMUNITY_LINK = "https://t.me/+Xc2_CgTRGy0wY2Zk";
         const ADMIN_LINK_1 = "https://t.me/kenneth_reignit";
-        const ADMIN_LINK_2 = "https://t.me/codd_AI_Vanguard";
+        const ADMIN_LINK_2 = "https://t.me/Codd_AIVanguard";
 
         // 3. Send Email
         const { data, error } = await resend.emails.send({
-            from: 'Reignit AI Vanguard <noreply@reignitinc.com>', // Ensure this domain is verified in Resend
+            from: 'Reignit AI Vanguard <noreply@reignitinc.com>',
             to: [email],
             subject: 'Welcome to Reignit AI Vanguard - Access Details',
             html: `

@@ -5,6 +5,7 @@ import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import AssessmentButton from '../components/ui/AssessmentButton';
+import ServiceRequestButton from '../components/ui/ServiceRequestButton';
 
 
 const inter = Inter({
@@ -36,9 +37,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block" />
+      </head>
       <body className={`${inter.variable} ${plusJakartaSans.variable} font-sans`}>
         {children}
         <AssessmentButton />
+        <ServiceRequestButton />
         {/* <Analytics /> */}
         {/* <SpeedInsights /> */}
       </body>
