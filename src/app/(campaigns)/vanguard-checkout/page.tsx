@@ -2,6 +2,7 @@
 
 
 import React, { useState, useEffect } from 'react';
+import Script from 'next/script';
 
 // Pricing Constants
 const COMMUNITY_PRICE = 34.46;
@@ -107,53 +108,7 @@ export default function VanguardCheckoutPage() {
     const [email, setEmail] = useState(""); // Email state
     const [isSquadLoaded, setIsSquadLoaded] = useState(false);
 
-    useEffect(() => {
-        // 1. Check if script is already moving or loaded
-        const existingScript = document.getElementById('squad-script');
-
-        const checkGlobal = () => {
-            // @ts-ignore
-            if (typeof window !== 'undefined' && (window.squad || window.Squad || window.SquadPay)) {
-                console.log('Squad global detected');
-                setIsSquadLoaded(true);
-                return true;
-            }
-            return false;
-        };
-
-        if (checkGlobal()) return;
-
-        // 2. Load script if not present
-        if (!existingScript) {
-            const script = document.createElement('script');
-            script.src = 'https://checkout.squadco.com/widget/squad.min.js';
-            script.id = 'squad-script';
-            script.async = true;
-
-            script.onload = () => {
-                console.log('Squad script loaded');
-                // Poll for the global variable
-                const checkInterval = setInterval(() => {
-                    if (checkGlobal()) {
-                        clearInterval(checkInterval);
-                    }
-                }, 500);
-
-                // Safety timeout to stop polling
-                setTimeout(() => clearInterval(checkInterval), 5000);
-            };
-
-            document.body.appendChild(script);
-        } else {
-            // Script exists but global not ready? Poll.
-            const checkInterval = setInterval(() => {
-                if (checkGlobal()) {
-                    clearInterval(checkInterval);
-                }
-            }, 500);
-            setTimeout(() => clearInterval(checkInterval), 5000);
-        }
-    }, []);
+    // Script is now handled by next/script below
 
     // Payment Configuration
 
@@ -277,6 +232,11 @@ export default function VanguardCheckoutPage() {
     }, []);
 
     const handlePayment = () => {
+        if (!isSquadLoaded) {
+            alert("Payment system is still loading. Please check your internet connection.");
+            return;
+        }
+
         if (!email) {
             alert("Please enter your email address provided.");
             return;
@@ -360,6 +320,16 @@ export default function VanguardCheckoutPage() {
 
     return (
         <div className="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-display pb-40 overflow-x-hidden">
+            {/* Squadco Payment Script */}
+            <Script
+                src="https://checkout.squadco.com/widget/squad.min.js"
+                strategy="lazyOnload"
+                onLoad={() => {
+                    console.log('Squad script loaded via next/script');
+                    setIsSquadLoaded(true);
+                }}
+            />
+
             {/* Inject Google Material Symbols */}
             <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet" />
 
@@ -756,10 +726,20 @@ export default function VanguardCheckoutPage() {
 
                         <button
                             onClick={handlePayment}
-                            className="relative overflow-hidden w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-800 text-white font-bold h-14 rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-blue-600/30 group disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-slate-400"
+                            disabled={!isSquadLoaded}
+                            className="relative overflow-hidden w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-800 text-white font-bold h-14 rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-blue-600/30 group disabled:opacity-70 disabled:cursor-not-allowed disabled:bg-slate-400"
                         >
-                            <span className="relative z-10 text-lg">Click to Pay</span>
-                            <span className="material-symbols-outlined relative z-10 text-xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                            {isSquadLoaded ? (
+                                <>
+                                    <span className="relative z-10 text-lg">Click to Pay</span>
+                                    <span className="material-symbols-outlined relative z-10 text-xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                </>
+                            ) : (
+                                <>
+                                    <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                                    <span className="relative z-10 text-lg">Loading Secure Payment...</span>
+                                </>
+                            )}
                             <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent z-0"></div>
                         </button>
                     </div>
