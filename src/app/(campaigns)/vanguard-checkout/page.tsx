@@ -321,12 +321,17 @@ export default function VanguardCheckoutPage() {
     return (
         <div className="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-display pb-40 overflow-x-hidden">
             {/* Squadco Payment Script */}
+            {/* Squadco Payment Script - Optimized for faster loading */}
             <Script
                 src="https://checkout.squadco.com/widget/squad.min.js"
-                strategy="lazyOnload"
+                strategy="afterInteractive"
                 onLoad={() => {
-                    console.log('Squad script loaded via next/script');
+                    console.log('Squad script loaded successfully');
                     setIsSquadLoaded(true);
+                }}
+                onError={(e) => {
+                    console.error('Squad script failed to load:', e);
+                    alert("Payment system failed to load. Please check your connection or disable ad-blockers and refresh.");
                 }}
             />
 
