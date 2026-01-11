@@ -206,13 +206,13 @@ const Hero: React.FC<HeroProps> = ({ onScrollDown }) => {
         </motion.div>
 
         <div className="flex flex-wrap justify-center gap-6">
-          <Link href="/agency" className="px-8 py-3 rounded-full border border-gray-600 bg-black/50 text-white font-display font-bold uppercase tracking-wider hover:border-neon-green hover:text-neon-green hover:shadow-[0_0_15px_rgba(57,255,20,0.3)] transition-all transform hover:scale-105 backdrop-blur-sm">
+          <Link href="/agency" className="px-8 py-3 rounded-full border-2 border-gray-600 bg-black/50 text-white font-display font-bold uppercase tracking-wider shadow-[0_4px_0_rgba(75,85,99,1)] hover:border-neon-green hover:text-neon-green hover:shadow-[0_4px_0_rgba(57,255,20,1)] active:translate-y-[2px] active:shadow-none transition-all transform backdrop-blur-sm">
             Agency
           </Link>
-          <Link href="/toolkit" className="px-8 py-3 rounded-full border border-gray-600 bg-black/50 text-white font-display font-bold uppercase tracking-wider hover:border-neon-purple hover:text-neon-purple hover:shadow-[0_0_15px_rgba(188,19,254,0.3)] transition-all transform hover:scale-105 backdrop-blur-sm">
+          <Link href="/toolkit" className="px-8 py-3 rounded-full border-2 border-gray-600 bg-black/50 text-white font-display font-bold uppercase tracking-wider shadow-[0_4px_0_rgba(75,85,99,1)] hover:border-neon-purple hover:text-neon-purple hover:shadow-[0_4px_0_rgba(188,19,254,1)] active:translate-y-[2px] active:shadow-none transition-all transform backdrop-blur-sm">
             Toolkit
           </Link>
-          <Link href="/community" className="px-8 py-3 rounded-full border border-gray-600 bg-black/50 text-white font-display font-bold uppercase tracking-wider hover:border-blue-500 hover:text-blue-500 hover:shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-all transform hover:scale-105 backdrop-blur-sm">
+          <Link href="/community" className="px-8 py-3 rounded-full border-2 border-gray-600 bg-black/50 text-white font-display font-bold uppercase tracking-wider shadow-[0_4px_0_rgba(75,85,99,1)] hover:border-blue-500 hover:text-blue-500 hover:shadow-[0_4px_0_rgba(59,130,246,1)] active:translate-y-[2px] active:shadow-none transition-all transform backdrop-blur-sm">
             Community
           </Link>
         </div>
