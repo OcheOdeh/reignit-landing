@@ -215,6 +215,9 @@ const Hero: React.FC<HeroProps> = ({ onScrollDown }) => {
           <Link href="/community" className="px-8 py-3 rounded-full border-2 border-gray-600 bg-black/50 text-white font-display font-bold uppercase tracking-wider shadow-[0_4px_0_rgba(75,85,99,1)] hover:border-blue-500 hover:text-blue-500 hover:shadow-[0_4px_0_rgba(59,130,246,1)] active:translate-y-[2px] active:shadow-none transition-all transform backdrop-blur-sm">
             Community
           </Link>
+          <Link href="/rewriting-africa" className="px-8 py-3 rounded-full border-2 border-gray-600 bg-black/50 text-white font-display font-bold uppercase tracking-wider shadow-[0_4px_0_rgba(75,85,99,1)] hover:border-red-500 hover:text-red-500 hover:shadow-[0_4px_0_rgba(239,68,68,1)] active:translate-y-[2px] active:shadow-none transition-all transform backdrop-blur-sm">
+            Rewriting 'Africa'
+          </Link>
         </div>
       </div>
     </section>
