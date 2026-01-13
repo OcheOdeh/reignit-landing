@@ -12,13 +12,27 @@ export async function POST(request: Request) {
 
         const projectId = process.env.GCP_PROJECT_ID;
         const clientEmail = process.env.GCP_CLIENT_EMAIL;
-        const privateKey = process.env.GCP_PRIVATE_KEY?.replace(/\\n/g, '\n'); // Handle newlines in env var
+        let privateKey = process.env.GCP_PRIVATE_KEY;
         const bucketName = process.env.GCP_BUCKET_NAME;
 
         if (!projectId || !clientEmail || !privateKey || !bucketName) {
             console.error("Missing GCP credentials");
-            return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
+            return NextResponse.json({
+                error: 'Server configuration error',
+                details: {
+                    hasProjectId: !!projectId,
+                    hasClientEmail: !!clientEmail,
+                    hasPrivateKey: !!privateKey,
+                    hasBucketName: !!bucketName
+                }
+            }, { status: 500 });
         }
+
+        // SANITIZATION: Handle Vercel newlines and potential quotes
+        if (privateKey.startsWith('"') && privateKey.endsWith('"')) {
+            privateKey = privateKey.slice(1, -1);
+        }
+        privateKey = privateKey.replace(/\\n/g, '\n');
 
         const storage = new Storage({
             projectId,
@@ -41,8 +55,12 @@ export async function POST(request: Request) {
 
         return NextResponse.json({ url, publicUrl: file.publicUrl() });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error generating signed URL:', error);
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+        return NextResponse.json({
+            error: 'Internal Server Error',
+            message: error.message,
+            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+        }, { status: 500 });
     }
 }
