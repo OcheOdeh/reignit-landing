@@ -17,7 +17,7 @@ export default function TruthDonation() {
     // File Upload State
     const [uploading, setUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0); // Mock progress for now as fetch doesn't support it easily without XHR
-    const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'success' | 'completed'>('idle');
+    const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'success' | 'completed' | 'error'>('idle');
     const [fileName, setFileName] = useState("");
     const [fileUrl, setFileUrl] = useState("");
 
