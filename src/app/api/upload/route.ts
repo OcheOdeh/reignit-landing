@@ -2,6 +2,31 @@
 import { NextResponse } from 'next/server';
 import { Storage } from '@google-cloud/storage';
 
+// Helper to sanitize and format the private key
+const formatPrivateKey = (key: string) => {
+    if (!key) return '';
+
+    // 1. Remove outer quotes and handle literal newlines
+    let cleanKey = key.replace(/(^"|"$)/g, '').split(String.raw`\n`).join('\n');
+
+    // 2. If it's already multi-line, return it
+    if (cleanKey.includes('\n-----')) return cleanKey;
+
+    // 3. If it's a one-liner, attempt to fix it by inserting newlines around headers
+    cleanKey = cleanKey.replace('-----BEGIN PRIVATE KEY-----', '-----BEGIN PRIVATE KEY-----\n');
+    cleanKey = cleanKey.replace('-----END PRIVATE KEY-----', '\n-----END PRIVATE KEY-----');
+
+    // 4. If space-separated instead of newline-separated (common copy-paste issue)
+    if (!cleanKey.includes('\n')) {
+        cleanKey = cleanKey.replace(/ /g, '\n');
+        // Fix headers broken by space replacement
+        cleanKey = cleanKey.replace('-----\nBEGIN\nPRIVATE\nKEY-----', '-----BEGIN PRIVATE KEY-----');
+        cleanKey = cleanKey.replace('-----\nEND\nPRIVATE\nKEY-----', '-----END PRIVATE KEY-----');
+    }
+
+    return cleanKey;
+};
+
 export async function POST(request: Request) {
     try {
         const { filename, contentType } = await request.json();
@@ -12,33 +37,27 @@ export async function POST(request: Request) {
 
         const projectId = process.env.GCP_PROJECT_ID;
         const clientEmail = process.env.GCP_CLIENT_EMAIL;
-        let privateKey = process.env.GCP_PRIVATE_KEY;
+        const rawPrivateKey = process.env.GCP_PRIVATE_KEY;
         const bucketName = process.env.GCP_BUCKET_NAME;
 
-        if (!projectId || !clientEmail || !privateKey || !bucketName) {
+        if (!projectId || !clientEmail || !rawPrivateKey || !bucketName) {
             console.error("Missing GCP credentials");
             return NextResponse.json({
                 error: 'Server configuration error',
                 details: {
                     hasProjectId: !!projectId,
                     hasClientEmail: !!clientEmail,
-                    hasPrivateKey: !!privateKey,
+                    hasPrivateKey: !!rawPrivateKey,
                     hasBucketName: !!bucketName
                 }
             }, { status: 500 });
         }
 
-        // SANITIZATION: Handle Vercel newlines and potential quotes
-        if (privateKey.startsWith('"') && privateKey.endsWith('"')) {
-            privateKey = privateKey.slice(1, -1);
-        }
-        privateKey = privateKey.replace(/\\n/g, '\n');
-
         const storage = new Storage({
             projectId,
             credentials: {
                 client_email: clientEmail,
-                private_key: privateKey,
+                private_key: formatPrivateKey(rawPrivateKey),
             },
         });
 
