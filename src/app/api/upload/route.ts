@@ -1,6 +1,5 @@
 
 import { NextResponse } from 'next/server';
-// Trigger Vercel rebuild to load environment variables
 import { Storage } from '@google-cloud/storage';
 
 export async function POST(request: Request) {
