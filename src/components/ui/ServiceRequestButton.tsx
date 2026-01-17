@@ -8,9 +8,10 @@ export default function ServiceRequestButton() {
     const pathname = usePathname();
     const isCheckout = pathname?.includes("vanguard-checkout");
     const isInvestors = pathname?.includes("investors");
+    const isMasterclass = pathname?.includes("masterclass");
     const [isDragging, setIsDragging] = useState(false);
 
-    if (isCheckout || isInvestors) return null;
+    if (isCheckout || isInvestors || isMasterclass) return null;
 
     return (
         <motion.div

@@ -9,6 +9,7 @@ export default function AssessmentButton() {
     // Hide on checkout page or if pathname is missing
     const isCheckout = pathname?.includes("vanguard-checkout");
     const isInvestors = pathname?.includes("investors");
+    const isMasterclass = pathname?.includes("masterclass");
 
     // Ref for constraints (optional, but keeps it within window if needed)
     const constraintsRef = useRef(null);
@@ -16,7 +17,7 @@ export default function AssessmentButton() {
     // State to track if we are dragging vs clicking
     const [isDragging, setIsDragging] = useState(false);
 
-    if (isCheckout || isInvestors) return null;
+    if (isCheckout || isInvestors || isMasterclass) return null;
 
     return (
         <>
