@@ -45,7 +45,7 @@ Object.entries(COURSE_CONTENT).forEach(([module, lessons]) => {
 
 const LESSON_DETAILS: Record<string, { video: string; slides: string; desc?: string }> = {
     "Lesson 1: The 70-Year AI Rollercoaster – Origins to Explosion": {
-        "video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ", // Replace with actual URL
+        "video": "https://youtu.be/3wr2DqeOS5U",
         "slides": "#",
         "desc": "Understanding the history of AI."
     },
