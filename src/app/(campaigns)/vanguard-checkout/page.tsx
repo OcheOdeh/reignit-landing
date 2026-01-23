@@ -75,7 +75,7 @@ const AUTOPILOT_INFO = {
 };
 
 const PERKS = [
-    { name: 'UK/US TikTok Account (1k-5k followers)', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
+    { name: 'UK/US TikTok Account', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
     { name: 'How to Prompt(Prompt Engineering)', labelNonMember: 'free', labelMember: 'FREE', value: 0 },
     { name: 'AI Tool uses', labelNonMember: 'free', labelMember: 'FREE', value: 0 },
     { name: 'AI Automation and Agents', labelNonMember: 'Not Available', labelMember: 'FREE', value: 50.00 },
@@ -369,6 +369,9 @@ export default function VanguardCheckoutPage() {
                             You can pay with your local card.
                         </span>
                     </div>
+                    <p className="text-[10px] text-slate-400 mt-2 font-medium">
+                        For enquiries, contact <a href="tel:+2348137349251" className="hover:text-blue-600 transition-colors">+2348137349251</a>
+                    </p>
                 </div>
 
                 {/* Community Card */}
