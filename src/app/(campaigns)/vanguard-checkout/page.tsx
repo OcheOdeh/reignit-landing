@@ -370,7 +370,7 @@ export default function VanguardCheckoutPage() {
                         </span>
                     </div>
                     <p className="text-[10px] text-slate-400 mt-2 font-medium">
-                        For enquiries, contact <a href="tel:+2348137349251" className="hover:text-blue-600 transition-colors">+2348137349251</a>
+                        For enquiries, contact <a href="tel:+2348137349251" className="hover:text-blue-600 transition-colors">+2348137349251 (whatsapp only)</a>
                     </p>
                 </div>
 
