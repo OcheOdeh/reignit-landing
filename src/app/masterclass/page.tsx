@@ -10,28 +10,29 @@ import { CheckCircleIcon as CheckCircleOutlineIcon } from '@heroicons/react/24/o
 const COURSE_CONTENT = {
     "Module 1: The Shield (Survival, Safety & Psychology)": [
         "Lesson 1: The 70-Year AI Rollercoaster – Origins to Explosion",
-        "Lesson 2: Digital Self-Defense & Data Hygiene",
-        "Lesson 3: Psychological Firewalls (Mental Health & Guardrails)"
+        "Lesson 2: Era of the Iron man suit-AI won't replace you but the person using AI will replace you",
+        "Lesson 3: Digital Self-Defense & Data Hygiene",
+        "Lesson 4: Psychological Firewalls (Mental Health & Guardrails)"
     ],
     "Module 2: The Creator (Content, Visuals & Strategy)": [
-        "Lesson 4: The Vanguard Toolbox (Commanding the Essentials)",
-        "Lesson 5: High-Level Prompt Engineering (The Context Pathway)",
-        "Lesson 6: Visual Dominance: Hybrid AI & The Premium Stock Hack",
-        "Lesson 7: The \"Faceless\" Growth Strategy",
-        "Lesson 8: Generative Engine Optimization (GEO)"
+        "Lesson 5: The Vanguard Toolbox (Commanding the Essentials)",
+        "Lesson 6: High-Level Prompt Engineering (The Context Pathway)",
+        "Lesson 7: Visual Dominance: Hybrid AI & The Premium Stock Hack",
+        "Lesson 8: The \"Faceless\" Growth Strategy",
+        "Lesson 9: Generative Engine Optimization (GEO)"
     ],
     "Module 3: The Operator (AI Automation, Agents & Builders)": [
-        "Lesson 9: The \"Agentic\" Revolution (The Foundation)",
-        "Lesson 10: Media & Content Automation (Replacing the Creative Team)",
-        "Lesson 11: Building \"Digital Employees\" (Business & Sales)",
-        "Lesson 12: Infrastructure, Cost & Privacy",
-        "Lesson 13: The Sovereign Mind (Fine-Tuning & Localization)",
-        "Lesson 14: Computer Vision (The Eyes of AI)",
-        "Lesson 15: The Certified Vanguard (Free Education & Badges)",
-        "Lesson 16: The Vibe Coder (Building Custom Apps)"
+        "Lesson 10: The \"Agentic\" Revolution (The Foundation)",
+        "Lesson 11: Media & Content Automation (Replacing the Creative Team)",
+        "Lesson 12: Building \"Digital Employees\" (Business & Sales)",
+        "Lesson 13: Infrastructure, Cost & Privacy",
+        "Lesson 14: The Sovereign Mind (Fine-Tuning & Localization)",
+        "Lesson 15: Computer Vision (The Eyes of AI)",
+        "Lesson 16: The Certified Vanguard (Free Education & Badges)",
+        "Lesson 17: The Vibe Coder (Building Custom Apps)"
     ],
     "Module 4: The Future Vanguard (AI for Kids & Families)": [
-        "Lesson 17: AI Literacy for the Next Gen (Tools & Safety)"
+        "Lesson 18: AI Literacy for the Next Gen (Tools & Safety)"
     ]
 };
 
@@ -49,12 +50,17 @@ const LESSON_DETAILS: Record<string, { video: string; slides: string; desc?: str
         "slides": "#",
         "desc": "Understanding the history of AI."
     },
-    "Lesson 2: Digital Self-Defense & Data Hygiene": {
-        "video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "Lesson 2: Era of the Iron man suit-AI won't replace you but the person using AI will replace you": {
+        "video": "https://youtu.be/jBXdrhxxuzQ",
+        "slides": "#",
+        "desc": "AI won't replace you, but the person using AI will."
+    },
+    "Lesson 3: Digital Self-Defense & Data Hygiene": {
+        "video": "https://youtu.be/_u4wUzM-fvM",
         "slides": "/masterclass/demo-slides.pdf",
         "desc": "Learn how to protect your digital footprint."
     },
-    "Lesson 17: AI Literacy for the Next Gen (Tools & Safety)": {
+    "Lesson 18: AI Literacy for the Next Gen (Tools & Safety)": {
         "video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         "slides": "#",
         "desc": "Don't just give them an iPad. Give them a weapon"
