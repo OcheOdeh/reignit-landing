@@ -561,7 +561,7 @@ export default function VanguardCheckoutPage() {
                                 <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
                                     <h3 className="font-bold text-sm text-slate-900 mb-4 flex items-center gap-2">
                                         <span className="material-symbols-outlined text-blue-600">flag</span>
-                                        US all inclusive Packages-Returning from completion of FORM 3C, please choose your package
+                                        US all inclusive Packages-Pls fill FORM 3C-US Business form in the group before choosing your package
                                         <div className="group relative ml-1 inline-flex items-center">
                                             <span className="material-symbols-outlined text-slate-400 text-[18px] cursor-help">info</span>
                                             <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 sm:w-64 p-3 bg-slate-900 text-white text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none leading-relaxed">
