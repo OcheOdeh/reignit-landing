@@ -11,7 +11,7 @@ const EXCHANGE_RATE = 1500;
 const SERVICES = [
     {
         id: 'us-business',
-        title: 'US Business Registration',
+        title: 'US Business Registration (Agency Service Only)',
         description: 'Go global and be open to more opportunities with this.',
         items: [],
         tooltip: 'Get all of these services for less than $200: LLC, C-Corp, S-Corp and Non-Profit Incorporation Services, EIN, Article of Organisation, Certificate of Organisation, US Bank account setup, Stripe Global payment, U.S. Business Address.',
@@ -261,6 +261,32 @@ export default function VanguardCheckoutPage() {
                 onLoad: () => { console.log('Widget loaded successfully'); },
                 onSuccess: async (response: any) => {
                     console.log("Payment Successful:", response);
+
+                    // Track Purchase
+                    try {
+                        const hashedEmail = await sha256(email);
+                        // @ts-ignore
+                        window.dataLayer = window.dataLayer || [];
+                        // @ts-ignore
+                        window.dataLayer.push({
+                            event: 'purchase',
+                            transaction_id: response.transaction_ref || response.reference,
+                            value: total,
+                            currency: 'USD',
+                            user_data: {
+                                sha256_email_address: hashedEmail,
+                            },
+                            items: selectedServices.map(id => ({
+                                item_id: id,
+                                item_name: id,
+                                price: 0 // Simplified for now as pricing logic is complex
+                            })),
+                            // Basic TikTok fields
+                            tt_content_type: 'product'
+                        });
+                    } catch (err) {
+                        console.error("Tracking Failed:", err);
+                    }
 
                     // Show immediate feedback
                     alert("Payment processing... Please check your email shortly.");
@@ -755,4 +781,12 @@ export default function VanguardCheckoutPage() {
             </div>
         </div>
     );
+}
+
+// Helper for SHA-256 Hashing
+async function sha256(message: string) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
