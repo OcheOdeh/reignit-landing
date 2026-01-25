@@ -28,6 +28,7 @@ const formatPrivateKey = (key: string) => {
 };
 
 export async function POST(request: Request) {
+    console.log("Upload API invoked - forcing fresh build"); // Trigger rebuild
     try {
         const { filename, contentType } = await request.json();
 
