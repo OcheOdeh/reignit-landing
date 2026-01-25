@@ -53,7 +53,15 @@ export default function TruthDonation() {
             if (!res.ok) {
                 const errData = await res.json().catch(() => ({}));
                 console.error("Step 1 Error Details:", errData);
-                throw new Error(`Step 1 (Auth) Failed: ${res.status} - ${errData.error || res.statusText}. ${errData.details ? 'Check Env Vars.' : ''}`);
+
+                let missingVars = "";
+                if (errData.details) {
+                    missingVars = Object.keys(errData.details)
+                        .filter(key => errData.details[key] === false)
+                        .join(", ");
+                }
+
+                throw new Error(`Step 1 (Auth) Failed: ${res.status} - ${errData.error || res.statusText}. ${missingVars ? 'Missing: ' + missingVars : ''}`);
             }
             const { url, publicUrl } = await res.json();
             setFileUrl(publicUrl); // Save public URL for email
