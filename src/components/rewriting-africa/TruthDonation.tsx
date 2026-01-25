@@ -20,6 +20,7 @@ export default function TruthDonation() {
     const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'success' | 'completed' | 'error'>('idle');
     const [fileName, setFileName] = useState("");
     const [fileUrl, setFileUrl] = useState("");
+    const [errorMessage, setErrorMessage] = useState(""); // Add error message state
 
     // Metadata Form State
     const [metadata, setMetadata] = useState({
@@ -36,6 +37,7 @@ export default function TruthDonation() {
 
         setUploading(true);
         setUploadStatus('idle');
+        setErrorMessage(""); // Reset error message
         setFileName(file.name);
         setUploadProgress(10); // Start progress
 
@@ -48,7 +50,11 @@ export default function TruthDonation() {
                 body: JSON.stringify({ filename: file.name, contentType: file.type })
             });
 
-            if (!res.ok) throw new Error('Failed to get upload URL');
+            if (!res.ok) {
+                const errData = await res.json().catch(() => ({}));
+                console.error("Step 1 Error Details:", errData);
+                throw new Error(`Step 1 (Auth) Failed: ${res.status} - ${errData.error || res.statusText}. ${errData.details ? 'Check Env Vars.' : ''}`);
+            }
             const { url, publicUrl } = await res.json();
             setFileUrl(publicUrl); // Save public URL for email
             setUploadProgress(40);
@@ -60,16 +66,20 @@ export default function TruthDonation() {
                 headers: { 'Content-Type': file.type }
             });
 
-            if (!uploadRes.ok) throw new Error('Upload failed');
+            if (!uploadRes.ok) {
+                console.error("Step 2 Error Status:", uploadRes.status);
+                throw new Error(`Step 2 (Storage) Failed: ${uploadRes.status} - Potential CORS or Bucket Config issue.`);
+            }
 
             setUploadProgress(100);
             setUploadStatus('success');
             setUploading(false);
             // Do NOT auto-reset; let user fill the form
 
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
             setUploadStatus('error');
+            setErrorMessage(error.message || "Unknown error occurred");
             setUploading(false);
         }
     };
@@ -231,10 +241,15 @@ export default function TruthDonation() {
                         )}
 
                         {uploadStatus === 'error' && (
-                            <p className="mt-3 text-red-500 font-bold text-sm">
-                                <span className="material-symbols-outlined align-middle mr-1 text-lg">error</span>
-                                Upload Failed. Please try again.
-                            </p>
+                            <div className="mt-3 text-red-500 font-bold text-sm">
+                                <p>
+                                    <span className="material-symbols-outlined align-middle mr-1 text-lg">error</span>
+                                    Upload Failed.
+                                </p>
+                                <p className="text-xs font-mono mt-1 bg-red-500/10 p-2 rounded">
+                                    {errorMessage}
+                                </p>
+                            </div>
                         )}
                         <p className="mt-4 text-[10px] text-gray-500 max-w-xs mx-auto leading-tight">
                             By uploading files for the purpose of Truth Model training, you accept or consent to the open-source licensing and ethical usage of this data for removing bias.
