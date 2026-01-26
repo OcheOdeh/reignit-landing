@@ -57,11 +57,15 @@ export default function TruthDonation() {
                 let missingVars = "";
                 if (errData.details) {
                     missingVars = Object.keys(errData.details)
-                        .filter(key => errData.details[key] === false)
+                        .filter(key => errData.details[key] === false && key !== 'availableEnvKeys')
                         .join(", ");
+
+                    if (errData.details.availableEnvKeys) {
+                        console.log("Server Env Keys:", errData.details.availableEnvKeys);
+                    }
                 }
 
-                throw new Error(`Step 1 (Auth) Failed: ${res.status} - ${errData.error || res.statusText}. ${missingVars ? 'Missing: ' + missingVars : ''}`);
+                throw new Error(`Step 1 (Auth) Failed: ${res.status} - ${errData.error || res.statusText}. ${missingVars ? 'Missing: ' + missingVars : ''} (See Console)`);
             }
             const { url, publicUrl } = await res.json();
             setFileUrl(publicUrl); // Save public URL for email
