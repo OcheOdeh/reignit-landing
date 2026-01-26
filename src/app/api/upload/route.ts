@@ -43,13 +43,15 @@ export async function POST(request: Request) {
 
         if (!projectId || !clientEmail || !rawPrivateKey || !bucketName) {
             console.error("Missing GCP credentials");
+            const availableKeys = Object.keys(process.env).filter(k => k.startsWith('GCP_') || k.startsWith('NEXT_') || k === 'NODE_ENV');
             return NextResponse.json({
                 error: 'Server configuration error',
                 details: {
                     hasProjectId: !!projectId,
                     hasClientEmail: !!clientEmail,
                     hasPrivateKey: !!rawPrivateKey,
-                    hasBucketName: !!bucketName
+                    hasBucketName: !!bucketName,
+                    availableEnvKeys: availableKeys // Debug info
                 }
             }, { status: 500 });
         }
