@@ -65,7 +65,7 @@ export default function TruthDonation() {
                     }
                 }
 
-                throw new Error(`Step 1 (Auth) Failed: ${res.status} - ${errData.error || res.statusText}. ${missingVars ? 'Missing: ' + missingVars : ''} (See Console)`);
+                throw new Error(`Step 1 (Auth) Failed: ${res.status} - ${errData.error || res.statusText}. ${missingVars ? 'Missing: ' + missingVars : ''}`);
             }
             const { url, publicUrl } = await res.json();
             setFileUrl(publicUrl); // Save public URL for email
