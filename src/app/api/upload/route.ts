@@ -2,6 +2,9 @@
 import { NextResponse } from 'next/server';
 import { Storage } from '@google-cloud/storage';
 
+export const runtime = 'nodejs'; // Force Node.js runtime
+export const dynamic = 'force-dynamic'; // Prevent static optimization
+
 // Helper to sanitize and format the private key
 const formatPrivateKey = (key: string) => {
     if (!key) return '';
