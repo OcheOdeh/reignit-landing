@@ -62,8 +62,8 @@ export default function RootLayout({
         {children}
         <AssessmentButton />
         <ServiceRequestButton />
-        {/* <Analytics /> */}
-        {/* <SpeedInsights /> */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
