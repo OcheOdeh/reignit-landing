@@ -302,13 +302,67 @@ export default function TruthDonation() {
                             ))}
                         </ul>
 
-                        <a
-                            href="https://buy.stripe.com/8x2dR9aGx9b02cQak0ds400"
-                            target="_blank"
-                            className="block w-full py-4 text-center bg-[#FFD700] text-[#120A05] font-bold rounded-xl hover:bg-white transition-colors shadow-[0_0_20px_rgba(255,215,0,0.3)]"
-                        >
-                            Donate/Sponsor
-                        </a>
+                        <div className="bg-[#1a1a1a] rounded-xl p-4 shadow-lg border border-white/10">
+                            <label className="block text-[#FFD700] text-xs font-bold uppercase mb-2">Enter Amount (USD)</label>
+                            <div className="flex gap-2">
+                                <span className="bg-[#2a2a2a] text-white px-4 py-3 rounded-lg font-bold flex items-center border border-white/10">$</span>
+                                <input
+                                    type="number"
+                                    min="1"
+                                    placeholder="50"
+                                    className="flex-1 bg-[#2a2a2a] text-white font-bold rounded-lg px-4 outline-none border border-white/10 focus:border-[#FFD700] transition-colors"
+                                    id="donation-amount"
+                                />
+                            </div>
+                            <button
+                                onClick={async () => {
+                                    const input = document.getElementById('donation-amount') as HTMLInputElement;
+                                    const amount = input?.value ? parseFloat(input.value) : 0;
+
+                                    if (!amount || amount <= 0) {
+                                        alert("Please enter a valid donation amount.");
+                                        return;
+                                    }
+
+                                    const btn = document.getElementById('donate-btn');
+                                    if (btn) {
+                                        btn.innerText = "Processing...";
+                                        (btn as HTMLButtonElement).disabled = true;
+                                    }
+
+                                    try {
+                                        const res = await fetch('/api/create-checkout-session', {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify({
+                                                items: [{ name: 'Donation: Rewriting Africa', price: amount }],
+                                                cancelUrl: window.location.href
+                                            })
+                                        });
+                                        const data = await res.json();
+                                        if (data.url) window.location.href = data.url;
+                                        else alert("Error creating donation session.");
+                                    } catch (e) {
+                                        console.error(e);
+                                        alert("Connection error. Please try again.");
+                                        if (btn) {
+                                            btn.innerText = "Donate/Sponsor";
+                                            (btn as HTMLButtonElement).disabled = false;
+                                        }
+                                    }
+                                }}
+                                id="donate-btn"
+                                className="mt-4 w-full py-4 text-center bg-[#FFD700] text-[#120A05] font-bold rounded-xl hover:bg-white transition-all shadow-[0_0_20px_rgba(255,215,0,0.3)] active:scale-[0.98]"
+                            >
+                                Donate/Sponsor
+                            </button>
+                            <p className="text-center text-xs text-gray-500 mt-3">
+                                Secure payments processed by Stripe.
+                            </p>
+                            <p className="text-center text-[10px] text-gray-500/80 mt-2 max-w-[280px] mx-auto leading-tight">
+                                We accept all major cards globally. Your bank will automatically convert USD to your local currency.
+                            </p>
+                        </div>
                     </div>
 
                     {/* Participant / Contact */}

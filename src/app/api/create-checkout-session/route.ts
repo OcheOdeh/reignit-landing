@@ -8,7 +8,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export async function POST(req: Request) {
     try {
-        const { items, email } = await req.json();
+        const body = await req.json();
+        const { items, email, cancelUrl } = body;
 
         if (!items || items.length === 0) {
             return NextResponse.json({ error: 'No items provided' }, { status: 400 });
@@ -30,7 +31,7 @@ export async function POST(req: Request) {
             line_items: lineItems,
             mode: 'payment',
             success_url: `${req.headers.get('origin')}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${req.headers.get('origin')}/vanguard-checkout`,
+            cancel_url: cancelUrl || `${req.headers.get('origin')}/vanguard-checkout`,
             customer_email: email, // Pre-fill email
             metadata: {
                 // Add any metadata you want to track
