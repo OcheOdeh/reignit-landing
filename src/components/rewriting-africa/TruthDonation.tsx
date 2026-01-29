@@ -303,7 +303,7 @@ export default function TruthDonation() {
                         </ul>
 
                         <a
-                            href="https://buy.stripe.com/test_eVa..." // Placeholder or real link if provided
+                            href="https://buy.stripe.com/8x2dR9aGx9b02cQak0ds400"
                             target="_blank"
                             className="block w-full py-4 text-center bg-[#FFD700] text-[#120A05] font-bold rounded-xl hover:bg-white transition-colors shadow-[0_0_20px_rgba(255,215,0,0.3)]"
                         >
