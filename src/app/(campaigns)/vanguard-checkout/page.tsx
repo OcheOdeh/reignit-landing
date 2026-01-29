@@ -6,7 +6,7 @@ import Script from 'next/script';
 
 // Pricing Constants
 const COMMUNITY_PRICE = 34.46;
-const EXCHANGE_RATE = 1500;
+
 
 const SERVICES = [
     {
@@ -711,7 +711,7 @@ export default function VanguardCheckoutPage() {
                             </div>
                             <div className="text-right">
                                 <span className="text-3xl font-black text-slate-900 tracking-tighter">${total.toFixed(2)}</span>
-                                <div className="text-xs text-slate-500 font-medium">~₦{(total * EXCHANGE_RATE).toLocaleString()}</div>
+                                { /* Removed Naira estimate as FX is handled by Stripe/Bank */}
                             </div>
                         </div>
 
