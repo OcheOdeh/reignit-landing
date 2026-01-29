@@ -40,12 +40,9 @@ export async function POST(req: Request) {
             custom_text: {
                 submit: {
                     message: "We accept all major cards globally. Your bank will automatically convert USD to your local currency."
-                submit: {
-                        message: "We accept all major cards globally. Your bank will automatically convert USD to your local currency."
-                    }
-                },
-                // Force refresh of custom text config
-            });
+                }
+            },
+        });
 
         return NextResponse.json({ url: session.url, sessionId: session.id });
     } catch (err: any) {
