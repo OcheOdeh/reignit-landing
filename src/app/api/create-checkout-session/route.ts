@@ -35,6 +35,11 @@ export async function POST(req: Request) {
             metadata: {
                 // Add any metadata you want to track
                 email: email
+            },
+            custom_text: {
+                submit: {
+                    message: "We accept all major cards globally. Your bank will automatically convert USD to your local currency."
+                }
             }
         });
 
