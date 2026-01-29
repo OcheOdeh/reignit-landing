@@ -106,7 +106,7 @@ export default function VanguardCheckoutPage() {
     const [savingsText, setSavingsText] = useState("");
     const [savingsClass, setSavingsClass] = useState("");
     const [email, setEmail] = useState(""); // Email state
-    const [isSquadLoaded, setIsSquadLoaded] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     // Script is now handled by next/script below
 
@@ -231,116 +231,84 @@ export default function VanguardCheckoutPage() {
         console.log("VanguardCheckoutPage MOUNTED/HYDRATED");
     }, []);
 
-    const handlePayment = () => {
-        if (!isSquadLoaded) {
-            alert("Payment system is still loading. Please check your internet connection.");
-            return;
-        }
-
+    const handlePayment = async () => {
         if (!email) {
             alert("Please enter your email address provided.");
             return;
         }
 
-        // Hardcoded Public Key to resolve Vercel Env Var propagation issue
-        const publicKey = "pk_10c932475b0034a2da4ea00fe17180caf9d71cab";
-        if (!publicKey) {
-            console.error("Missing NEXT_PUBLIC_SQUAD_PUBLIC_KEY");
-            alert("Payment error: Public Key missing (v2). Please check keys.");
+        setIsLoading(true);
+
+        const itemsToCheckout: { name: string; price: number }[] = [];
+
+        // 1. Community Fee
+        if (isMember) {
+            itemsToCheckout.push({ name: 'Community Membership', price: COMMUNITY_PRICE });
+        }
+
+        // 2. Services
+        SERVICES.forEach(s => {
+            if (selectedServices.includes(s.id)) {
+                itemsToCheckout.push({
+                    name: s.title,
+                    price: isMemberOrExisting ? s.priceMember : s.priceNonMember
+                });
+            }
+        });
+
+        // 3. Autopilot
+        if (selectedAutopilot) {
+            const plan = AUTOPILOT_PLANS.find(p => p.id === selectedAutopilot);
+            if (plan) {
+                itemsToCheckout.push({
+                    name: `Autopilot: ${plan.name}`,
+                    price: isMemberOrExisting ? plan.priceMember : plan.priceNonMember
+                });
+            }
+        }
+
+        // 4. US Packages
+        if (selectedUSPackage) {
+            const pkg = US_PACKAGES.find(p => p.id === selectedUSPackage);
+            if (pkg) {
+                itemsToCheckout.push({ name: `US Package: ${pkg.name}`, price: pkg.price });
+            }
+        }
+
+        // 5. Handbook V.2
+        if (selectedHandbookV2) {
+            itemsToCheckout.push({
+                name: 'Online Monetization Handbook V.2',
+                price: isMemberOrExisting ? 30.00 : 90.00
+            });
+        }
+
+        if (itemsToCheckout.length === 0) {
+            alert("Please select at least one item.");
+            setIsLoading(false);
             return;
         }
 
-        // @ts-ignore
-        const SquadConstructor = window.squad || window.Squad || window.SquadPay;
+        try {
+            const response = await fetch('/api/create-checkout-session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ items: itemsToCheckout, email }),
+            });
 
-        if (typeof window !== 'undefined' && SquadConstructor) {
-            console.log("Initializing Squadco with key:", publicKey.substring(0, 10) + "...");
+            const data = await response.json();
 
-            const paymentData = {
-                onClose: () => { console.log('Widget closed'); },
-                onLoad: () => { console.log('Widget loaded successfully'); },
-                onSuccess: async (response: any) => {
-                    console.log("Payment Successful:", response);
-
-                    // Track Purchase
-                    try {
-                        const hashedEmail = await sha256(email);
-                        // @ts-ignore
-                        window.dataLayer = window.dataLayer || [];
-                        // @ts-ignore
-                        window.dataLayer.push({
-                            event: 'purchase',
-                            transaction_id: response.transaction_ref || response.reference,
-                            value: total,
-                            currency: 'USD',
-                            user_data: {
-                                sha256_email_address: hashedEmail,
-                            },
-                            items: selectedServices.map(id => ({
-                                item_id: id,
-                                item_name: id,
-                                price: 0 // Simplified for now as pricing logic is complex
-                            })),
-                            // Basic TikTok fields
-                            tt_content_type: 'product'
-                        });
-                    } catch (err) {
-                        console.error("Tracking Failed:", err);
-                    }
-
-                    // Show immediate feedback
-                    alert("Payment processing... Please check your email shortly.");
-
-                    try {
-                        await fetch('/api/payment-success', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                email: email,
-                                amount: Math.round(total * EXCHANGE_RATE), // Send amount paid in NGN
-                                name: 'Valued Member',
-                                transaction_id: response.transaction_ref || response.reference
-                            })
-                        });
-                        // alert("Payment verification email sent!"); // Optional, maybe redundant with above
-                    } catch (err) {
-                        console.error("Failed to track payment:", err);
-                        // Don't scare the user if payment worked but tracking failed, or do? 
-                        // It's better to log it; they already paid.
-                    }
-                },
-                key: publicKey,
-                email: email,
-                amount: Math.round(total * EXCHANGE_RATE * 100), // Convert to NGN kobo
-                currency_code: "NGN"
-            };
-
-            try {
-                // @ts-ignore
-                const squadInstance = new SquadConstructor(paymentData);
-
-                if (typeof squadInstance.setup === 'function') {
-                    squadInstance.setup();
-                    squadInstance.open();
-                } else if (typeof squadInstance.open === 'function') {
-                    squadInstance.open();
-                } else {
-                    console.warn("Squad setup/open not found, trying function call fallback");
-                    SquadConstructor(paymentData);
-                }
-            } catch (e) {
-                console.error("Payment init error:", e);
-                // Fallback attempt
-                try {
-                    SquadConstructor(paymentData);
-                } catch (e2) {
-                    console.error("Payment fallback init error:", e2);
-                    alert("Payment system error. Please refresh and try again.");
-                }
+            if (data.url) {
+                window.location.href = data.url;
+            } else {
+                console.error("Stripe Error:", data.error);
+                alert("Payment initiation failed. Please try again.");
+                setIsLoading(false);
             }
-        } else {
-            console.error("Squad global not found");
-            alert("Payment system is initializing. Please wait a few seconds and try again.");
+        } catch (error) {
+            console.error("Payment Error:", error);
+            alert("An error occurred. Please check your connection.");
+            setIsLoading(false);
         }
     };
 
@@ -348,18 +316,7 @@ export default function VanguardCheckoutPage() {
         <div className="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-display pb-40 overflow-x-hidden">
             {/* Squadco Payment Script */}
             {/* Squadco Payment Script - Optimized for faster loading */}
-            <Script
-                src="https://checkout.squadco.com/widget/squad.min.js"
-                strategy="afterInteractive"
-                onLoad={() => {
-                    console.log('Squad script loaded successfully');
-                    setIsSquadLoaded(true);
-                }}
-                onError={(e) => {
-                    console.error('Squad script failed to load:', e);
-                    alert("Payment system failed to load. Please check your connection or disable ad-blockers and refresh.");
-                }}
-            />
+
 
             {/* Inject Google Material Symbols */}
             <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet" />
@@ -760,18 +717,18 @@ export default function VanguardCheckoutPage() {
 
                         <button
                             onClick={handlePayment}
-                            disabled={!isSquadLoaded}
+                            disabled={isLoading}
                             className="relative overflow-hidden w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-800 text-white font-bold h-14 rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-blue-600/30 group disabled:opacity-70 disabled:cursor-not-allowed disabled:bg-slate-400"
                         >
-                            {isSquadLoaded ? (
+                            {isLoading ? (
                                 <>
-                                    <span className="relative z-10 text-lg">Click to Pay</span>
-                                    <span className="material-symbols-outlined relative z-10 text-xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                    <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                                    <span className="relative z-10 text-lg">Redirecting to Stripe...</span>
                                 </>
                             ) : (
                                 <>
-                                    <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                                    <span className="relative z-10 text-lg">Loading Secure Payment...</span>
+                                    <span className="relative z-10 text-lg">Click to Pay</span>
+                                    <span className="material-symbols-outlined relative z-10 text-xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
                                 </>
                             )}
                             <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent z-0"></div>
