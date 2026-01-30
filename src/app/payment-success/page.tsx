@@ -37,7 +37,7 @@ function PaymentSuccessContent() {
                 </p>
 
                 <p className="text-gray-400 mb-8 leading-relaxed">
-                    Your contribution helps us build a sovereign truth engine. A receipt has been sent to your email.
+                    We have received your payment. A receipt has been sent to your email.
                 </p>
 
                 {sessionId && (
