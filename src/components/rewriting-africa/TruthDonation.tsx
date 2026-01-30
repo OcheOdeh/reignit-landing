@@ -336,7 +336,8 @@ export default function TruthDonation() {
                                             headers: { 'Content-Type': 'application/json' },
                                             body: JSON.stringify({
                                                 items: [{ name: 'Donation: Rewriting Africa', price: amount }],
-                                                cancelUrl: window.location.href
+                                                cancelUrl: window.location.href,
+                                                type: 'donation'
                                             })
                                         });
                                         const data = await res.json();

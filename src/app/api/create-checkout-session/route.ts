@@ -35,7 +35,8 @@ export async function POST(req: Request) {
             customer_email: email, // Pre-fill email
             metadata: {
                 // Add any metadata you want to track
-                email: email
+                email: email,
+                type: body.type || 'unknown' // Track transaction type (donation vs vanguard)
             },
             custom_text: {
                 submit: {
