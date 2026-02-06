@@ -21,6 +21,20 @@ export default function CommunityPage() {
                         <p className="text-xl text-gray-400 mb-8">
                             Everything you need to move forward with AI
                         </p>
+
+                        <div className="flex items-center gap-3 mb-8 bg-white/5 border border-white/10 p-4 rounded-xl backdrop-blur-sm w-fit">
+                            <div className="flex -space-x-3">
+                                {[1, 2, 3, 4].map((i) => (
+                                    <div key={i} className="w-8 h-8 rounded-full border-2 border-[#120A05] bg-gray-600 overflow-hidden relative">
+                                        {/* Placeholder avatars until real ones are added, or just use colors */}
+                                        <div className={`w-full h-full bg-gradient-to-br from-gray-500 to-gray-700 opacity-80`} />
+                                    </div>
+                                ))}
+                            </div>
+                            <p className="text-sm font-medium text-gray-300">
+                                Joined by over <span className="text-[#FFD700] font-bold">500 people</span> upscaling their AI experience and Business
+                            </p>
+                        </div>
                         <ul className="space-y-6">
                             {[
                                 "Learn proven methods to earn online",
