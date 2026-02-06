@@ -57,7 +57,6 @@ const Footer: React.FC = () => {
               <li className="text-gray-400 text-sm">
                 <span className="block text-white font-semibold mb-1">Contact</span>
                 <a href="mailto:sales@reignitinc.com" className="hover:text-accent transition-colors block">sales@reignitinc.com</a>
-                <a href="tel:+13395655737" className="hover:text-accent transition-colors block">+1 (339) 565-5737</a>
               </li>
             </ul>
           </div>
