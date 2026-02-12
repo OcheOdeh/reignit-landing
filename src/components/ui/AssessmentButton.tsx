@@ -10,6 +10,7 @@ export default function AssessmentButton() {
     const isCheckout = pathname?.includes("vanguard-checkout");
     const isInvestors = pathname?.includes("investors");
     const isMasterclass = pathname?.includes("masterclass");
+    const isRewritingAfrica = pathname?.includes("rewriting-africa");
 
     // Ref for constraints (optional, but keeps it within window if needed)
     const constraintsRef = useRef(null);
@@ -17,7 +18,7 @@ export default function AssessmentButton() {
     // State to track if we are dragging vs clicking
     const [isDragging, setIsDragging] = useState(false);
 
-    if (isCheckout || isInvestors || isMasterclass) return null;
+    if (isCheckout || isInvestors || isMasterclass || isRewritingAfrica) return null;
 
     return (
         <>
